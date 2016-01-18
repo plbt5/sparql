@@ -377,7 +377,7 @@ class NumericLiteral(NonTerminal):
 NumericLiteral_p.setParseAction(NumericLiteral)
 
 # [129]   RDFLiteral        ::=   String ( LANGTAG | ( '^^' iri ) )? 
-RDFLiteral_p = Group(String_p)('lexical_form') + Optional( Group ( ( LANGTAG_p ^ ('^^' + iri_p ) ) ) ('type_info') ) 
+RDFLiteral_p = Group(String_p)('lexical_form') + Optional(Group ((LANGTAG_p('langtag') ^ ('^^' + iri_p)('datatype'))))
 class RDFLiteral(NonTerminal):  
     def assignPattern(self):
         self.pattern = eval(self.__class__.__name__ + '_p')
@@ -406,7 +406,7 @@ class ExpressionList(NonTerminal):
     def assignPattern(self):
         self.pattern = eval(self.__class__.__name__ + '_p')
     def render(self):
-        return ', '.join([v.render() for v in self.unpackParseResults(self.elements)])
+        return ', '.join([v[0].render() for v in self.parseinfo.tokens])
 ExpressionList_p.setParseAction(ExpressionList)
     
  
@@ -419,7 +419,7 @@ ArgList_p.setParseAction(ArgList)
 
 
 # [128]   iriOrFunction     ::=   iri ArgList? 
-iriOrFunction_p = iri_p('iri') + Optional(Group(ArgList_p)('ArgList'))
+iriOrFunction_p = iri_p('iri') + Optional(Group(ArgList_p))('ArgList')
 
 # [127]   Aggregate         ::=     'COUNT' '(' 'DISTINCT'? ( '*' | Expression ) ')' 
 #             | 'SUM' '(' 'DISTINCT'? Expression ')' 

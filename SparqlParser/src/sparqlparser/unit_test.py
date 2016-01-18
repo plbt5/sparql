@@ -1,6 +1,5 @@
 import unittest
 from sparqlparser.grammar import *
-from pyparsing import ParseException
 
 
 class Test(unittest.TestCase):
