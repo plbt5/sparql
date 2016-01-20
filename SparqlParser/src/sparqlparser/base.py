@@ -16,29 +16,23 @@ class ParseInfo():
     def __init__(self, parseresults):
         assert isinstance(parseresults, ParseResults), type(parseresults)
         self.name = parseresults.getName()
-        self.names = OrderedDict()
+        self.dict = OrderedDict()
         self.tokens = []
+        valuedict = dict((id(v), k) for (k, v) in parseresults.items())
+        assert len(valuedict) == len(list(parseresults.items())), 'internal error'
         for t in parseresults:
-            if isinstance(t, str) or isinstance(t, SPARQLNode):
+            if isinstance(t, (str, SPARQLNode)):
                 newtoken = [t]
             else:
                 assert isinstance(t, ParseResults)
                 newtoken = [ParseInfo(t)]
             self.tokens.append(newtoken)
-            try:
-                n = t.getName()
-            except AttributeError:
-                n = None
-            if n:
-#                 print('************* got name: {} **************'.format(n))
-                if n in self.names.keys():
-                    raise ParseFatalException('duplicate name: "{}"'.format(n))
-                if getattr(self, n, None):
-                    raise ParseFatalException('name clash with "{}"'.format(n))
-                self.names[n] = newtoken
-#         print('constructed names: {}'.format(str(self.names.keys())))
-#     def __getattr__(self, a):
-#         return self.names.get(a)
+            if id(t) in valuedict: 
+                self.dict[valuedict[id(t)]] = newtoken
+    def __getattr__(self, key):
+        return self.dict[key][0]
+    def getKeys(self):
+        return self.dict.keys()
     def getName(self):
         return self.name
     def render(self):
@@ -47,7 +41,7 @@ class ParseInfo():
             if isinstance(t, str):
                 reslist.append(t) 
             else:
-                assert isinstance(t, SPARQLNode) or isinstance(t, ParseInfo)
+                assert isinstance(t, (SPARQLNode, ParseInfo))
                 reslist.append(t.render())
         return ' '.join(reslist)
 
@@ -64,6 +58,10 @@ class SPARQLNode():
     def __repr__(self):
         return ' <<< Class:' + self.__class__.__name__ + ', dict=' + str(self.__dict__) + ' >>> '
     __str__ = __repr__
+    def __getattr__(self, key):
+        return getattr(self.parseinfo, key)
+    def getKeys(self):
+        return self.parseinfo.getKeys()
     def render(self):
         return NotImplementedError
 
@@ -97,10 +95,7 @@ def dumpParseInfo(parseinfo, indent=' ', depth=0):
     for t in parseinfo.tokens:
         if isinstance(t[0], ParseInfo):
             name = t[0].getName()
-            if name:
-                label = ('>> ' + name + ': ' if name else '')
-            else:
-                label = ''
+            label = ('>> ' + name + ': ' if name else '')
             print(skip + label)
             dumpParseInfo(t[0], indent, depth+1)
         elif isinstance(t[0], str):
