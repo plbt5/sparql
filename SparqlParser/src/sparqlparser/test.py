@@ -2,33 +2,52 @@ from sparqlparser.base import *
 from sparqlparser.grammar import *
 
 s = '( *Expression*)'
-
-r = ArgList_p.parseString(s)
-
-t = r[0]
-
-print(type(t))
+t1 = ArgList_p.parseString(s)[0]
 print()
-print(t.getKeys())
-
-u = t.arguments
+# print(t1.getKeys())
 print()
-print(type(u))
+t2 = ArgList(s)
+
+assert t1.pattern == t2.pattern
+
+print(t2.render())
 print()
-print(u.getKeys())
-
-v = u.expression_list
-
+dumpParseInfo(t2)
 print()
-print(type(v))
-print(v.getKeys())
+# print()
+# print(t2.arguments.expression_list.render())
+e = ExpressionList('*Expression*, *Expression*')
+t2.arguments.expression_list = e
+print(t2.render())
+print()
+dumpParseInfo(t2)
 
-w = t.arguments.expression_list
-
-assert w == v
-
-print(t.render())
-
-s = '()'
-
-a = ArgList_p.parseString(s)
+# print(t2.getKeys())
+# print(t.parseinfo.__dict__.keys())
+# print(t.parseinfo.namedtokens.__dict__.keys())
+# 
+# print(type(t))
+# print()
+# print(t.getKeys())
+# 
+# u = t.arguments
+# print()
+# print(type(u))
+# print()
+# print(u.getKeys())
+# 
+# v = u.expression_list
+# 
+# print()
+# print(type(v))
+# print(v.getKeys())
+# 
+# w = t.arguments.expression_list
+# 
+# assert w == v
+# 
+# print(t.render())
+# 
+# s = '()'
+# 
+# a = ArgList_p.parseString(s)

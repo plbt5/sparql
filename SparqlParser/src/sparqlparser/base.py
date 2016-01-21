@@ -15,9 +15,9 @@ if sys.version_info < (3,3):
 class ParseInfo():
     def __init__(self, parseresults):
         assert isinstance(parseresults, ParseResults), type(parseresults)
-        self.name = parseresults.getName()
-        self.dict = OrderedDict()
-        self.tokens = []
+        self.__dict__['name'] = parseresults.getName()
+        self.__dict__['namedtokens'] = OrderedDict()
+        self.__dict__['tokens'] = []
         valuedict = dict((id(v), k) for (k, v) in parseresults.items())
         assert len(valuedict) == len(list(parseresults.items())), 'internal error'
         for t in parseresults:
@@ -26,13 +26,17 @@ class ParseInfo():
             else:
                 assert isinstance(t, ParseResults)
                 newtoken = [ParseInfo(t)]
-            self.tokens.append(newtoken)
+            self.__dict__['tokens'].append(newtoken)
             if id(t) in valuedict: 
-                self.dict[valuedict[id(t)]] = newtoken
-    def __getattr__(self, key):
-        return self.dict[key][0]
+                self.__dict__['namedtokens'][valuedict[id(t)]] = newtoken
+    def __getattr__(self, name):
+        return self.namedtokens[name][0]
+    def __setattr__(self, name, value):
+        assert name in self.namedtokens
+#         assert type(self.__dict__.namedtokens[name][0]) == type(value), 'assigned value must be of type {}, is of type {}'.format(type(self.namedtokens[name][0]), type(value)) 
+        self.__dict__['namedtokens'][name][0] = value
     def getKeys(self):
-        return self.dict.keys()
+        return self.namedtokens.keys()
     def getName(self):
         return self.name
     def render(self):
@@ -48,18 +52,22 @@ class ParseInfo():
 
 class SPARQLNode():
     
-    def __init__(self, pr):
+    def __init__(self, pr_or_str):
         self.assignPattern()
-        if isinstance(pr, ParseResults):
-            self.parseinfo = ParseInfo(pr)
+        if isinstance(pr_or_str, ParseResults):
+            self.__dict__['parseinfo'] = ParseInfo(pr_or_str)
         else:
-            assert isinstance(pr, str)
-            self.parseinfo = ParseInfo(self.pattern.parseString(pr))
+            assert isinstance(pr_or_str, str)
+            newparseinfo = ParseInfo(self.pattern.parseString(pr_or_str))
+            assert len(newparseinfo.tokens[0]) == 1
+            self.__dict__['parseinfo'] = newparseinfo.tokens[0][0].parseinfo
     def __repr__(self):
         return ' <<< Class:' + self.__class__.__name__ + ', dict=' + str(self.__dict__) + ' >>> '
     __str__ = __repr__
     def __getattr__(self, key):
         return getattr(self.parseinfo, key)
+    def __setattr__(self, key, value):
+        setattr(self.parsinfo, key, value)
     def getKeys(self):
         return self.parseinfo.getKeys()
     def render(self):
