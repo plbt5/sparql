@@ -9,6 +9,7 @@ print()
 t2 = ArgList(s)
 
 assert t1.pattern == t2.pattern
+print('equal?', t1 == t2)
 
 print(t2.render())
 print()
@@ -21,6 +22,8 @@ t2.arguments.expression_list = e
 print(t2.render())
 print()
 dumpParseInfo(t2)
+
+print('equal?', t1 == t2)
 
 # print(t2.getKeys())
 # print(t.parseinfo.__dict__.keys())
