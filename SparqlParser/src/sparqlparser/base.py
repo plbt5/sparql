@@ -51,8 +51,8 @@ class ParseInfo():
     
     def __setattr__(self, name, value):
         assert name in self.namedtokens
-#         assert type(self.__dict__.namedtokens[name][0]) == type(value), 'assigned value must be of type {}, is of type {}'.format(type(self.namedtokens[name][0]), type(value)) 
-        self.__dict__['namedtokens'][name][0] = value
+        assert type(self.__dict__['namedtokens'][name][0]) == type(value.parseinfo), 'assigned value must be of type {}, is of type {}'.format(type(self.namedtokens[name][0]), type(value)) 
+        self.namedtokens[name][0] = value.parseinfo
         
     def getKeys(self):
         return self.namedtokens.keys()

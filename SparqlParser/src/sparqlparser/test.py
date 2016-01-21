@@ -25,6 +25,8 @@ dumpParseInfo(t2)
 
 print('equal?', t1 == t2)
 
+print(ArgList('(  *Expression*)') == ArgList('(*Expression*, *Expression*)'))
+
 # print(t2.getKeys())
 # print(t.parseinfo.__dict__.keys())
 # print(t.parseinfo.namedtokens.__dict__.keys())
