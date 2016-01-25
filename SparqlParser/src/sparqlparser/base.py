@@ -45,15 +45,15 @@ class ParseInfo():
                 return False
         return True
     
-    def __getattr__(self, name):
-        assert name in self.namedtokens.keys()
-        return self.namedtokens[name][0]
-    
-    def __setattr__(self, name, value):
-        assert name in self.namedtokens
-        assert type(self.__dict__['namedtokens'][name][0]) == type(value.parseinfo), 'assigned value must be of type {}, is of type {}'.format(type(self.namedtokens[name][0]), type(value)) 
-        self.namedtokens[name][0] = value.parseinfo
-        
+#     def __getattr__(self, name):
+#         assert name in self.namedtokens.keys()
+#         return self.namedtokens[name][0]
+#     
+#     def __setattr__(self, name, value):
+#         assert name in self.namedtokens
+#         assert type(self.__dict__['namedtokens'][name][0]) == type(value.parseinfo), 'assigned value must be of type {}, is of type {}'.format(type(self.namedtokens[name][0]), type(value)) 
+#         self.namedtokens[name][0] = value.parseinfo
+#         
     def getKeys(self):
         return self.namedtokens.keys()
     
@@ -121,7 +121,7 @@ class NonTerminal(SPARQLNode):
     __str__ = render
     
 
-def dumpSPARQLNode(node, indent=' ', depth=0):
+def dumpSPARQLNode(node, indent='  ', depth=0):
     
     skip = indent * depth
     print(skip + '[' + node.__class__.__name__ + ']')
@@ -132,12 +132,17 @@ def dumpSPARQLNode(node, indent=' ', depth=0):
         dumpParseInfo(node.parseinfo, indent, depth + 1)
 
 
-def dumpParseInfo(parseinfo, indent=' ', depth=0):
+def dumpParseInfo(parseinfo, indent='  ', depth=0):
     skip = indent * depth
     for t in parseinfo.tokens:
         if isinstance(t[0], ParseInfo):
             name = t[0].getName()
-            label = ('>> ' + name + ': ' if name else '')
+            if name == None:
+                label = '(no type)'
+            elif name == 'group':
+                label = '(group)'
+            else:
+                label = ('>> ' + name)
             print(skip + label)
             dumpParseInfo(t[0], indent, depth+1)
         elif isinstance(t[0], str):
