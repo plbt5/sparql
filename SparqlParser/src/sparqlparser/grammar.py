@@ -3,28 +3,46 @@ from sparqlparser.base import *
 
 do_parseactions = True
 
+# def keyedList(parseresults):
+#     valuedict = dict((id(t), k) for (k, t) in parseresults.items())
+#     assert len(valuedict) == len(list(parseresults.items())), 'internal error: len(valuedict) = {}, len(parseresults.items) = {}'.format(len(valuedict), len(list(parseresults.items)))
+#     result = []
+#     for t in parseresults:
+#         if isinstance(t, (str, ParseInfo)):
+#             result.append([valuedict.get(id(t)), t])
+#             continue
+#         assert isinstance(t, ParseResults), type(t)
+#         if valuedict.get(id(t)):
+#             assert isinstance(t, ParseResults), type(t)
+#             result.append([valuedict.get(id(t)), keyedList(t)])
+#             continue
+#         result.extend(keyedList(t))
+#     return result
+        
 def parseInfoFunc(classname):
-    cls = globals()[classname]
+    
+    def keyedList(parseresults):
+        valuedict = dict((id(t), k) for (k, t) in parseresults.items())
+        assert len(valuedict) == len(list(parseresults.items())), 'internal error: len(valuedict) = {}, len(parseresults.items) = {}'.format(len(valuedict), len(list(parseresults.items)))
+        result = []
+        for t in parseresults:
+            if isinstance(t, (str, ParseInfo)):
+                result.append([valuedict.get(id(t)), t])
+                continue
+            assert isinstance(t, ParseResults), type(t)
+            if valuedict.get(id(t)):
+                assert isinstance(t, ParseResults), type(t)
+                result.append([valuedict.get(id(t)), keyedList(t)])
+                continue
+            result.extend(keyedList(t))
+        return result
+    
     def makeparseinfo(parseresults):
-#         print(cls)
+        cls = globals()[classname]
         name = parseresults.getName()
-        while len(parseresults) == 1 and isinstance(parseresults[0], ParseResults) and not parseresults[0].getName():
-                parseresults = parseresults[0]
-        items = []
-        if isinstance(parseresults, str):
-            return cls(name, parseresults)
-        else:
-            assert isinstance(parseresults, ParseResults)
-            valuedict = dict((id(t), k) for (k, t) in parseresults.items())
-            assert len(valuedict) == len(list(parseresults.items())), 'internal error: len(valuedict) = {}, len(parseresults.items) = {}'.format(len(valuedict), len(list(parseresults.items)))
-            for t in parseresults:
-                k = valuedict.get(id(t))
-                if isinstance(t, (str, ParseInfo)):
-                    items.append([k, t])
-                else:
-                    assert isinstance(t, ParseResults)
-                    items.append([k, makeParseInfo(t)])
-            return cls(name, items)  
+        assert isinstance(parseresults, ParseResults)
+        return cls(name, keyedList(parseresults))  
+    
     return makeparseinfo
 # 
 # Parsers and classes for terminals
@@ -404,7 +422,7 @@ if do_parseactions: NumericLiteral_p.setParseAction(parseInfoFunc('NumericLitera
 
 # [129]   RDFLiteral        ::=   String ( LANGTAG | ( '^^' iri ) )? 
 RDFLiteral_p = (
-                     String_p('lexical_form') \
+                     Group(String_p('lexical_form')) \
                      + Optional(
                                 Group (
                                        (
@@ -436,8 +454,6 @@ class ExpressionList(NonTerminal):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return ', '.join([v[1] if isinstance(v[1], str) else v[1].render() for v in self.items])
-#     def render(self):
-#         super().render()
 if do_parseactions: ExpressionList_p.setParseAction(parseInfoFunc('ExpressionList'))
     
  

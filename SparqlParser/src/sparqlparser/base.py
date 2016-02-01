@@ -13,26 +13,6 @@ if sys.version_info < (3,3):
 #
 
 
-def makeParseInfo(parseresults):
-    name = parseresults.getName()
-    while len(parseresults) == 1 and isinstance(parseresults[0], ParseResults) and not parseresults[0].getName():
-            parseresults = parseresults[0]
-    items = []
-    if isinstance(parseresults, str):
-        return ParseInfo(name, [None, parseresults])
-    else:
-        assert isinstance(parseresults, ParseResults)
-        valuedict = dict((id(t), k) for (k, t) in parseresults.items())
-        assert len(valuedict) == len(list(parseresults.items())), 'internal error: len(valuedict) = {}, len(parseresults.items) = {}'.format(len(valuedict), len(list(parseresults.items)))
-        for t in parseresults:
-            k = valuedict.get(id(t))
-            if isinstance(t, (str, ParseInfo)):
-                items.append([k, t])
-            else:
-                assert isinstance(t, ParseResults)
-                items.append([k, makeParseInfo(t)])
-        return ParseInfo(name, items)
-        
 
 class ParseInfo():
     
@@ -84,30 +64,58 @@ class ParseInfo():
 
     def dump(self, indent='  ', depth=0):
         skip = indent * depth
-        print(skip + '[' + self.__class__.__name__ + ']', end=' ')
-
-        print((self.name if self.name else '_noName') + ':')
+        def dumpItemList(l, depth=0):
+            for i in l:
+                if isinstance(i[1], str):
+                    print(skip + i[1])
+                    continue
+                if isinstance(i[1], ParseInfo):
+                    i[1].dump(depth=depth+1)
+                    continue
+                assert isinstance(i[1], list), type(i[1])
+                dumpItemList(i[1], depth=depth+1)
+        print((skip + (self.name if self.name else '_')) + ': ' + '[' + self.__class__.__name__ + '] ' + self.render())
         for i in self.items:
-            k, v = i
-            label = k + ':' if k else '_noKey:'
-            print(skip + indent + label)
+            v = i[1]
             if isinstance(v, str):
-                print(skip + indent + v)
+                continue
+            if isinstance(v, list):
+                dumpItemList(v, depth=depth)
             else:
                 assert isinstance(v, ParseInfo), type(v)
                 v.dump(depth=depth+1)
     
-    def render(self, sep=' '):
-        reslist = []
-        for t in map(lambda x: x[1], self.items):
-            if isinstance(t, str):
-                reslist.append(t) 
-            elif isinstance(t, list):
-                reslist.append(' '.join([t1 if isinstance(t1, str) else t1.render() for t1 in t]))
+
+
+    def render(self):
+        sep = ' '
+        def renderList(l):
+            resultList = []
+            for i in l:
+                if isinstance(i, str):
+                    resultList.append(i)
+                    continue
+                if isinstance(i, ParseInfo):
+                    resultList.append(i.render())
+                    continue
+                if isinstance(i, list):
+                    resultList.append(renderList(i))
+            return sep.join(resultList)
+        result = []
+        for t in self.items:
+            if isinstance(t[1], str):
+                result.append(t[1]) 
+            elif isinstance(t[1], list):
+#                 result.append(t.renderItems(sep))
+                result.append(renderList(t[1]))
             else:
-                assert isinstance(t, ParseInfo), type(t)
-                reslist.append(t.render())
-        return sep.join(reslist)
+                assert isinstance(t[1], ParseInfo), type(t[1])
+                result.append(t[1].render())
+        return sep.join(result)
+
+#     def render(self, sep=' '):
+#         return self.renderItems(sep)
+
     
 
 class SPARQLNode(ParseInfo):

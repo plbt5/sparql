@@ -17,10 +17,10 @@ def printResults(l, rule):
         print('Render:', rendering)
         if s != rendering:
             print()
-            print('+'* 80)
+            print('+' * 80)
             print('Note: rendering (len={}) differs from input (len={})'.format(len(rendering), len(s)))
-            print('+'* 80)
-        print('\n' + '-'*80)
+            print('+' * 80)
+        print('\n' + '-' * 80)
         
 if __name__ == '__main__':
     
