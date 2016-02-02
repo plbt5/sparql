@@ -45,7 +45,7 @@ class ParseInfo():
         assert name in self.getKeys()
         items = self.getItemsForKey(name)
         assert len(items) == 1
-        assert isinstance(value, type(items[0][1])), 'assigned value must be of type {}, is of type {}'.format(type(items[0][1]), type(value)) 
+        assert type(items[0][1]) == type(value), 'assigned value must be of type {}, is of type {}'.format(type(items[0][1]), type(value)) 
         self.items[0][1] = value
 #         
     def assignPattern(self):
