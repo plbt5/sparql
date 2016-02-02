@@ -1,6 +1,7 @@
 from pyparsing import ParseFatalException, ParseResults
 from collections import OrderedDict
 import sys
+from _operator import itemgetter
 
 if sys.version_info < (3,3):
     raise ParseFatalException('This parser only works with Python 3.3 or later (due to unicode handling and other issues)')
@@ -43,47 +44,40 @@ class ParseInfo():
     def getItems(self):
         return self.items
     
-    def getTokens(self):
-        return NotImplementedError
+    def getValues(self):
+        return [i[1] for i in self.getItems()]
     
-    def getDict(self):
-        return NotImplementedError
+    def getKeys(self):
+        return [i[0] for i in self.getItems() if i[0]]
     
-    def getList(self):
-        return NotImplementedError
+    def getValuesForKey(self, k):
+        result = [i[1] for i in self.getItems() if i[0] == k]
+        if len(result) > 1:
+            raise NotImplementedError('Multiple values ({}) for key {} not yet supported'.format(result, k))
+        return result
     
-    def dumpItems(self, indent=' ', depth=0):
-        skip = indent * depth
-        for n, t in self.items:
-            print(skip + n + ':')
-            if isinstance(t, str):
-                print(skip + indent + t)
-            else:
-                assert isinstance(t, ParseInfo)
-                t.dumpItems(depth=depth+1)
+    
 
-    def dump(self, indent='  ', depth=0):
-        skip = indent * depth
-        def dumpItemList(l, depth=0):
-            for i in l:
-                if isinstance(i[1], str):
-                    print(skip + i[1])
-                    continue
-                if isinstance(i[1], ParseInfo):
-                    i[1].dump(depth=depth+1)
-                    continue
-                assert isinstance(i[1], list), type(i[1])
-                dumpItemList(i[1], depth=depth+1)
-        print((skip + (self.name if self.name else '_')) + ': ' + '[' + self.__class__.__name__ + '] ' + self.render())
-        for i in self.items:
-            v = i[1]
-            if isinstance(v, str):
-                continue
-            if isinstance(v, list):
-                dumpItemList(v, depth=depth)
-            else:
-                assert isinstance(v, ParseInfo), type(v)
-                v.dump(depth=depth+1)
+
+    def dump(self, indent='', step='  '):
+        
+        def dumpString(s, indent, step):
+            print(indent + '- ' + s + ' <str>' )
+        
+        def dumpItems(items, indent, step):
+#             print(indent + '<debug> items, len: ' + str(len(items)))
+            for k, v in items:
+#                 print(indent + '<debug> item: ' + str(id(v)) + ' ' + (k if k else '(no key)'))
+                if isinstance(v, str):
+                    dumpString(v, indent+step, step)
+                elif isinstance(v, list):
+                    dumpItems(v, indent+step, step)
+                else:
+                    assert isinstance(v, ParseInfo)
+                    v.dump(indent+step, step)       
+       
+        print(indent + ('- '+ self.name + ':\n' + indent if self.name else '') + '[' + self.__class__.__name__ + '] ' + self.render())
+        dumpItems(self.items, indent, step)
     
 
 

@@ -26,21 +26,23 @@ def parseInfoFunc(classname):
         assert len(valuedict) == len(list(parseresults.items())), 'internal error: len(valuedict) = {}, len(parseresults.items) = {}'.format(len(valuedict), len(list(parseresults.items)))
         result = []
         for t in parseresults:
-            if isinstance(t, (str, ParseInfo)):
+            if isinstance(t, str):
+                result.append([None, t])
+                continue
+            if isinstance(t, ParseInfo):
                 result.append([valuedict.get(id(t)), t])
                 continue
             assert isinstance(t, ParseResults), type(t)
-            if valuedict.get(id(t)):
-                assert isinstance(t, ParseResults), type(t)
-                result.append([valuedict.get(id(t)), keyedList(t)])
-                continue
+#             if valuedict.get(id(t)):
+#                 result.append([None, keyedList(t)])
+#                 continue
             result.extend(keyedList(t))
         return result
     
     def makeparseinfo(parseresults):
         cls = globals()[classname]
-        name = parseresults.getName()
         assert isinstance(parseresults, ParseResults)
+        name = parseresults.getName()
         return cls(name, keyedList(parseresults))  
     
     return makeparseinfo
@@ -334,10 +336,10 @@ if do_parseactions: IRIREF_p.setParseAction(parseInfoFunc('IRIREF'))
 # Keywords
 #
 DISTINCT_p = CaselessKeyword('DISTINCT')
-# class DISTINCT(Terminal):
-#     def render(self):
-#         return 'DISTINCT'
-# DISTINCT_p.setParseAction(parseInfoFunc('(DISTINCT)'))
+class DISTINCT(Terminal):
+    def render(self):
+        return 'DISTINCT'
+DISTINCT_p.setParseAction(parseInfoFunc('DISTINCT'))
 
 COUNT_p = CaselessKeyword('COUNT')
 SUM_p = CaselessKeyword('SUM')
@@ -428,7 +430,7 @@ RDFLiteral_p = (
                                        (
                                         LANGTAG_p('langtag') \
                                         ^ \
-                                        ('^^' + iri_p('datatype'))
+                                        ('^^' + iri_p('datatype'))('caps')
                                         )
                                        )
                                 )
@@ -448,17 +450,17 @@ class Expression(NonTerminal):
 if do_parseactions: Expression_p.setParseAction(parseInfoFunc('Expression'))
 
 # pattern and class to parse and render delimited Expression lists
-ExpressionList_p = Group(delimitedList(Expression_p))
+ExpressionList_p = delimitedList(Expression_p)
 class ExpressionList(NonTerminal):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
-        return ', '.join([v[1] if isinstance(v[1], str) else v[1].render() for v in self.items])
+        return ', '.join([v[1] if isinstance(v[1], str) else v[1].render() for v in self.getItems()])
 if do_parseactions: ExpressionList_p.setParseAction(parseInfoFunc('ExpressionList'))
     
  
 # [71]    ArgList   ::=   NIL | '(' 'DISTINCT'? Expression ( ',' Expression )* ')' 
-ArgList_p =   Group(NIL_p('nil') | (LPAR_p + Optional(Group(DISTINCT_p)('distinct')) + Group(ExpressionList_p)('expression_list') + RPAR_p)('arguments'))
+ArgList_p = Group(NIL_p('nil')) | (LPAR_p + Optional(Group(DISTINCT_p('distinct'))) + Group(ExpressionList_p('expression_list')) + RPAR_p)
 class ArgList(NonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
