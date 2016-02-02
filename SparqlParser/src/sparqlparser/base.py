@@ -16,12 +16,19 @@ if sys.version_info < (3,3):
 
 class ParseInfo():
     
-    def __init__(self, name, items):
-        self.__dict__['name'] = name
-        self.__dict__['items'] = items
+    def __init__(self, *args):
         self.assignPattern()
+        if len(args) == 2:
+            self.__dict__['name'] = args[0] # name
+            self.__dict__['items'] = args[1] # items
+        else:
+            assert len(args) == 1 and isinstance(args[0], str)
+            self.__dict__['name'] = None
+            self.__dict__['items'] = self.pattern.parseString(args[0])[0].items
                 
     def __eq__(self, other):
+        if self.__class__ != other.__class__:
+            return False
         if self.name != other.name:
             return False
         for t1, t2 in zip(self.items, other.items):

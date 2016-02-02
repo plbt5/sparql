@@ -16,9 +16,9 @@ s = '(DISTINCT *Expression*,  *Expression*,   *Expression* )'
   
 r = ArgList_p.parseString(s)[0]
  
-s = 'DISTINCT'
-
-r = DISTINCT_p.parseString(s)[0]
+# s = 'DISTINCT'
+# 
+# r = DISTINCT_p.parseString(s)[0]
 # r.dump()
 # print()
 # print(r.getName())
@@ -44,3 +44,11 @@ print(r.__dict__)
 print(r.pattern)
 
 print(type(r.pattern))
+
+rr = ArgList(s)
+
+print(r.items == rr.items)
+print(r.name, rr.name)
+print(r == rr)
+print(type(r), type(rr))
+
