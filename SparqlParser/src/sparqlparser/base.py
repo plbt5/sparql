@@ -20,6 +20,7 @@ class ParseInfo():
     def __init__(self, name, items):
         self.__dict__['name'] = name
         self.__dict__['items'] = items
+        self.assignPattern()
                 
     def __eq__(self, other):
         if self.name != other.name:
@@ -29,15 +30,19 @@ class ParseInfo():
                 return False
         return True
     
-#     def __getattr__(self, name):
-#         assert name in self.namedtokens.keys()
-#         return self.namedtokens[name][0]
+    def __getattr__(self, name):
+        values = self.getValuesForKey(name)
+        assert len(values) == 1, len(values)
+        return values[0]
 #     
 #     def __setattr__(self, name, value):
 #         assert name in self.namedtokens
 #         assert type(self.__dict__['namedtokens'][name][0]) == type(value.parseinfo), 'assigned value must be of type {}, is of type {}'.format(type(self.namedtokens[name][0]), type(value)) 
 #         self.namedtokens[name][0] = value.parseinfo
 #         
+    def assignPattern(self):
+        pass
+
     def getName(self):
         return self.name
     
@@ -65,9 +70,7 @@ class ParseInfo():
             print(indent + '- ' + s + ' <str>' )
         
         def dumpItems(items, indent, step):
-#             print(indent + '<debug> items, len: ' + str(len(items)))
             for k, v in items:
-#                 print(indent + '<debug> item: ' + str(id(v)) + ' ' + (k if k else '(no key)'))
                 if isinstance(v, str):
                     dumpString(v, indent+step, step)
                 elif isinstance(v, list):
@@ -76,7 +79,7 @@ class ParseInfo():
                     assert isinstance(v, ParseInfo)
                     v.dump(indent+step, step)       
        
-        print(indent + ('- '+ self.name + ':\n' + indent if self.name else '') + '[' + self.__class__.__name__ + '] ' + self.render())
+        print(indent + ('> '+ self.name + ':\n' + indent if self.name else '') + '[' + self.__class__.__name__ + '] ' + self.render())
         dumpItems(self.items, indent, step)
     
 
@@ -123,6 +126,9 @@ class Terminal(SPARQLNode):
             
             
 class NonTerminal(SPARQLNode):
+    pass
+
+class SPARQLKeyword(ParseInfo):
     pass
     
 

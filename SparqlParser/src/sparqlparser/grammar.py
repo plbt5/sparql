@@ -33,9 +33,6 @@ def parseInfoFunc(classname):
                 result.append([valuedict.get(id(t)), t])
                 continue
             assert isinstance(t, ParseResults), type(t)
-#             if valuedict.get(id(t)):
-#                 result.append([None, keyedList(t)])
-#                 continue
             result.extend(keyedList(t))
         return result
     
@@ -336,7 +333,9 @@ if do_parseactions: IRIREF_p.setParseAction(parseInfoFunc('IRIREF'))
 # Keywords
 #
 DISTINCT_p = CaselessKeyword('DISTINCT')
-class DISTINCT(Terminal):
+class DISTINCT(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return 'DISTINCT'
 DISTINCT_p.setParseAction(parseInfoFunc('DISTINCT'))
