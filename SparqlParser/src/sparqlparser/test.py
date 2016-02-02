@@ -12,9 +12,9 @@ from sparqlparser.grammar import *
 #     r.dump()
 #     print()
     
-s = '(DISTINCT *Expression*,  *Expression*,   *Expression* )'
-  
-r = ArgList_p.parseString(s)[0]
+# s = '(DISTINCT *Expression*,  *Expression*,   *Expression* )'
+#   
+# r = ArgList_p.parseString(s)[0]
  
 # s = 'DISTINCT'
 # 
@@ -37,18 +37,21 @@ r = ArgList_p.parseString(s)[0]
 # 
 # r = PN_LOCAL_ESC_p.parseString(s)[0]
 
+s = "'test' ^^ <test>"
+
+r = RDFLiteral(s)
+
 r.dump()
 
-print(r.__dict__)
+lf = r.lexical_form
 
-print(r.pattern)
+lf.dump()
 
-print(type(r.pattern))
+print(type(lf))
 
-rr = ArgList(s)
+new_lexical_form = String("'test2'")
 
-print(r.items == rr.items)
-print(r.name, rr.name)
-print(r == rr)
-print(type(r), type(rr))
+print(r.lexical_form.render())
+r.lexical_form = new_lexical_form
 
+print(r.render())

@@ -41,10 +41,12 @@ class ParseInfo():
         assert len(values) == 1, len(values)
         return values[0]
 #     
-#     def __setattr__(self, name, value):
-#         assert name in self.namedtokens
-#         assert type(self.__dict__['namedtokens'][name][0]) == type(value.parseinfo), 'assigned value must be of type {}, is of type {}'.format(type(self.namedtokens[name][0]), type(value)) 
-#         self.namedtokens[name][0] = value.parseinfo
+    def __setattr__(self, name, value):
+        assert name in self.getKeys()
+        items = self.getItemsForKey(name)
+        assert len(items) == 1
+        assert type(items[0][1] == type(value)), 'assigned value must be of type {}, is of type {}'.format(type(items[0][1]), type(value)) 
+        self.items[0][1] = value
 #         
     def assignPattern(self):
         pass
@@ -65,6 +67,12 @@ class ParseInfo():
         result = [i[1] for i in self.getItems() if i[0] == k]
         if len(result) > 1:
             raise NotImplementedError('Multiple values ({}) for key {} not yet supported'.format(result, k))
+        return result
+    
+    def getItemsForKey(self, k):
+        result = [i for i in self.getItems() if i[0] == k]
+        if len(result) > 1:
+            raise NotImplementedError('Multiple items ({}) for key {} not yet supported'.format(result, k))
         return result
 
     def dump(self, indent='', step='  '):
