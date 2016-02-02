@@ -14,7 +14,6 @@ if sys.version_info < (3,3):
 #
 
 
-
 class ParseInfo():
     
     def __init__(self, name, items):
@@ -60,9 +59,6 @@ class ParseInfo():
         if len(result) > 1:
             raise NotImplementedError('Multiple values ({}) for key {} not yet supported'.format(result, k))
         return result
-    
-    
-
 
     def dump(self, indent='', step='  '):
         
@@ -81,8 +77,6 @@ class ParseInfo():
        
         print(indent + ('> '+ self.name + ':\n' + indent if self.name else '') + '[' + self.__class__.__name__ + '] ' + self.render())
         dumpItems(self.items, indent, step)
-    
-
 
     def render(self):
         sep = ' '
@@ -110,64 +104,30 @@ class ParseInfo():
                 result.append(t[1].render())
         return sep.join(result)
 
-#     def render(self, sep=' '):
-#         return self.renderItems(sep)
 
-    
 
-class SPARQLNode(ParseInfo):
+class SPARQLElement(ParseInfo):
+    pass
+
+
+class SPARQLNode(SPARQLElement):
     pass
 
             
-class Terminal(SPARQLNode):
+class SPARQLTerminal(SPARQLNode):
     def render(self):
         return ''.join([t[1] for t in self.items])
     __str__ = render
             
             
-class NonTerminal(SPARQLNode):
+class SPARQLNonTerminal(SPARQLNode):
     pass
 
-class SPARQLKeyword(ParseInfo):
+
+class SPARQLKeyword(SPARQLElement):
     pass
     
 
-# def dumpSPARQLNode(node, indent='  ', depth=0):
-#     
-#     skip = indent * depth
-#     print(skip + '[' + node.__class__.__name__ + ']')
-#     if isinstance(node, Terminal):
-#         print(skip + str(node))
-#     else:
-#         assert isinstance(node, NonTerminal)
-#         dumpParseInfo(node.parseinfo, indent, depth + 1)
-
-
-# def dumpParseInfo(parseinfo, indent='  ', depth=0):
-#     skip = indent * depth
-#     
-#     if isinstance(parseinfo, SPARQLNode):
-#         clsName = '[' + parseinfo.__class__.__name__ + ']'
-#     else:
-#         clsName = '[ParseInfo]'
-#     print(skip + clsName)
-# 
-#     for t in parseinfo.tokens:
-#         if isinstance(t, ParseInfo):
-#             name = t.getName()
-#             if name == None:
-#                 label = indent + '(no name)'
-#             elif name == 'group':
-#                 label = indent + '(group)'
-#             else:
-#                 label = (indent + '<key> "' + name + '"')
-#             print(skip + label)
-#             dumpParseInfo(t, indent, depth+1)
-#         elif isinstance(t, ParseResults):
-#             dumpParseInfo(ParseInfo(t), indent, depth+1)
-#         else:
-#             assert isinstance(t, str)
-#             print(skip + indent + '<str> ' + t)
 
 
 

@@ -50,7 +50,7 @@ def parseInfoFunc(classname):
 # [173]   PN_LOCAL_ESC      ::=   '\' ( '_' | '~' | '.' | '-' | '!' | '$' | '&' | "'" | '(' | ')' | '*' | '+' | ',' | ';' | '=' | '/' | '?' | '#' | '@' | '%' ) 
 PN_LOCAL_ESC_e = r'\\[_~.\-!$&\'()*+,;=/?#@%]'
 PN_LOCAL_ESC_p = Regex(PN_LOCAL_ESC_e)
-class PN_LOCAL_ESC(Terminal): 
+class PN_LOCAL_ESC(SPARQLTerminal): 
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: PN_LOCAL_ESC_p.setParseAction(parseInfoFunc('PN_LOCAL_ESC'))
@@ -59,7 +59,7 @@ if do_parseactions: PN_LOCAL_ESC_p.setParseAction(parseInfoFunc('PN_LOCAL_ESC'))
 # [172]   HEX       ::=   [0-9] | [A-F] | [a-f] 
 HEX_e = r'[0-9A-Fa-f]'
 HEX_p = Regex(HEX_e)
-class HEX(Terminal):  
+class HEX(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: HEX_p.setParseAction(parseInfoFunc('HEX'))
@@ -67,7 +67,7 @@ if do_parseactions: HEX_p.setParseAction(parseInfoFunc('HEX'))
 # [171]   PERCENT   ::=   '%' HEX HEX
 PERCENT_e = r'%({})({})'.format( HEX_e, HEX_e)
 PERCENT_p = Regex(PERCENT_e)
-class PERCENT(Terminal):   
+class PERCENT(SPARQLTerminal):   
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: PERCENT_p.setParseAction(parseInfoFunc('PERCENT'))
@@ -75,7 +75,7 @@ if do_parseactions: PERCENT_p.setParseAction(parseInfoFunc('PERCENT'))
 # [170]   PLX       ::=   PERCENT | PN_LOCAL_ESC 
 PLX_e = r'({})|({})'.format( PERCENT_e, PN_LOCAL_ESC_e)
 PLX_p = Regex(PLX_e)
-class PLX(Terminal):  
+class PLX(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: PLX_p.setParseAction(parseInfoFunc('PLX'))
@@ -83,7 +83,7 @@ if do_parseactions: PLX_p.setParseAction(parseInfoFunc('PLX'))
 # [164]   PN_CHARS_BASE     ::=   [A-Z] | [a-z] | [#x00C0-#x00D6] | [#x00D8-#x00F6] | [#x00F8-#x02FF] | [#x0370-#x037D] | [#x037F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF] 
 PN_CHARS_BASE_e = r'[A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\U00010000-\U000EFFFF]'
 PN_CHARS_BASE_p = Regex(PN_CHARS_BASE_e)
-class PN_CHARS_BASE(Terminal):  
+class PN_CHARS_BASE(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: PN_CHARS_BASE_p.setParseAction(parseInfoFunc('PN_CHARS_BASE'))
@@ -91,7 +91,7 @@ if do_parseactions: PN_CHARS_BASE_p.setParseAction(parseInfoFunc('PN_CHARS_BASE'
 # [165]   PN_CHARS_U        ::=   PN_CHARS_BASE | '_' 
 PN_CHARS_U_e = r'({})|({})'.format( PN_CHARS_BASE_e, r'_')
 PN_CHARS_U_p = Regex(PN_CHARS_U_e)
-class PN_CHARS_U(Terminal):  
+class PN_CHARS_U(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: PN_CHARS_U_p.setParseAction(parseInfoFunc('PN_CHARS_U'))
@@ -99,7 +99,7 @@ if do_parseactions: PN_CHARS_U_p.setParseAction(parseInfoFunc('PN_CHARS_U'))
 # [167]   PN_CHARS          ::=   PN_CHARS_U | '-' | [0-9] | #x00B7 | [#x0300-#x036F] | [#x203F-#x2040] 
 PN_CHARS_e = r'({})|({})|({})|({})|({})|({})'.format( PN_CHARS_U_e, r'\-', r'[0-9]',  r'\u00B7', r'[\u0300-\u036F]', r'[\u203F-\u2040]')
 PN_CHARS_p = Regex(PN_CHARS_e) 
-class PN_CHARS(Terminal):  
+class PN_CHARS(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: PN_CHARS_p.setParseAction(parseInfoFunc('PN_CHARS'))
@@ -107,7 +107,7 @@ if do_parseactions: PN_CHARS_p.setParseAction(parseInfoFunc('PN_CHARS'))
 # [169]   PN_LOCAL          ::=   (PN_CHARS_U | ':' | [0-9] | PLX ) ((PN_CHARS | '.' | ':' | PLX)* (PN_CHARS | ':' | PLX) )?
 PN_LOCAL_e = r'(({})|({})|({})|({}))((({})|({})|({})|({}))*(({})|({})|({})))?'.format( PN_CHARS_U_e, r':', r'[0-9]', PLX_e, PN_CHARS_e, r'\.', r':', PLX_e, PN_CHARS_e, r':', PLX_e) 
 PN_LOCAL_p = Regex(PN_LOCAL_e)
-class PN_LOCAL(Terminal):  
+class PN_LOCAL(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: PN_LOCAL_p.setParseAction(parseInfoFunc('PN_LOCAL'))
@@ -115,7 +115,7 @@ if do_parseactions: PN_LOCAL_p.setParseAction(parseInfoFunc('PN_LOCAL'))
 # [168]   PN_PREFIX         ::=   PN_CHARS_BASE ((PN_CHARS|'.')* PN_CHARS)?
 PN_PREFIX_e = r'({})((({})|({}))*({}))?'.format( PN_CHARS_BASE_e, PN_CHARS_e, r'\.', PN_CHARS_e)
 PN_PREFIX_p = Regex(PN_PREFIX_e)
-class PN_PREFIX(Terminal):  
+class PN_PREFIX(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: PN_PREFIX_p.setParseAction(parseInfoFunc('PN_PREFIX'))
@@ -123,14 +123,14 @@ if do_parseactions: PN_PREFIX_p.setParseAction(parseInfoFunc('PN_PREFIX'))
 # [166]   VARNAME   ::=   ( PN_CHARS_U | [0-9] ) ( PN_CHARS_U | [0-9] | #x00B7 | [#x0300-#x036F] | [#x203F-#x2040] )* 
 VARNAME_e = r'(({})|({}))(({})|({})|({})|({})|({}))*'.format( PN_CHARS_U_e, r'[0-9]', PN_CHARS_U_e, r'[0-9]', r'\u00B7', r'[\u0030-036F]', r'[\u0203-\u2040]')
 VARNAME_p = Regex(VARNAME_e)
-class VARNAME(Terminal):  
+class VARNAME(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: VARNAME_p.setParseAction(parseInfoFunc('VARNAME'))
 
 # [163]   ANON      ::=   '[' WS* ']' 
 ANON_p = Literal('[') + ']'
-class ANON(Terminal):  
+class ANON(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: ANON_p.setParseAction(parseInfoFunc('ANON'))
@@ -141,7 +141,7 @@ if do_parseactions: ANON_p.setParseAction(parseInfoFunc('ANON'))
 
 # [161]   NIL       ::=   '(' WS* ')' 
 NIL_p = Literal('(') + ')'
-class NIL(Terminal):  
+class NIL(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: NIL_p.setParseAction(parseInfoFunc('NIL'))
@@ -149,7 +149,7 @@ if do_parseactions: NIL_p.setParseAction(parseInfoFunc('NIL'))
 # [160]   ECHAR     ::=   '\' [tbnrf\"']
 ECHAR_e = r'\\[tbnrf\\"\']'
 ECHAR_p = Regex(ECHAR_e) 
-class ECHAR(Terminal):  
+class ECHAR(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: ECHAR_p.setParseAction(parseInfoFunc('ECHAR'))
@@ -157,7 +157,7 @@ if do_parseactions: ECHAR_p.setParseAction(parseInfoFunc('ECHAR'))
 # [159]   STRING_LITERAL_LONG2      ::=   '"""' ( ( '"' | '""' )? ( [^"\] | ECHAR ) )* '"""'  
 STRING_LITERAL_LONG2_e = r'"""((""|")?(({})|({})))*"""'.format(r'[^"\\]', ECHAR_e)
 STRING_LITERAL_LONG2_p = Regex(STRING_LITERAL_LONG2_e)
-class STRING_LITERAL_LONG2(Terminal):  
+class STRING_LITERAL_LONG2(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 STRING_LITERAL_LONG2_p.parseWithTabs()
@@ -166,7 +166,7 @@ if do_parseactions: STRING_LITERAL_LONG2_p.setParseAction(parseInfoFunc('STRING_
 # [158]   STRING_LITERAL_LONG1      ::=   "'''" ( ( "'" | "''" )? ( [^'\] | ECHAR ) )* "'''" 
 STRING_LITERAL_LONG1_e = r"'''(('|'')?(({})|({})))*'''".format(r"[^'\\]", ECHAR_e)
 STRING_LITERAL_LONG1_p = Regex(STRING_LITERAL_LONG1_e)  
-class STRING_LITERAL_LONG1(Terminal):  
+class STRING_LITERAL_LONG1(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 STRING_LITERAL_LONG1_p.parseWithTabs()
@@ -175,7 +175,7 @@ if do_parseactions: STRING_LITERAL_LONG1_p.setParseAction(parseInfoFunc('STRING_
 # [157]   STRING_LITERAL2   ::=   '"' ( ([^#x22#x5C#xA#xD]) | ECHAR )* '"' 
 STRING_LITERAL2_e = r'"(({})|({}))*"'.format(ECHAR_e, r'[^\u0022\u005C\u000A\u000D]')
 STRING_LITERAL2_p = Regex(STRING_LITERAL2_e)
-class STRING_LITERAL2(Terminal):  
+class STRING_LITERAL2(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 STRING_LITERAL2_p.parseWithTabs()
@@ -184,7 +184,7 @@ if do_parseactions: STRING_LITERAL2_p.setParseAction(parseInfoFunc('STRING_LITER
 # [156]   STRING_LITERAL1   ::=   "'" ( ([^#x27#x5C#xA#xD]) | ECHAR )* "'" 
 STRING_LITERAL1_e = r"'(({})|({}))*'".format(ECHAR_e, r'[^\u0027\u005C\u000A\u000D]')
 STRING_LITERAL1_p = Regex(STRING_LITERAL1_e)
-class STRING_LITERAL1(Terminal):  
+class STRING_LITERAL1(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 STRING_LITERAL1_p.parseWithTabs()
@@ -193,7 +193,7 @@ if do_parseactions: STRING_LITERAL1_p.setParseAction(parseInfoFunc('STRING_LITER
 # [155]   EXPONENT          ::=   [eE] [+-]? [0-9]+ 
 EXPONENT_e = r'[eE][+-][0-9]+'
 EXPONENT_p = Regex(EXPONENT_e)
-class EXPONENT(Terminal):  
+class EXPONENT(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: EXPONENT_p.setParseAction(parseInfoFunc('EXPONENT'))
@@ -201,7 +201,7 @@ if do_parseactions: EXPONENT_p.setParseAction(parseInfoFunc('EXPONENT'))
 # [148]   DOUBLE    ::=   [0-9]+ '.' [0-9]* EXPONENT | '.' ([0-9])+ EXPONENT | ([0-9])+ EXPONENT 
 DOUBLE_e = r'([0-9]+\.[0-9]*({}))|(\.[0-9]+({}))|([0-9]+({}))'.format(EXPONENT_e, EXPONENT_e, EXPONENT_e)
 DOUBLE_p = Regex(DOUBLE_e)
-class DOUBLE(Terminal):  
+class DOUBLE(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: DOUBLE_p.setParseAction(parseInfoFunc('DOUBLE'))
@@ -209,7 +209,7 @@ if do_parseactions: DOUBLE_p.setParseAction(parseInfoFunc('DOUBLE'))
 # [154]   DOUBLE_NEGATIVE   ::=   '-' DOUBLE 
 DOUBLE_NEGATIVE_e = r'\-({})'.format(DOUBLE_e)
 DOUBLE_NEGATIVE_p = Regex(DOUBLE_NEGATIVE_e)
-class DOUBLE_NEGATIVE(Terminal):  
+class DOUBLE_NEGATIVE(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: DOUBLE_NEGATIVE_p.setParseAction(parseInfoFunc('DOUBLE_NEGATIVE'))
@@ -217,7 +217,7 @@ if do_parseactions: DOUBLE_NEGATIVE_p.setParseAction(parseInfoFunc('DOUBLE_NEGAT
 # [151]   DOUBLE_POSITIVE   ::=   '+' DOUBLE 
 DOUBLE_POSITIVE_e = r'\+({})'.format(DOUBLE_e)
 DOUBLE_POSITIVE_p = Regex(DOUBLE_POSITIVE_e)
-class DOUBLE_POSITIVE(Terminal):  
+class DOUBLE_POSITIVE(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: DOUBLE_POSITIVE_p.setParseAction(parseInfoFunc('DOUBLE_POSITIVE'))
@@ -225,7 +225,7 @@ if do_parseactions: DOUBLE_POSITIVE_p.setParseAction(parseInfoFunc('DOUBLE_POSIT
 # [147]   DECIMAL   ::=   [0-9]* '.' [0-9]+ 
 DECIMAL_e = r'[0-9]*\.[0-9]+'
 DECIMAL_p = Regex(DECIMAL_e)
-class DECIMAL(Terminal):  
+class DECIMAL(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: DECIMAL_p.setParseAction(parseInfoFunc('DECIMAL'))
@@ -233,7 +233,7 @@ if do_parseactions: DECIMAL_p.setParseAction(parseInfoFunc('DECIMAL'))
 # [153]   DECIMAL_NEGATIVE          ::=   '-' DECIMAL 
 DECIMAL_NEGATIVE_e = r'\-({})'.format(DECIMAL_e)
 DECIMAL_NEGATIVE_p = Regex(DECIMAL_NEGATIVE_e)
-class DECIMAL_NEGATIVE(Terminal):  
+class DECIMAL_NEGATIVE(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: DECIMAL_NEGATIVE_p.setParseAction(parseInfoFunc('DECIMAL_NEGATIVE'))
@@ -241,7 +241,7 @@ if do_parseactions: DECIMAL_NEGATIVE_p.setParseAction(parseInfoFunc('DECIMAL_NEG
 # [150]   DECIMAL_POSITIVE          ::=   '+' DECIMAL 
 DECIMAL_POSITIVE_e = r'\+({})'.format(DECIMAL_e)
 DECIMAL_POSITIVE_p = Regex(DECIMAL_POSITIVE_e)
-class DECIMAL_POSITIVE(Terminal):  
+class DECIMAL_POSITIVE(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: DECIMAL_POSITIVE_p.setParseAction(parseInfoFunc('DECIMAL_POSITIVE'))
@@ -249,7 +249,7 @@ if do_parseactions: DECIMAL_POSITIVE_p.setParseAction(parseInfoFunc('DECIMAL_POS
 # [146]   INTEGER   ::=   [0-9]+ 
 INTEGER_e = r'[0-9]+'
 INTEGER_p = Regex(INTEGER_e)
-class INTEGER(Terminal):  
+class INTEGER(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: INTEGER_p.setParseAction(parseInfoFunc('INTEGER'))
@@ -257,7 +257,7 @@ if do_parseactions: INTEGER_p.setParseAction(parseInfoFunc('INTEGER'))
 # [152]   INTEGER_NEGATIVE          ::=   '-' INTEGER
 INTEGER_NEGATIVE_e = r'\-({})'.format(INTEGER_e)
 INTEGER_NEGATIVE_p = Regex(INTEGER_NEGATIVE_e)
-class INTEGER_NEGATIVE(Terminal):  
+class INTEGER_NEGATIVE(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: INTEGER_NEGATIVE_p.setParseAction(parseInfoFunc('INTEGER_NEGATIVE'))
@@ -265,7 +265,7 @@ if do_parseactions: INTEGER_NEGATIVE_p.setParseAction(parseInfoFunc('INTEGER_NEG
 # [149]   INTEGER_POSITIVE          ::=   '+' INTEGER 
 INTEGER_POSITIVE_e = r'\+({})'.format(INTEGER_e)
 INTEGER_POSITIVE_p = Regex(INTEGER_POSITIVE_e)
-class INTEGER_POSITIVE(Terminal):  
+class INTEGER_POSITIVE(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: INTEGER_POSITIVE_p.setParseAction(parseInfoFunc('INTEGER_POSITIVE'))
@@ -273,7 +273,7 @@ if do_parseactions: INTEGER_POSITIVE_p.setParseAction(parseInfoFunc('INTEGER_POS
 # [145]   LANGTAG   ::=   '@' [a-zA-Z]+ ('-' [a-zA-Z0-9]+)* 
 LANGTAG_e = r'@[a-zA-Z]+(\-[a-zA-Z0-9]+)*'
 LANGTAG_p = Regex(LANGTAG_e)
-class LANGTAG(Terminal):  
+class LANGTAG(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: LANGTAG_p.setParseAction(parseInfoFunc('LANGTAG'))
@@ -281,7 +281,7 @@ if do_parseactions: LANGTAG_p.setParseAction(parseInfoFunc('LANGTAG'))
 # [144]   VAR2      ::=   '$' VARNAME 
 VAR2_e = r'\$({})'.format(VARNAME_e)
 VAR2_p = Regex(VAR2_e)
-class VAR2(Terminal):  
+class VAR2(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: VAR2_p.setParseAction(parseInfoFunc('VAR2'))
@@ -289,7 +289,7 @@ if do_parseactions: VAR2_p.setParseAction(parseInfoFunc('VAR2'))
 # [143]   VAR1      ::=   '?' VARNAME 
 VAR1_e = r'\?({})'.format(VARNAME_e)
 VAR1_p = Regex(VAR1_e)
-class VAR1(Terminal):  
+class VAR1(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: VAR1_p.setParseAction(parseInfoFunc('VAR1'))
@@ -297,7 +297,7 @@ if do_parseactions: VAR1_p.setParseAction(parseInfoFunc('VAR1'))
 # [142]   BLANK_NODE_LABEL          ::=   '_:' ( PN_CHARS_U | [0-9] ) ((PN_CHARS|'.')* PN_CHARS)?
 BLANK_NODE_LABEL_e = r'_:(({})|[0-9])((({})|\.)*({}))?'.format(PN_CHARS_U_e, PN_CHARS_e, PN_CHARS_e)
 BLANK_NODE_LABEL_p = Regex(BLANK_NODE_LABEL_e)
-class BLANK_NODE_LABEL(Terminal):  
+class BLANK_NODE_LABEL(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: BLANK_NODE_LABEL_p.setParseAction(parseInfoFunc('BLANK_NODE_LABEL'))
@@ -305,7 +305,7 @@ if do_parseactions: BLANK_NODE_LABEL_p.setParseAction(parseInfoFunc('BLANK_NODE_
 # [140]   PNAME_NS          ::=   PN_PREFIX? ':'
 PNAME_NS_e = r'({})?:'.format(PN_PREFIX_e)
 PNAME_NS_p = Regex(PNAME_NS_e)
-class PNAME_NS(Terminal):  
+class PNAME_NS(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: PNAME_NS_p.setParseAction(parseInfoFunc('PNAME_NS'))
@@ -313,7 +313,7 @@ if do_parseactions: PNAME_NS_p.setParseAction(parseInfoFunc('PNAME_NS'))
 # [141]   PNAME_LN          ::=   PNAME_NS PN_LOCAL 
 PNAME_LN_e = r'({})({})'.format(PNAME_NS_e, PN_LOCAL_e)
 PNAME_LN_p = Regex(PNAME_LN_e)
-class PNAME_LN(Terminal):  
+class PNAME_LN(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: PNAME_LN_p.setParseAction(parseInfoFunc('PNAME_LN'))
@@ -321,7 +321,7 @@ if do_parseactions: PNAME_LN_p.setParseAction(parseInfoFunc('PNAME_LN'))
 # [139]   IRIREF    ::=   '<' ([^<>"{}|^`\]-[#x00-#x20])* '>' 
 IRIREF_e = r'<[^<>"{}|^`\\\\\u0000-\u0020]*>'
 IRIREF_p = Regex(IRIREF_e)
-class IRIREF(Terminal):  
+class IRIREF(SPARQLTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: IRIREF_p.setParseAction(parseInfoFunc('IRIREF'))
@@ -359,28 +359,28 @@ LPAR_p, RPAR_p, SEMICOL_p, COMMA_p = '();,'
 
 # [138]   BlankNode         ::=   BLANK_NODE_LABEL | ANON 
 BlankNode_p = BLANK_NODE_LABEL_p | ANON_p
-class BlankNode(NonTerminal):  
+class BlankNode(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: BlankNode_p.setParseAction(parseInfoFunc('BlankNode'))
 
 # [137]   PrefixedName      ::=   PNAME_LN | PNAME_NS 
 PrefixedName_p = Group(PNAME_LN_p ^ PNAME_NS_p)
-class PrefixedName(NonTerminal):  
+class PrefixedName(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: PrefixedName_p.setParseAction(parseInfoFunc('PrefixedName'))
 
 # [136]   iri       ::=   IRIREF | PrefixedName 
 iri_p = IRIREF_p ^ PrefixedName_p
-class iri(NonTerminal):  
+class iri(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: iri_p.setParseAction(parseInfoFunc('iri'))
 
 # [135]   String    ::=   STRING_LITERAL1 | STRING_LITERAL2 | STRING_LITERAL_LONG1 | STRING_LITERAL_LONG2 
 String_p = (STRING_LITERAL1_p ^ STRING_LITERAL2_p ^ STRING_LITERAL_LONG1_p ^ STRING_LITERAL_LONG2_p)
-class String(NonTerminal):  
+class String(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 String_p.parseWithTabs()
@@ -388,35 +388,35 @@ if do_parseactions: String_p.setParseAction(parseInfoFunc('String'))
  
 # [134]   BooleanLiteral    ::=   'true' | 'false' 
 BooleanLiteral_p = Group(Literal('true') | Literal('false'))
-class BooleanLiteral(NonTerminal):  
+class BooleanLiteral(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: BooleanLiteral_p.setParseAction(parseInfoFunc('BooleanLiteral'))
  
 # # [133]   NumericLiteralNegative    ::=   INTEGER_NEGATIVE | DECIMAL_NEGATIVE | DOUBLE_NEGATIVE 
 NumericLiteralNegative_p = Group(INTEGER_NEGATIVE_p ^ DECIMAL_NEGATIVE_p ^ DOUBLE_NEGATIVE_p)
-class NumericLiteralNegative(NonTerminal):  
+class NumericLiteralNegative(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: NumericLiteralNegative_p.setParseAction(parseInfoFunc('NumericLiteralNegative'))
  
 # # [132]   NumericLiteralPositive    ::=   INTEGER_POSITIVE | DECIMAL_POSITIVE | DOUBLE_POSITIVE 
 NumericLiteralPositive_p = Group(INTEGER_POSITIVE_p ^ DECIMAL_POSITIVE_p ^ DOUBLE_POSITIVE_p)
-class NumericLiteralPositive(NonTerminal):  
+class NumericLiteralPositive(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: NumericLiteralPositive_p.setParseAction(parseInfoFunc('NumericLiteralPositive'))
  
 # # [131]   NumericLiteralUnsigned    ::=   INTEGER | DECIMAL | DOUBLE 
 NumericLiteralUnsigned_p = Group(INTEGER_p ^ DECIMAL_p ^ DOUBLE_p)
-class NumericLiteralUnsigned(NonTerminal):  
+class NumericLiteralUnsigned(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: NumericLiteralUnsigned_p.setParseAction(parseInfoFunc('NumericLiteralUnsigned'))
 # 
 # # [130]   NumericLiteral    ::=   NumericLiteralUnsigned | NumericLiteralPositive | NumericLiteralNegative 
 NumericLiteral_p = Group(NumericLiteralUnsigned_p ^ NumericLiteralPositive_p ^ NumericLiteralNegative_p)
-class NumericLiteral(NonTerminal):  
+class NumericLiteral(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: NumericLiteral_p.setParseAction(parseInfoFunc('NumericLiteral'))
@@ -434,7 +434,7 @@ RDFLiteral_p = (
                                        )
                                 )
                      )
-class RDFLiteral(NonTerminal):  
+class RDFLiteral(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: RDFLiteral_p.setParseAction(parseInfoFunc('RDFLiteral'))
@@ -443,14 +443,14 @@ if do_parseactions: RDFLiteral_p.setParseAction(parseInfoFunc('RDFLiteral'))
 # TODO
 Expression_p = Forward()
 Expression_p << Group(Literal('*Expression*'))
-class Expression(NonTerminal):  
+class Expression(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: Expression_p.setParseAction(parseInfoFunc('Expression'))
 
 # pattern and class to parse and render delimited Expression lists
 ExpressionList_p = delimitedList(Expression_p)
-class ExpressionList(NonTerminal):
+class ExpressionList(SPARQLNonTerminal):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
@@ -460,7 +460,7 @@ if do_parseactions: ExpressionList_p.setParseAction(parseInfoFunc('ExpressionLis
  
 # [71]    ArgList   ::=   NIL | '(' 'DISTINCT'? Expression ( ',' Expression )* ')' 
 ArgList_p = Group(NIL_p('nil')) | (LPAR_p + Optional(Group(DISTINCT_p('distinct'))) + Group(ExpressionList_p('expression_list')) + RPAR_p)
-class ArgList(NonTerminal):  
+class ArgList(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: ArgList_p.setParseAction(parseInfoFunc('ArgList'))
