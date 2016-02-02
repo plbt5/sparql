@@ -55,3 +55,4 @@ print(r.lexical_form.render())
 r.lexical_form = new_lexical_form
 
 print(r.render())
+r.dump()
