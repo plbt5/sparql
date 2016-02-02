@@ -52,7 +52,7 @@ print(type(lf))
 new_lexical_form = String("'test2'")
 
 print(r.lexical_form.render())
-r.lexical_form = new_lexical_form
+r.lexical_form = "test"
 
 print(r.render())
 r.dump()
