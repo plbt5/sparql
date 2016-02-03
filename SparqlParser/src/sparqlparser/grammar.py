@@ -3,22 +3,6 @@ from sparqlparser.base import *
 
 do_parseactions = True
 
-# def keyedList(parseresults):
-#     valuedict = dict((id(t), k) for (k, t) in parseresults.items())
-#     assert len(valuedict) == len(list(parseresults.items())), 'internal error: len(valuedict) = {}, len(parseresults.items) = {}'.format(len(valuedict), len(list(parseresults.items)))
-#     result = []
-#     for t in parseresults:
-#         if isinstance(t, (str, ParseInfo)):
-#             result.append([valuedict.get(id(t)), t])
-#             continue
-#         assert isinstance(t, ParseResults), type(t)
-#         if valuedict.get(id(t)):
-#             assert isinstance(t, ParseResults), type(t)
-#             result.append([valuedict.get(id(t)), keyedList(t)])
-#             continue
-#         result.extend(keyedList(t))
-#     return result
-        
 def parseInfoFunc(classname):
     
     def keyedList(parseresults):
@@ -43,6 +27,7 @@ def parseInfoFunc(classname):
         return cls(name, keyedList(parseresults))  
     
     return makeparseinfo
+
 # 
 # Parsers and classes for terminals
 #
@@ -341,18 +326,108 @@ class DISTINCT(SPARQLKeyword):
 DISTINCT_p.setParseAction(parseInfoFunc('DISTINCT'))
 
 COUNT_p = CaselessKeyword('COUNT')
+class COUNT(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'COUNT'
+COUNT_p.setParseAction(parseInfoFunc('COUNT'))
+
 SUM_p = CaselessKeyword('SUM')
+class SUM(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'SUM'
+SUM_p.setParseAction(parseInfoFunc('SUM'))
+
 MIN_p = CaselessKeyword('MIN') 
+class MIN(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'MIN'
+MIN_p.setParseAction(parseInfoFunc('MIN'))
+
 MAX_p = CaselessKeyword('MAX') 
+class MAX(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'MAX'
+MAX_p.setParseAction(parseInfoFunc('MAX'))
+
 AVG_p = CaselessKeyword('AVG') 
+class AVG(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'AVG'
+AVG_p.setParseAction(parseInfoFunc('AVG'))
+
 SAMPLE_p = CaselessKeyword('SAMPLE') 
+class SAMPLE(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'SAMPLE'
+SAMPLE_p.setParseAction(parseInfoFunc('SAMPLE'))
+
 GROUP_CONCAT_p = CaselessKeyword('GROUP_CONCAT') 
+class GROUP_CONCAT(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'GROUP_CONCAT'
+GROUP_CONCAT_p.setParseAction(parseInfoFunc('GROUP_CONCAT'))
+
 SEPARATOR_p = CaselessKeyword('SEPARATOR')
+class SEPARATOR(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'SEPARATOR'
+SEPARATOR_p.setParseAction(parseInfoFunc('SEPARATOR'))
+
 NOT_p = CaselessKeyword('NOT')
+class NOT(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'NOT'
+NOT_p.setParseAction(parseInfoFunc('NOT'))
+
 EXISTS_p = CaselessKeyword('EXISTS')
+class EXISTS(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'EXISTS'
+EXISTS_p.setParseAction(parseInfoFunc('EXISTS'))
+
 REPLACE_p = CaselessKeyword('REPLACE')
+class REPLACE(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'REPLACE'
+REPLACE_p.setParseAction(parseInfoFunc('REPLACE'))
+
 SUBSTR_p = CaselessKeyword('SUBSTR')
+class SUBSTR(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'SUBSTR'
+SUBSTR_p.setParseAction(parseInfoFunc('SUBSTR'))
+
 REGEX_p = CaselessKeyword('REGEX')
+class REGEX(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'REGEX'
+REGEX_p.setParseAction(parseInfoFunc('REGEX'))
 
 # Brackets and separators
 LPAR_p, RPAR_p, SEMICOL_p, COMMA_p = '();,'

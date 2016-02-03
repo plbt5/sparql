@@ -27,27 +27,33 @@ class ParseInfo():
             self.__dict__['items'] = self.pattern.parseString(args[0])[0].items
                 
     def __eq__(self, other):
-        if self.__class__ != other.__class__:
-            return False
-        if self.name != other.name:
-            return False
-        for t1, t2 in zip(self.items, other.items):
-            if t1 != t2:
-                return False
-        return True
+#         if self.__class__ != other.__class__:
+#             return False
+#         if self.name != other.name:
+#             return False
+#         if len(self.items) != len(other.items):
+#             return False
+#         for t1, t2 in zip(self.items, other.items):
+#             if t1 != t2:
+#                 return False
+#         return True
+        return self.__class__ == other.__class__ and self.name == other.name and self.items == other.items
     
     def __getattr__(self, name):
         values = self.getValuesForKey(name)
-        assert len(values) == 1, len(values)
-        return values[0]
+        if len(values) == 1:
+            return values[0]
+        else:
+            return super.__getattr__(name)
 #     
     def __setattr__(self, name, value):
-        assert name in self.getKeys()
-        items = self.getItemsForKey(name)
-        assert len(items) == 1
-        assert type(items[0][1]) == type(value), 'assigned value must be of type {}, is of type {}'.format(type(items[0][1]), type(value)) 
-        self.items[0][1] = value
-#         
+        if name in self.getKeys():
+            items = self.getItemsForKey(name)
+            assert len(items) == 1
+            assert type(items[0][1]) == type(value), 'assigned value must be of type {}, is of type {}'.format(type(items[0][1]), type(value)) 
+            self.items[0][1] = value
+        else:
+            super().__setattr__(name, value)
     def assignPattern(self):
         pass
 
