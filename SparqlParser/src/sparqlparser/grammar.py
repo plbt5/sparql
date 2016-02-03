@@ -504,7 +504,7 @@ RDFLiteral_p = (
                                        (
                                         LANGTAG_p('langtag') \
                                         ^ \
-                                        ('^^' + iri_p('datatype'))('caps')
+                                        ('^^' + iri_p('datatype'))
                                         )
                                        )
                                 )

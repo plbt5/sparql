@@ -8,8 +8,6 @@ def printResults(l, rule):
         r = eval(rule + '_p').parseString(s)
         print('\nParse : {}'.format(s))
         print()
-#         inspect(r[0])
-#         print()
         r[0].dump()
         print()
         rendering = r[0].render()

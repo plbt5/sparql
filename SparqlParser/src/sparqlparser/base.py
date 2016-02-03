@@ -1,7 +1,5 @@
-from pyparsing import ParseFatalException, ParseResults
-from collections import OrderedDict
+from pyparsing import ParseFatalException, ParseException
 import sys
-from _operator import itemgetter
 
 if sys.version_info < (3,3):
     raise ParseFatalException('This parser only works with Python 3.3 or later (due to unicode handling and other issues)')
@@ -24,19 +22,9 @@ class ParseInfo():
         else:
             assert len(args) == 1 and isinstance(args[0], str)
             self.__dict__['name'] = None
-            self.__dict__['items'] = self.pattern.parseString(args[0])[0].items
+            self.__dict__['items'] = self.pattern.parseString(args[0], parseAll=True)[0].items
                 
     def __eq__(self, other):
-#         if self.__class__ != other.__class__:
-#             return False
-#         if self.name != other.name:
-#             return False
-#         if len(self.items) != len(other.items):
-#             return False
-#         for t1, t2 in zip(self.items, other.items):
-#             if t1 != t2:
-#                 return False
-#         return True
         return self.__class__ == other.__class__ and self.name == other.name and self.items == other.items
     
     def __getattr__(self, name):
@@ -50,8 +38,10 @@ class ParseInfo():
         if name in self.getKeys():
             items = self.getItemsForKey(name)
             assert len(items) == 1
-            assert type(items[0][1]) == type(value), 'assigned value must be of type {}, is of type {}'.format(type(items[0][1]), type(value)) 
-            self.items[0][1] = value
+            oldtype = type(items[0][1])
+            items[0][1] = value
+            if oldtype != type(value):
+                print('*** Warning: value of type {} replaced with value of type {}. Result is {}.'.format(oldtype.__name__, type(value).__name__, 'valid' if self.isValid() else 'invalid')) 
         else:
             super().__setattr__(name, value)
     def assignPattern(self):
@@ -87,7 +77,7 @@ class ParseInfo():
             print(indent + '- ' + s + ' <str>' )
         
         def dumpItems(items, indent, step):
-            for k, v in items:
+            for _, v in items:
                 if isinstance(v, str):
                     dumpString(v, indent+step, step)
                 elif isinstance(v, list):
@@ -124,6 +114,13 @@ class ParseInfo():
                 assert isinstance(t[1], ParseInfo), type(t[1])
                 result.append(t[1].render())
         return sep.join(result)
+    
+    def isValid(self):
+        try:
+            self.pattern.parseString(self.render(), parseAll=True)
+            return True
+        except ParseException:
+            return False
 
 
 
