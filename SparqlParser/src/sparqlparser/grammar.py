@@ -4,7 +4,7 @@ from sparqlparser.base import *
 do_parseactions = True
 
 def parseInfoFunc(classname):
-    
+            
     def keyedList(parseresults):
         valuedict = dict((id(t), k) for (k, t) in parseresults.items())
         assert len(valuedict) == len(list(parseresults.items())), 'internal error: len(valuedict) = {}, len(parseresults.items) = {}'.format(len(valuedict), len(list(parseresults.items)))
@@ -12,19 +12,19 @@ def parseInfoFunc(classname):
         for t in parseresults:
             if isinstance(t, str):
                 result.append([None, t])
-                continue
-            if isinstance(t, ParseInfo):
+            elif isinstance(t, ParseInfo):
+                t.__dict__['name'] = valuedict.get(id(t))
                 result.append([valuedict.get(id(t)), t])
-                continue
-            assert isinstance(t, ParseResults), type(t)
-            result.extend(keyedList(t))
+            else:
+                assert isinstance(t, ParseResults), type(t)
+                assert valuedict.get(id(t)) == None, 'Error: found name ({}) for compound expression {}, remove'.format(valuedict.get(id(t)), t.render())
+                result.extend(keyedList(t))
         return result
     
     def makeparseinfo(parseresults):
         cls = globals()[classname]
         assert isinstance(parseresults, ParseResults)
-        name = parseresults.getName()
-        return cls(name, keyedList(parseresults))  
+        return cls(None, keyedList(parseresults))  
     
     return makeparseinfo
 
@@ -454,7 +454,7 @@ class iri(SPARQLNonTerminal):
 if do_parseactions: iri_p.setParseAction(parseInfoFunc('iri'))
 
 # [135]   String    ::=   STRING_LITERAL1 | STRING_LITERAL2 | STRING_LITERAL_LONG1 | STRING_LITERAL_LONG2 
-String_p = (STRING_LITERAL1_p ^ STRING_LITERAL2_p ^ STRING_LITERAL_LONG1_p ^ STRING_LITERAL_LONG2_p)
+String_p = STRING_LITERAL1_p ^ STRING_LITERAL2_p ^ STRING_LITERAL_LONG1_p ^ STRING_LITERAL_LONG2_p
 class String(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
@@ -462,7 +462,7 @@ String_p.parseWithTabs()
 if do_parseactions: String_p.setParseAction(parseInfoFunc('String'))
  
 # [134]   BooleanLiteral    ::=   'true' | 'false' 
-BooleanLiteral_p = Group(Literal('true') | Literal('false'))
+BooleanLiteral_p = Literal('true') | Literal('false')
 class BooleanLiteral(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
@@ -498,7 +498,7 @@ if do_parseactions: NumericLiteral_p.setParseAction(parseInfoFunc('NumericLitera
 
 # [129]   RDFLiteral        ::=   String ( LANGTAG | ( '^^' iri ) )? 
 RDFLiteral_p = (
-                     Group(String_p('lexical_form')) \
+                     String_p('lexical_form') \
                      + Optional(
                                 Group (
                                        (

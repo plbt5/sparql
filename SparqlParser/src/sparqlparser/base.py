@@ -28,22 +28,22 @@ class ParseInfo():
         return self.__class__ == other.__class__ and self.name == other.name and self.items == other.items
     
     def __getattr__(self, name):
+        assert name in self.getKeys()
         values = self.getValuesForKey(name)
-        if len(values) == 1:
-            return values[0]
-        else:
-            return super.__getattr__(name)
+        assert len(values) == 1
+        return values[0] 
 #     
     def __setattr__(self, name, value):
-        if name in self.getKeys():
-            items = self.getItemsForKey(name)
-            assert len(items) == 1
-            oldtype = type(items[0][1])
-            items[0][1] = value
-            if oldtype != type(value):
-                print('*** Warning: value of type {} replaced with value of type {}. Result is {}.'.format(oldtype.__name__, type(value).__name__, 'valid' if self.isValid() else 'invalid')) 
-        else:
-            super().__setattr__(name, value)
+        assert name in self.getKeys(), 'attempting to assign value to nonexisting key "{}"'.format(name)
+        items = self.getItemsForKey(name)
+        assert len(items) == 1
+        assert items[0][0] == name
+        oldtype = type(items[0][1])
+        value.__dict__['name'] = items[0][0]
+        items[0][1] = value
+        if oldtype != type(value):
+            print('*** Warning: value of type {} replaced with value of type {}. Result is {}.'.format(oldtype.__name__, type(value).__name__, 'valid' if self.isValid() else 'invalid')) 
+   
     def assignPattern(self):
         pass
 
