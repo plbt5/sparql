@@ -429,6 +429,15 @@ class REGEX(SPARQLKeyword):
         return 'REGEX'
 REGEX_p.setParseAction(parseInfoFunc('REGEX'))
 
+# Special tokens
+ALL_VALUES_p = Literal('*')
+class ALL_VALUES(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return '*'
+ALL_VALUES_p.setParseAction(parseInfoFunc('ALL_VALUES'))
+
 # Brackets and separators
 LPAR_p, RPAR_p, SEMICOL_p, COMMA_p = '();,'
 
@@ -534,7 +543,7 @@ if do_parseactions: ExpressionList_p.setParseAction(parseInfoFunc('ExpressionLis
     
  
 # [71]    ArgList   ::=   NIL | '(' 'DISTINCT'? Expression ( ',' Expression )* ')' 
-ArgList_p = Group(NIL_p('nil')) | (LPAR_p + Optional(Group(DISTINCT_p('distinct'))) + Group(ExpressionList_p('expression_list')) + RPAR_p)
+ArgList_p = Group(NIL_p('nil')) | (LPAR_p + Optional(DISTINCT_p('distinct')) + ExpressionList_p('expression_list') + RPAR_p)
 class ArgList(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
@@ -543,6 +552,10 @@ if do_parseactions: ArgList_p.setParseAction(parseInfoFunc('ArgList'))
 
 # [128]   iriOrFunction     ::=   iri ArgList? 
 iriOrFunction_p = iri_p('iri') + Optional(Group(ArgList_p))('ArgList')
+class iriOrFunction(SPARQLNonTerminal):  
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+if do_parseactions: iriOrFunction_p.setParseAction(parseInfoFunc('iriOrFunction'))
 
 # [127]   Aggregate         ::=     'COUNT' '(' 'DISTINCT'? ( '*' | Expression ) ')' 
 #             | 'SUM' '(' 'DISTINCT'? Expression ')' 
@@ -551,35 +564,60 @@ iriOrFunction_p = iri_p('iri') + Optional(Group(ArgList_p))('ArgList')
 #             | 'AVG' '(' 'DISTINCT'? Expression ')' 
 #             | 'SAMPLE' '(' 'DISTINCT'? Expression ')' 
 #             | 'GROUP_CONCAT' '(' 'DISTINCT'? Expression ( ';' 'SEPARATOR' '=' String )? ')' 
-Aggregate_p = ( COUNT_p + LPAR_p + Optional(DISTINCT_p) + ( Literal('*') ^ Expression_p ) + RPAR_p ) ^ \
-            ( SUM_p + LPAR_p + Optional(DISTINCT_p) + ( Literal('*') ^ Expression_p ) + RPAR_p ) ^ \
-            ( MIN_p + LPAR_p + Optional(DISTINCT_p) + ( Literal('*') ^ Expression_p ) + RPAR_p ) ^ \
-            ( MAX_p + LPAR_p + Optional(DISTINCT_p) + ( Literal('*') ^ Expression_p ) + RPAR_p ) ^ \
-            ( AVG_p + LPAR_p + Optional(DISTINCT_p) + ( Literal('*') ^ Expression_p ) + RPAR_p ) ^ \
-            ( SAMPLE_p + LPAR_p + Optional(DISTINCT_p) + ( Literal('*') ^ Expression_p ) + RPAR_p ) ^ \
-            ( GROUP_CONCAT_p + LPAR_p + Optional(DISTINCT_p) + Expression_p + Optional( SEMICOL_p + SEPARATOR_p + '=' + String_p ) + RPAR_p )
+Aggregate_p = ( COUNT_p('count') + LPAR_p + Optional(DISTINCT_p('distinct')) + ( ALL_VALUES_p('all') ^ Expression_p('expression') ) + RPAR_p ) ^ \
+            ( SUM_p('sum') + LPAR_p + Optional(DISTINCT_p('distinct')) + ( ALL_VALUES_p('all') ^ Expression_p('expression') ) + RPAR_p ) ^ \
+            ( MIN_p('min') + LPAR_p + Optional(DISTINCT_p('distinct')) + ( ALL_VALUES_p('all') ^ Expression_p('expression') ) + RPAR_p ) ^ \
+            ( MAX_p('max') + LPAR_p + Optional(DISTINCT_p('distinct')) + ( ALL_VALUES_p('all') ^ Expression_p('expression') ) + RPAR_p ) ^ \
+            ( AVG_p('avg') + LPAR_p + Optional(DISTINCT_p('distinct')) + ( ALL_VALUES_p('all') ^ Expression_p('expression') ) + RPAR_p ) ^ \
+            ( SAMPLE_p('sample') + LPAR_p + Optional(DISTINCT_p('distinct')) + ( ALL_VALUES_p('all') ^ Expression_p('expression') ) + RPAR_p ) ^ \
+            ( GROUP_CONCAT_p('group_concat') + LPAR_p + Optional(DISTINCT_p('distinct')) + Expression_p('expression') + Optional( SEMICOL_p + SEPARATOR_p + '=' + String_p('separator') ) + RPAR_p )
+class Aggregate(SPARQLNonTerminal):  
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+if do_parseactions: Aggregate_p.setParseAction(parseInfoFunc('Aggregate'))
 
 # # TODO
 GroupGraphPattern_p = Forward()
 GroupGraphPattern_p << Literal('*GroupGraphPattern*')
+class GroupGraphPattern(SPARQLNonTerminal):  
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+if do_parseactions: GroupGraphPattern_p.setParseAction(parseInfoFunc('GroupGraphPattern'))
  
 # [126]   NotExistsFunc     ::=   'NOT' 'EXISTS' GroupGraphPattern 
-NotExistsFunc_p = NOT_p + EXISTS_p + GroupGraphPattern_p
+NotExistsFunc_p = NOT_p + EXISTS_p + GroupGraphPattern_p('groupgraph')
+class NotExistsFunc(SPARQLNonTerminal):  
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+if do_parseactions: NotExistsFunc_p.setParseAction(parseInfoFunc('NotExistsFunc'))
  
 # [125]   ExistsFunc        ::=   'EXISTS' GroupGraphPattern 
-ExistsFunc_p = EXISTS_p + GroupGraphPattern_p
+ExistsFunc_p = EXISTS_p + GroupGraphPattern_p('groupgraph')
+class ExistsFunc(SPARQLNonTerminal):  
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+if do_parseactions: ExistsFunc_p.setParseAction(parseInfoFunc('ExistsFunc'))
  
 # [124]   StrReplaceExpression      ::=   'REPLACE' '(' Expression ',' Expression ',' Expression ( ',' Expression )? ')' 
-StrReplaceExpression_p = REPLACE_p + LPAR_p + Expression_p + COMMA_p + Expression_p + COMMA_p + Expression_p + Optional(COMMA_p + Expression_p) + RPAR_p
+StrReplaceExpression_p = REPLACE_p + LPAR_p + Expression_p('arg') + COMMA_p + Expression_p('pattern') + COMMA_p + Expression_p('replacement') + Optional(COMMA_p + Expression_p('flags')) + RPAR_p
+class StrReplaceExpression(SPARQLNonTerminal):  
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+if do_parseactions: StrReplaceExpression_p.setParseAction(parseInfoFunc('StrReplaceExpression'))
  
 # [123]   SubstringExpression       ::=   'SUBSTR' '(' Expression ',' Expression ( ',' Expression )? ')' 
-SubstringExpression_p = SUBSTR_p + LPAR_p + Expression_p + COMMA_p + Expression_p + Optional(COMMA_p + Expression_p) + RPAR_p
+SubstringExpression_p = SUBSTR_p + LPAR_p + Expression_p('source') + COMMA_p + Expression_p('startloc') + Optional(COMMA_p + Expression_p('length')) + RPAR_p
+class SubstringExpression(SPARQLNonTerminal):  
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+if do_parseactions: SubstringExpression_p.setParseAction(parseInfoFunc('SubstringExpression'))
  
 # [122]   RegexExpression   ::=   'REGEX' '(' Expression ',' Expression ( ',' Expression )? ')' 
-RegexExpression_p = REGEX_p + LPAR_p + Expression_p + COMMA_p + Expression_p + Optional(COMMA_p + Expression_p) + RPAR_p
- 
-# [122]   RegexExpression   ::=   'REGEX' '(' Expression ',' Expression ( ',' Expression )? ')' 
-RegexExpression_p = REGEX_p + LPAR_p + Expression_p + COMMA_p + Expression_p + Optional(COMMA_p + Expression_p) + RPAR_p
+RegexExpression_p = REGEX_p + LPAR_p + Expression_p('text') + COMMA_p + Expression_p('pattern') + Optional(COMMA_p + Expression_p('flags')) + RPAR_p
+class RegexExpression(SPARQLNonTerminal):  
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+if do_parseactions: RegexExpression_p.setParseAction(parseInfoFunc('RegexExpression'))
 
 # [121]   BuiltInCall       ::=     Aggregate 
 

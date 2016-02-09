@@ -28,21 +28,26 @@ class ParseInfo():
         return self.__class__ == other.__class__ and self.name == other.name and self.items == other.items
     
     def __getattr__(self, name):
-        assert name in self.getKeys()
-        values = self.getValuesForKey(name)
-        assert len(values) == 1
-        return values[0] 
+        if name in self.getKeys():
+            values = self.getValuesForKey(name)
+            assert len(values) == 1
+            return values[0] 
+        else:
+            raise AttributeError('Unknown key: {}'.format(name))
 #     
     def __setattr__(self, name, value):
-        assert name in self.getKeys(), 'attempting to assign value to nonexisting key "{}"'.format(name)
-        items = self.getItemsForKey(name)
-        assert len(items) == 1
-        assert items[0][0] == name
-        oldtype = type(items[0][1])
-        value.__dict__['name'] = items[0][0]
-        items[0][1] = value
-        if oldtype != type(value):
-            print('*** Warning: value of type {} replaced with value of type {}. Result is {}.'.format(oldtype.__name__, type(value).__name__, 'valid' if self.isValid() else 'invalid')) 
+        if name in self.getKeys():
+            items = self.getItemsForKey(name)
+            assert len(items) == 1
+            assert items[0][0] == name
+            oldtype = type(items[0][1])
+            value.__dict__['name'] = items[0][0]
+            items[0][1] = value
+            if oldtype != type(value):
+                print('>>> Warning: value of type {} replaced with value of type {}. Result is {}.'.format(oldtype.__name__, type(value).__name__, 'valid' if self.isValid() else '***invalid***')) 
+        else:
+            raise AttributeError('Unknown key: {}'.format(name))
+
    
     def assignPattern(self):
         pass
@@ -58,6 +63,9 @@ class ParseInfo():
     
     def getKeys(self):
         return [i[0] for i in self.getItems() if i[0]]
+    
+    def hasKey(self, k):
+        return k in self.getKeys()
     
     def getValuesForKey(self, k):
         result = [i[1] for i in self.getItems() if i[0] == k]

@@ -52,5 +52,15 @@ assert r.datatype.render() == '\\&'
 assert r.render() == "'test2' ^^ \\&"
 assert not r.isValid()
 
-print('Passed')
+s = '(DISTINCT *Expression*,  *Expression*,   *Expression* )'
+p = ArgList_p.parseString(s)[0]
+q = ArgList(s)
+
+assert p == q
+assert p.render() == q.render()
+assert p.hasKey('distinct')
+p.expression_list = Expression('*Expression*')
+assert p.isValid()
+
+print('\nPassed')
 

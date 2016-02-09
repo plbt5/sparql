@@ -368,6 +368,11 @@ class Test(unittest.TestCase):
         self.testCases['Expression']['pass'] += ['*Expression*'] 
         self.testCases['Expression']['fail'] += ['*NoExpression*'] 
 
+# ExpressionList - TODO
+        self.testCases['ExpressionList'] = {'pass': [],
+                                        'fail': []}
+        self.testCases['ExpressionList']['pass'] += ['*Expression*, *Expression*'] 
+        self.testCases['ExpressionList']['fail'] += ['*NoExpression*'] 
                
 # [71]    ArgList   ::=   NIL | '(' 'DISTINCT'? Expression ( ',' Expression )* ')' 
         self.testCases['ArgList'] = {'pass': [],
@@ -378,9 +383,6 @@ class Test(unittest.TestCase):
                 self.testCases['ArgList']['fail'] += ['[]', 'Not an arglist', '(DISTINCT)']
         for p1 in self.testCases['Expression']['fail']:
             self.testCases['ArgList']['fail'] += [p1]
-
-
-             
         
 # [128]   iriOrFunction     ::=   iri ArgList? 
         self.testCases['iriOrFunction'] = {'pass': [],
@@ -650,6 +652,12 @@ class Test(unittest.TestCase):
     def testRDFLiteral(self):
         Test.makeTestFunc('RDFLiteral', self.testCases)()
 
+    def testExpression(self):
+        Test.makeTestFunc('Expression', self.testCases)()
+
+    def testExpressionList(self):
+        Test.makeTestFunc('ExpressionList', self.testCases)()
+
     def testArgList(self):
         Test.makeTestFunc('ArgList', self.testCases)()
 
@@ -657,7 +665,10 @@ class Test(unittest.TestCase):
         Test.makeTestFunc('iriOrFunction', self.testCases)()
 
     def testAggregate(self):
-        Test.makeTestFunc('Aggregate', self.testCases)()
+        Test.makeTestFunc('GroupGraphPattern', self.testCases)()
+
+    def testGroupGraphPattern(self):
+        Test.makeTestFunc('GroupGraphPattern', self.testCases)()
 
     def testNotExistsFunc(self):
         Test.makeTestFunc('NotExistsFunc', self.testCases)()
