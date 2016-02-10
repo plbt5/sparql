@@ -4,46 +4,46 @@ from sparqlparser.grammar import *
 
 # setup
 
-s = "'test' ^^<test>"
+s = "'work' ^^<work>"
 
 r = RDFLiteral(s)
 p = RDFLiteral_p.parseString(s)[0]
 q = RDFLiteral(s)
-# test render functie
+# work render functie
 
-assert r.render() == "'test' ^^ <test>" 
+assert r.render() == "'work' ^^ <work>" 
  
-# test init van ParseInfo (twee manieren) geeft hetzelfde resultaat
+# work init van ParseInfo (twee manieren) geeft hetzelfde resultaat
  
 assert r == p
 assert r.render() == p.render()
  
-# test dot access (read)
+# work dot access (read)
  
-assert r.lexical_form.render() == "'test'"
+assert r.lexical_form.render() == "'work'"
 
-# test dot access (write)
+# work dot access (write)
  
-p.lexical_form.lexical_form = STRING_LITERAL1("'test'")
-assert p.lexical_form.render() == "'test'"
-assert p.render() == "'test' ^^ <test>"
+p.lexical_form.lexical_form = STRING_LITERAL1("'work'")
+assert p.lexical_form.render() == "'work'"
+assert p.render() == "'work' ^^ <work>"
 assert p.isValid()
 assert r == p
 
-q.lexical_form = STRING_LITERAL1("'test'")
-assert q.lexical_form.render() == "'test'"
-assert q.render() == "'test' ^^ <test>"
+q.lexical_form = STRING_LITERAL1("'work'")
+assert q.lexical_form.render() == "'work'"
+assert q.render() == "'work' ^^ <work>"
 assert q.isValid()
 assert not r == q
  
 r.lexical_form.lexical_form = String("'test2'")
 assert r.lexical_form.render() == "'test2'"
-assert r.render() == "'test2' ^^ <test>"
+assert r.render() == "'test2' ^^ <work>"
 assert r.isValid()
 
 r.lexical_form = STRING_LITERAL1("'test2'")
 assert r.lexical_form.render() == "'test2'"
-assert r.render() == "'test2' ^^ <test>"
+assert r.render() == "'test2' ^^ <work>"
 assert r.isValid()
 
  

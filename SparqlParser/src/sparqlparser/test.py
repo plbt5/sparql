@@ -50,22 +50,29 @@ src = """
 #             | 'isNUMERIC' '(' Expression ')' 
 """[1:-1].split('\n')
 # print(len(src))
-kwds = [r.split()[2].replace("'", "") for r in src]
-# print(kwds)
-# print(len(kwds))
 
-tmplt = """
-MIN_kw_p = CaselessKeyword('MIN') 
-class MIN_kw(SPARQLKeyword):
-    def assignPattern(self):
-        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
-    def render(self):
-        return 'MIN'
-MIN_kw_p.setParseAction(parseInfoFunc('MIN_kw'))
-"""[1:-1]
+src = [s.replace('Expression', '*Expression*') for s in src]
+src = [s.replace("'", '') for s in src]
+src = [s[16:-1] for s in src]
+src = ["'" + s + "'," for s in src]
 
-print()
-
-for kw in kwds:
-    print(tmplt.replace('MIN', kw))
-    print()
+for s in src: print(s)
+# tmplt = """
+# MIN_kw_p = CaselessKeyword('MIN') 
+# class MIN_kw(SPARQLKeyword):
+#     def assignPattern(self):
+#         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+#     def render(self):
+#         return 'MIN'
+# MIN_kw_p.setParseAction(parseInfoFunc('MIN_kw'))
+# """[1:-1]
+# 
+# tmplt2 = """
+#                 XXX_kw_p + LPAR_p + Expression_p + RPAR_p    | \\
+# """[1:-1]
+# 
+# print()
+# 
+# for kw in kwds:
+#     print(tmplt2.replace('XXX', kw))
+# print()

@@ -392,7 +392,7 @@ class SEPARATOR_kw(SPARQLKeyword):
         return 'SEPARATOR'
 SEPARATOR_kw_p.setParseAction(parseInfoFunc('SEPARATOR_kw'))
 
-NOT_kw_p = CaselessKeyword('NOT')
+NOT_kw_p = CaselessKeyword('NOT') + NotAny(CaselessKeyword('EXISTS') | CaselessKeyword('IN'))
 class NOT_kw(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
@@ -407,6 +407,14 @@ class EXISTS_kw(SPARQLKeyword):
     def render(self):
         return 'EXISTS'
 EXISTS_kw_p.setParseAction(parseInfoFunc('EXISTS_kw'))
+
+NOT_EXISTS_kw_p = CaselessKeyword('NOT') + CaselessKeyword('EXISTS')
+class NOT_EXISTS_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'EXISTS'
+NOT_EXISTS_kw_p.setParseAction(parseInfoFunc('NOT_EXISTS_kw'))
 
 REPLACE_kw_p = CaselessKeyword('REPLACE')
 class REPLACE_kw(SPARQLKeyword):
@@ -902,18 +910,7 @@ class NumericLiteral(SPARQLNonTerminal):
 if do_parseactions: NumericLiteral_p.setParseAction(parseInfoFunc('NumericLiteral'))
 
 # [129]   RDFLiteral        ::=   String ( LANGTAG | ( '^^' iri ) )? 
-RDFLiteral_p = (
-                     String_p('lexical_form') \
-                     + Optional(
-                                Group (
-                                       (
-                                        LANGTAG_p('langtag') \
-                                        ^ \
-                                        ('^^' + iri_p('datatype'))
-                                        )
-                                       )
-                                )
-                     )
+RDFLiteral_p = String_p('lexical_form') + Optional(Group ((LANGTAG_p('langtag') ^ ('^^' + iri_p('datatype')))))
 class RDFLiteral(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
@@ -981,7 +978,7 @@ class GroupGraphPattern(SPARQLNonTerminal):
 if do_parseactions: GroupGraphPattern_p.setParseAction(parseInfoFunc('GroupGraphPattern'))
  
 # [126]   NotExistsFunc     ::=   'NOT' 'EXISTS' GroupGraphPattern 
-NotExistsFunc_p = NOT_kw_p + EXISTS_kw_p + GroupGraphPattern_p('groupgraph')
+NotExistsFunc_p = NOT_EXISTS_kw_p + GroupGraphPattern_p('groupgraph')
 class NotExistsFunc(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
@@ -1014,6 +1011,13 @@ class RegexExpression(SPARQLNonTerminal):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: RegexExpression_p.setParseAction(parseInfoFunc('RegexExpression'))
+
+# [108]   Var       ::=   VAR1 | VAR2 
+Var_p = VAR1_p | VAR2_p
+class Var(SPARQLNonTerminal):  
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+if do_parseactions: Var_p.setParseAction(parseInfoFunc('Var'))
 
 # [121]   BuiltInCall       ::=     Aggregate 
 #             | 'STR' '(' Expression ')' 
@@ -1070,6 +1074,71 @@ if do_parseactions: RegexExpression_p.setParseAction(parseInfoFunc('RegexExpress
 #             | RegexExpression 
 #             | ExistsFunc 
 #             | NotExistsFunc 
+BuiltInCall_p = Aggregate_p | \
+                STR_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                LANG_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                LANGMATCHES_kw_p + LPAR_p + Expression_p('language-tag') + COMMA_p + Expression_p('language-range') + RPAR_p    | \
+                DATATYPE_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                BOUND_kw_p + LPAR_p + Var_p('var') + RPAR_p    | \
+                IRI_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                URI_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                BNODE_kw_p + (LPAR_p + Expression_p('expression') + RPAR_p | NIL_p)    | \
+                RAND_kw_p + NIL_p    | \
+                ABS_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                CEIL_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                FLOOR_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                ROUND_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                CONCAT_kw_p + ExpressionList_p('expressionList')    | \
+                SubstringExpression_p   | \
+                STRLEN_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                StrReplaceExpression_p  | \
+                UCASE_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                LCASE_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                ENCODE_FOR_URI_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                CONTAINS_kw_p + LPAR_p + Expression_p('arg1') + COMMA_p + Expression_p('arg2') + RPAR_p    | \
+                STRSTARTS_kw_p + LPAR_p + Expression_p('arg1') + COMMA_p + Expression_p('arg2') + RPAR_p    | \
+                STRENDS_kw_p + LPAR_p + Expression_p('arg1') + COMMA_p + Expression_p('arg2') + RPAR_p    | \
+                STRBEFORE_kw_p + LPAR_p + Expression_p('arg1') + COMMA_p + Expression_p('arg2') + RPAR_p    | \
+                STRAFTER_kw_p + LPAR_p + Expression_p('arg1') + COMMA_p + Expression_p('arg2') + RPAR_p    | \
+                YEAR_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                MONTH_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                DAY_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                HOURS_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                MINUTES_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                SECONDS_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                TIMEZONE_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                TZ_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                NOW_kw_p + NIL_p    | \
+                UUID_kw_p + NIL_p    | \
+                STRUUID_kw_p + NIL_p    | \
+                MD5_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                SHA1_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                SHA256_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                SHA384_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                SHA512_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                COALESCE_kw_p + ExpressionList_p('expressionList')    | \
+                IF_kw_p + LPAR_p + Expression_p('expression1') + COMMA_p + Expression_p('expression2') + COMMA_p + Expression_p('expression3') + RPAR_p    | \
+                STRLANG_kw_p + LPAR_p + Expression_p('lexicalForm') + COMMA_p + Expression_p('langTag') + RPAR_p    | \
+                STRDT_kw_p + LPAR_p + Expression_p('lexicalForm') + COMMA_p + Expression_p('datatypeIRI') + RPAR_p    | \
+                sameTerm_kw_p + LPAR_p + Expression_p('term1') + COMMA_p + Expression_p('term2') + RPAR_p    | \
+                isIRI_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                isURI_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                isBLANK_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                isLITERAL_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                isNUMERIC_kw_p + LPAR_p + Expression_p('expression') + RPAR_p    | \
+                RegexExpression_p | \
+                ExistsFunc_p | \
+                NotExistsFunc_p
+class BuiltInCall(SPARQLNonTerminal):  
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+if do_parseactions: BuiltInCall_p.setParseAction(parseInfoFunc('BuiltInCall'))
+                
+  
+                
+                
+                
+
 
 # [120]   BrackettedExpression      ::=   '(' Expression ')' 
 
@@ -1100,8 +1169,6 @@ if do_parseactions: RegexExpression_p.setParseAction(parseInfoFunc('RegexExpress
 # [110]   Expression        ::=   ConditionalOrExpression 
 
 # [109]   GraphTerm         ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | BlankNode | NIL 
-
-# [108]   Var       ::=   VAR1 | VAR2 
 
 # [107]   VarOrIri          ::=   Var | iri 
 

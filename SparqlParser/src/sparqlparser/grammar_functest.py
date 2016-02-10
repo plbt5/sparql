@@ -156,7 +156,7 @@ if __name__ == '__main__':
     printResults(l, 'PNAME_LN')
                      
     # [139]   IRIREF    ::=   '<' ([^<>"{}|^`\]-[#x00-#x20])* '>' 
-    l = ['<test:22?>']
+    l = ['<work:22?>']
     printResults(l, 'IRIREF')
                     
     # [138]   BlankNode         ::=   BLANK_NODE_LABEL | ANON 
@@ -168,7 +168,7 @@ if __name__ == '__main__':
     printResults(l, 'PrefixedName')
                    
     # [136]   iri       ::=   IRIREF | PrefixedName 
-    l = ['<test:22?>','aA:Z.a', 'Z.8:AA', 'aA:', 'Z.8:', ':']
+    l = ['<work:22?>','aA:Z.a', 'Z.8:AA', 'aA:', 'Z.8:', ':']
     printResults(l, 'iri')
                   
     # [135]   String    ::=   STRING_LITERAL1 | STRING_LITERAL2 | STRING_LITERAL_LONG1 | STRING_LITERAL_LONG2 
@@ -196,7 +196,7 @@ if __name__ == '__main__':
     printResults(l, 'NumericLiteral')
            
     # [129]   RDFLiteral        ::=   String ( LANGTAG | ( '^^' iri ) )? 
-    l = ['"test"', '"test" @en-bf', "'test' ^^ <test>", "'test'^^:"]
+    l = ['"work"', '"work" @en-bf', "'work' ^^ <work>", "'work'^^:"]
     printResults(l, 'RDFLiteral')
             
     # ExpressionList
@@ -205,12 +205,13 @@ if __name__ == '__main__':
     printResults(l, 'ExpressionList')
            
     # [71]    ArgList   ::=   NIL | '(' 'DISTINCT'? Expression ( ',' Expression )* ')' 
-    # TODO
+    # TODO: replace expression
     l = ['()', '( *Expression*) ', '(*Expression*, *Expression*)', '(DISTINCT *Expression*,  *Expression*,   *Expression* )']
     printResults(l, 'ArgList')
            
     # [128]   iriOrFunction     ::=   iri ArgList? 
-    l = ['<test:22?>','aA:Z.a', 'Z.8:AA', 'aA:', 'Z.8:', ':', '<test:22?>()','aA:Z.a (*Expression*)']
+    # TODO: replace expression
+    l = ['<work:22?>','aA:Z.a', 'Z.8:AA', 'aA:', 'Z.8:', ':', '<work:22?>()','aA:Z.a (*Expression*)']
     printResults(l, 'iriOrFunction')
  
     # [127]   Aggregate         ::=     'COUNT' '(' 'DISTINCT'? ( '*' | Expression ) ')' 
@@ -220,6 +221,7 @@ if __name__ == '__main__':
     #             | 'AVG' '(' 'DISTINCT'? Expression ')' 
     #             | 'SAMPLE' '(' 'DISTINCT'? Expression ')' 
     #             | 'GROUP_CONCAT' '(' 'DISTINCT'? Expression ( ';' 'SEPARATOR' '=' String )? ')' 
+    # TODO: replace expression
     l = ['avg(*)', 'count (distinct *)', 'min(*Expression*)', 'GROUP_CONCAT ( distinct *Expression* ; SEPARATOR = "sep")']
     printResults(l, 'Aggregate')
     
@@ -248,4 +250,65 @@ if __name__ == '__main__':
     l = ['REGEX (*Expression*, *Expression*)', 'REGEX (*Expression*, *Expression*, *Expression*)']
     printResults(l, 'RegexExpression')
     
-    
+    # [108]   Var       ::=   VAR1 | VAR2 
+    l = ['$aA', '?9_\u218B7']
+    printResults(l, 'Var')
+
+    # [121]   BuiltInCall       ::=     Aggregate 
+    #             | 'STR' '(' Expression ')' 
+    #             | 'LANG' '(' Expression ')' 
+    #             | 'LANGMATCHES' '(' Expression ',' Expression ')' 
+    #             | 'DATATYPE' '(' Expression ')' 
+    #             | 'BOUND' '(' Var ')' 
+    #             | 'IRI' '(' Expression ')' 
+    #             | 'URI' '(' Expression ')' 
+    #             | 'BNODE' ( '(' Expression ')' | NIL ) 
+    #             | 'RAND' NIL 
+    #             | 'ABS' '(' Expression ')' 
+    #             | 'CEIL' '(' Expression ')' 
+    #             | 'FLOOR' '(' Expression ')' 
+    #             | 'ROUND' '(' Expression ')' 
+    #             | 'CONCAT' ExpressionList 
+    #             | SubstringExpression 
+    #             | 'STRLEN' '(' Expression ')' 
+    #             | StrReplaceExpression 
+    #             | 'UCASE' '(' Expression ')' 
+    #             | 'LCASE' '(' Expression ')' 
+    #             | 'ENCODE_FOR_URI' '(' Expression ')' 
+    #             | 'CONTAINS' '(' Expression ',' Expression ')' 
+    #             | 'STRSTARTS' '(' Expression ',' Expression ')' 
+    #             | 'STRENDS' '(' Expression ',' Expression ')' 
+    #             | 'STRBEFORE' '(' Expression ',' Expression ')' 
+    #             | 'STRAFTER' '(' Expression ',' Expression ')' 
+    #             | 'YEAR' '(' Expression ')' 
+    #             | 'MONTH' '(' Expression ')' 
+    #             | 'DAY' '(' Expression ')' 
+    #             | 'HOURS' '(' Expression ')' 
+    #             | 'MINUTES' '(' Expression ')' 
+    #             | 'SECONDS' '(' Expression ')' 
+    #             | 'TIMEZONE' '(' Expression ')' 
+    #             | 'TZ' '(' Expression ')' 
+    #             | 'NOW' NIL 
+    #             | 'UUID' NIL 
+    #             | 'STRUUID' NIL 
+    #             | 'MD5' '(' Expression ')' 
+    #             | 'SHA1' '(' Expression ')' 
+    #             | 'SHA256' '(' Expression ')' 
+    #             | 'SHA384' '(' Expression ')' 
+    #             | 'SHA512' '(' Expression ')' 
+    #             | 'COALESCE' ExpressionList 
+    #             | 'IF' '(' Expression ',' Expression ',' Expression ')' 
+    #             | 'STRLANG' '(' Expression ',' Expression ')' 
+    #             | 'STRDT' '(' Expression ',' Expression ')' 
+    #             | 'sameTerm' '(' Expression ',' Expression ')' 
+    #             | 'isIRI' '(' Expression ')' 
+    #             | 'isURI' '(' Expression ')' 
+    #             | 'isBLANK' '(' Expression ')' 
+    #             | 'isLITERAL' '(' Expression ')' 
+    #             | 'isNUMERIC' '(' Expression ')' 
+    #             | RegexExpression 
+    #             | ExistsFunc 
+    #             | NotExistsFunc 
+    l = ['STRUUID()', 'ROUND ( *Expression*)', 'isBLANK (*Expression*)', 'COUNT ( * )']
+    # TODO: replace expression
+    printResults(l, 'BuiltInCall')
