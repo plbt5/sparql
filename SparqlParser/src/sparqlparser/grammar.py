@@ -6,6 +6,8 @@ do_parseactions = True
 def parseInfoFunc(classname):
             
     def keyedList(parseresults):
+        while len(parseresults) == 1 and isinstance(parseresults[0], ParseResults):
+            parseresults = parseresults[0]
         valuedict = dict((id(t), k) for (k, t) in parseresults.items())
         assert len(valuedict) == len(list(parseresults.items())), 'internal error: len(valuedict) = {}, len(parseresults.items) = {}'.format(len(valuedict), len(list(parseresults.items)))
         result = []
@@ -315,128 +317,522 @@ if do_parseactions: IRIREF_p.setParseAction(parseInfoFunc('IRIREF'))
 # Parsers and classes for non-terminals
 #
 
+#
 # Keywords
 #
-DISTINCT_p = CaselessKeyword('DISTINCT')
-class DISTINCT(SPARQLKeyword):
+DISTINCT_kw_p = CaselessKeyword('DISTINCT')
+class DISTINCT_kw(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return 'DISTINCT'
-DISTINCT_p.setParseAction(parseInfoFunc('DISTINCT'))
+DISTINCT_kw_p.setParseAction(parseInfoFunc('DISTINCT_kw'))
 
-COUNT_p = CaselessKeyword('COUNT')
-class COUNT(SPARQLKeyword):
+COUNT_kw_p = CaselessKeyword('COUNT')
+class COUNT_kw(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return 'COUNT'
-COUNT_p.setParseAction(parseInfoFunc('COUNT'))
+COUNT_kw_p.setParseAction(parseInfoFunc('COUNT_kw'))
 
-SUM_p = CaselessKeyword('SUM')
-class SUM(SPARQLKeyword):
+SUM_kw_p = CaselessKeyword('SUM')
+class SUM_kw(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return 'SUM'
-SUM_p.setParseAction(parseInfoFunc('SUM'))
+SUM_kw_p.setParseAction(parseInfoFunc('SUM_kw'))
 
-MIN_p = CaselessKeyword('MIN') 
-class MIN(SPARQLKeyword):
+MIN_kw_p = CaselessKeyword('MIN') 
+class MIN_kw(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return 'MIN'
-MIN_p.setParseAction(parseInfoFunc('MIN'))
+MIN_kw_p.setParseAction(parseInfoFunc('MIN_kw'))
 
-MAX_p = CaselessKeyword('MAX') 
-class MAX(SPARQLKeyword):
+MAX_kw_p = CaselessKeyword('MAX') 
+class MAX_kw(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return 'MAX'
-MAX_p.setParseAction(parseInfoFunc('MAX'))
+MAX_kw_p.setParseAction(parseInfoFunc('MAX_kw'))
 
-AVG_p = CaselessKeyword('AVG') 
-class AVG(SPARQLKeyword):
+AVG_kw_p = CaselessKeyword('AVG') 
+class AVG_kw(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return 'AVG'
-AVG_p.setParseAction(parseInfoFunc('AVG'))
+AVG_kw_p.setParseAction(parseInfoFunc('AVG_kw'))
 
-SAMPLE_p = CaselessKeyword('SAMPLE') 
-class SAMPLE(SPARQLKeyword):
+SAMPLE_kw_p = CaselessKeyword('SAMPLE') 
+class SAMPLE_kw(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return 'SAMPLE'
-SAMPLE_p.setParseAction(parseInfoFunc('SAMPLE'))
+SAMPLE_kw_p.setParseAction(parseInfoFunc('SAMPLE_kw'))
 
-GROUP_CONCAT_p = CaselessKeyword('GROUP_CONCAT') 
-class GROUP_CONCAT(SPARQLKeyword):
+GROUP_CONCAT_kw_p = CaselessKeyword('GROUP_CONCAT') 
+class GROUP_CONCAT_kw(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return 'GROUP_CONCAT'
-GROUP_CONCAT_p.setParseAction(parseInfoFunc('GROUP_CONCAT'))
+GROUP_CONCAT_kw_p.setParseAction(parseInfoFunc('GROUP_CONCAT_kw'))
 
-SEPARATOR_p = CaselessKeyword('SEPARATOR')
-class SEPARATOR(SPARQLKeyword):
+SEPARATOR_kw_p = CaselessKeyword('SEPARATOR')
+class SEPARATOR_kw(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return 'SEPARATOR'
-SEPARATOR_p.setParseAction(parseInfoFunc('SEPARATOR'))
+SEPARATOR_kw_p.setParseAction(parseInfoFunc('SEPARATOR_kw'))
 
-NOT_p = CaselessKeyword('NOT')
-class NOT(SPARQLKeyword):
+NOT_kw_p = CaselessKeyword('NOT')
+class NOT_kw(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return 'NOT'
-NOT_p.setParseAction(parseInfoFunc('NOT'))
+NOT_kw_p.setParseAction(parseInfoFunc('NOT_kw'))
 
-EXISTS_p = CaselessKeyword('EXISTS')
-class EXISTS(SPARQLKeyword):
+EXISTS_kw_p = CaselessKeyword('EXISTS')
+class EXISTS_kw(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return 'EXISTS'
-EXISTS_p.setParseAction(parseInfoFunc('EXISTS'))
+EXISTS_kw_p.setParseAction(parseInfoFunc('EXISTS_kw'))
 
-REPLACE_p = CaselessKeyword('REPLACE')
-class REPLACE(SPARQLKeyword):
+REPLACE_kw_p = CaselessKeyword('REPLACE')
+class REPLACE_kw(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return 'REPLACE'
-REPLACE_p.setParseAction(parseInfoFunc('REPLACE'))
+REPLACE_kw_p.setParseAction(parseInfoFunc('REPLACE_kw'))
 
-SUBSTR_p = CaselessKeyword('SUBSTR')
-class SUBSTR(SPARQLKeyword):
+SUBSTR_kw_p = CaselessKeyword('SUBSTR')
+class SUBSTR_kw(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return 'SUBSTR'
-SUBSTR_p.setParseAction(parseInfoFunc('SUBSTR'))
+SUBSTR_kw_p.setParseAction(parseInfoFunc('SUBSTR_kw'))
 
-REGEX_p = CaselessKeyword('REGEX')
-class REGEX(SPARQLKeyword):
+REGEX_kw_p = CaselessKeyword('REGEX')
+class REGEX_kw(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return 'REGEX'
-REGEX_p.setParseAction(parseInfoFunc('REGEX'))
+REGEX_kw_p.setParseAction(parseInfoFunc('REGEX_kw'))
+
+STR_kw_p = CaselessKeyword('STR') 
+class STR_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'STR'
+STR_kw_p.setParseAction(parseInfoFunc('STR_kw'))
+
+LANG_kw_p = CaselessKeyword('LANG') 
+class LANG_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'LANG'
+LANG_kw_p.setParseAction(parseInfoFunc('LANG_kw'))
+
+LANGMATCHES_kw_p = CaselessKeyword('LANGMATCHES') 
+class LANGMATCHES_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'LANGMATCHES'
+LANGMATCHES_kw_p.setParseAction(parseInfoFunc('LANGMATCHES_kw'))
+
+DATATYPE_kw_p = CaselessKeyword('DATATYPE') 
+class DATATYPE_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'DATATYPE'
+DATATYPE_kw_p.setParseAction(parseInfoFunc('DATATYPE_kw'))
+
+BOUND_kw_p = CaselessKeyword('BOUND') 
+class BOUND_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'BOUND'
+BOUND_kw_p.setParseAction(parseInfoFunc('BOUND_kw'))
+
+IRI_kw_p = CaselessKeyword('IRI') 
+class IRI_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'IRI'
+IRI_kw_p.setParseAction(parseInfoFunc('IRI_kw'))
+
+URI_kw_p = CaselessKeyword('URI') 
+class URI_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'URI'
+URI_kw_p.setParseAction(parseInfoFunc('URI_kw'))
+
+BNODE_kw_p = CaselessKeyword('BNODE') 
+class BNODE_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'BNODE'
+BNODE_kw_p.setParseAction(parseInfoFunc('BNODE_kw'))
+
+RAND_kw_p = CaselessKeyword('RAND') 
+class RAND_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'RAND'
+RAND_kw_p.setParseAction(parseInfoFunc('RAND_kw'))
+
+ABS_kw_p = CaselessKeyword('ABS') 
+class ABS_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'ABS'
+ABS_kw_p.setParseAction(parseInfoFunc('ABS_kw'))
+
+CEIL_kw_p = CaselessKeyword('CEIL') 
+class CEIL_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'CEIL'
+CEIL_kw_p.setParseAction(parseInfoFunc('CEIL_kw'))
+
+FLOOR_kw_p = CaselessKeyword('FLOOR') 
+class FLOOR_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'FLOOR'
+FLOOR_kw_p.setParseAction(parseInfoFunc('FLOOR_kw'))
+
+ROUND_kw_p = CaselessKeyword('ROUND') 
+class ROUND_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'ROUND'
+ROUND_kw_p.setParseAction(parseInfoFunc('ROUND_kw'))
+
+CONCAT_kw_p = CaselessKeyword('CONCAT') 
+class CONCAT_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'CONCAT'
+CONCAT_kw_p.setParseAction(parseInfoFunc('CONCAT_kw'))
+
+STRLEN_kw_p = CaselessKeyword('STRLEN') 
+class STRLEN_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'STRLEN'
+STRLEN_kw_p.setParseAction(parseInfoFunc('STRLEN_kw'))
+
+UCASE_kw_p = CaselessKeyword('UCASE') 
+class UCASE_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'UCASE'
+UCASE_kw_p.setParseAction(parseInfoFunc('UCASE_kw'))
+
+LCASE_kw_p = CaselessKeyword('LCASE') 
+class LCASE_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'LCASE'
+LCASE_kw_p.setParseAction(parseInfoFunc('LCASE_kw'))
+
+ENCODE_FOR_URI_kw_p = CaselessKeyword('ENCODE_FOR_URI') 
+class ENCODE_FOR_URI_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'ENCODE_FOR_URI'
+ENCODE_FOR_URI_kw_p.setParseAction(parseInfoFunc('ENCODE_FOR_URI_kw'))
+
+CONTAINS_kw_p = CaselessKeyword('CONTAINS') 
+class CONTAINS_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'CONTAINS'
+CONTAINS_kw_p.setParseAction(parseInfoFunc('CONTAINS_kw'))
+
+STRSTARTS_kw_p = CaselessKeyword('STRSTARTS') 
+class STRSTARTS_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'STRSTARTS'
+STRSTARTS_kw_p.setParseAction(parseInfoFunc('STRSTARTS_kw'))
+
+STRENDS_kw_p = CaselessKeyword('STRENDS') 
+class STRENDS_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'STRENDS'
+STRENDS_kw_p.setParseAction(parseInfoFunc('STRENDS_kw'))
+
+STRBEFORE_kw_p = CaselessKeyword('STRBEFORE') 
+class STRBEFORE_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'STRBEFORE'
+STRBEFORE_kw_p.setParseAction(parseInfoFunc('STRBEFORE_kw'))
+
+STRAFTER_kw_p = CaselessKeyword('STRAFTER') 
+class STRAFTER_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'STRAFTER'
+STRAFTER_kw_p.setParseAction(parseInfoFunc('STRAFTER_kw'))
+
+YEAR_kw_p = CaselessKeyword('YEAR') 
+class YEAR_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'YEAR'
+YEAR_kw_p.setParseAction(parseInfoFunc('YEAR_kw'))
+
+MONTH_kw_p = CaselessKeyword('MONTH') 
+class MONTH_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'MONTH'
+MONTH_kw_p.setParseAction(parseInfoFunc('MONTH_kw'))
+
+DAY_kw_p = CaselessKeyword('DAY') 
+class DAY_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'DAY'
+DAY_kw_p.setParseAction(parseInfoFunc('DAY_kw'))
+
+HOURS_kw_p = CaselessKeyword('HOURS') 
+class HOURS_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'HOURS'
+HOURS_kw_p.setParseAction(parseInfoFunc('HOURS_kw'))
+
+MINUTES_kw_p = CaselessKeyword('MINUTES') 
+class MINUTES_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'MINUTES'
+MINUTES_kw_p.setParseAction(parseInfoFunc('MINUTES_kw'))
+
+SECONDS_kw_p = CaselessKeyword('SECONDS') 
+class SECONDS_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'SECONDS'
+SECONDS_kw_p.setParseAction(parseInfoFunc('SECONDS_kw'))
+
+TIMEZONE_kw_p = CaselessKeyword('TIMEZONE') 
+class TIMEZONE_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'TIMEZONE'
+TIMEZONE_kw_p.setParseAction(parseInfoFunc('TIMEZONE_kw'))
+
+TZ_kw_p = CaselessKeyword('TZ') 
+class TZ_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'TZ'
+TZ_kw_p.setParseAction(parseInfoFunc('TZ_kw'))
+
+NOW_kw_p = CaselessKeyword('NOW') 
+class NOW_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'NOW'
+NOW_kw_p.setParseAction(parseInfoFunc('NOW_kw'))
+
+UUID_kw_p = CaselessKeyword('UUID') 
+class UUID_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'UUID'
+UUID_kw_p.setParseAction(parseInfoFunc('UUID_kw'))
+
+STRUUID_kw_p = CaselessKeyword('STRUUID') 
+class STRUUID_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'STRUUID'
+STRUUID_kw_p.setParseAction(parseInfoFunc('STRUUID_kw'))
+
+MD5_kw_p = CaselessKeyword('MD5') 
+class MD5_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'MD5'
+MD5_kw_p.setParseAction(parseInfoFunc('MD5_kw'))
+
+SHA1_kw_p = CaselessKeyword('SHA1') 
+class SHA1_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'SHA1'
+SHA1_kw_p.setParseAction(parseInfoFunc('SHA1_kw'))
+
+SHA256_kw_p = CaselessKeyword('SHA256') 
+class SHA256_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'SHA256'
+SHA256_kw_p.setParseAction(parseInfoFunc('SHA256_kw'))
+
+SHA384_kw_p = CaselessKeyword('SHA384') 
+class SHA384_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'SHA384'
+SHA384_kw_p.setParseAction(parseInfoFunc('SHA384_kw'))
+
+SHA512_kw_p = CaselessKeyword('SHA512') 
+class SHA512_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'SHA512'
+SHA512_kw_p.setParseAction(parseInfoFunc('SHA512_kw'))
+
+COALESCE_kw_p = CaselessKeyword('COALESCE') 
+class COALESCE_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'COALESCE'
+COALESCE_kw_p.setParseAction(parseInfoFunc('COALESCE_kw'))
+
+IF_kw_p = CaselessKeyword('IF') 
+class IF_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'IF'
+IF_kw_p.setParseAction(parseInfoFunc('IF_kw'))
+
+STRLANG_kw_p = CaselessKeyword('STRLANG') 
+class STRLANG_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'STRLANG'
+STRLANG_kw_p.setParseAction(parseInfoFunc('STRLANG_kw'))
+
+STRDT_kw_p = CaselessKeyword('STRDT') 
+class STRDT_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'STRDT'
+STRDT_kw_p.setParseAction(parseInfoFunc('STRDT_kw'))
+
+sameTerm_kw_p = CaselessKeyword('sameTerm') 
+class sameTerm_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'sameTerm'
+sameTerm_kw_p.setParseAction(parseInfoFunc('sameTerm_kw'))
+
+isIRI_kw_p = CaselessKeyword('isIRI') 
+class isIRI_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'isIRI'
+isIRI_kw_p.setParseAction(parseInfoFunc('isIRI_kw'))
+
+isURI_kw_p = CaselessKeyword('isURI') 
+class isURI_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'isURI'
+isURI_kw_p.setParseAction(parseInfoFunc('isURI_kw'))
+
+isBLANK_kw_p = CaselessKeyword('isBLANK') 
+class isBLANK_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'isBLANK'
+isBLANK_kw_p.setParseAction(parseInfoFunc('isBLANK_kw'))
+
+isLITERAL_kw_p = CaselessKeyword('isLITERAL') 
+class isLITERAL_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'isLITERAL'
+isLITERAL_kw_p.setParseAction(parseInfoFunc('isLITERAL_kw'))
+
+isNUMERIC_kw_p = CaselessKeyword('isNUMERIC') 
+class isNUMERIC_kw(SPARQLKeyword):
+    def assignPattern(self):
+        self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
+    def render(self):
+        return 'isNUMERIC'
+isNUMERIC_kw_p.setParseAction(parseInfoFunc('isNUMERIC_kw'))
+
 
 # Special tokens
-ALL_VALUES_p = Literal('*')
-class ALL_VALUES(SPARQLKeyword):
+ALL_VALUES_st_p = Literal('*')
+class ALL_VALUES_st(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
         return '*'
-ALL_VALUES_p.setParseAction(parseInfoFunc('ALL_VALUES'))
+ALL_VALUES_st_p.setParseAction(parseInfoFunc('ALL_VALUES_st'))
 
 # Brackets and separators
 LPAR_p, RPAR_p, SEMICOL_p, COMMA_p = '();,'
@@ -543,7 +939,7 @@ if do_parseactions: ExpressionList_p.setParseAction(parseInfoFunc('ExpressionLis
     
  
 # [71]    ArgList   ::=   NIL | '(' 'DISTINCT'? Expression ( ',' Expression )* ')' 
-ArgList_p = Group(NIL_p('nil')) | (LPAR_p + Optional(DISTINCT_p('distinct')) + ExpressionList_p('expression_list') + RPAR_p)
+ArgList_p = Group(NIL_p('nil')) | (LPAR_p + Optional(DISTINCT_kw_p('distinct')) + ExpressionList_p('expression_list') + RPAR_p)
 class ArgList(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
@@ -564,13 +960,13 @@ if do_parseactions: iriOrFunction_p.setParseAction(parseInfoFunc('iriOrFunction'
 #             | 'AVG' '(' 'DISTINCT'? Expression ')' 
 #             | 'SAMPLE' '(' 'DISTINCT'? Expression ')' 
 #             | 'GROUP_CONCAT' '(' 'DISTINCT'? Expression ( ';' 'SEPARATOR' '=' String )? ')' 
-Aggregate_p = ( COUNT_p('count') + LPAR_p + Optional(DISTINCT_p('distinct')) + ( ALL_VALUES_p('all') ^ Expression_p('expression') ) + RPAR_p ) ^ \
-            ( SUM_p('sum') + LPAR_p + Optional(DISTINCT_p('distinct')) + ( ALL_VALUES_p('all') ^ Expression_p('expression') ) + RPAR_p ) ^ \
-            ( MIN_p('min') + LPAR_p + Optional(DISTINCT_p('distinct')) + ( ALL_VALUES_p('all') ^ Expression_p('expression') ) + RPAR_p ) ^ \
-            ( MAX_p('max') + LPAR_p + Optional(DISTINCT_p('distinct')) + ( ALL_VALUES_p('all') ^ Expression_p('expression') ) + RPAR_p ) ^ \
-            ( AVG_p('avg') + LPAR_p + Optional(DISTINCT_p('distinct')) + ( ALL_VALUES_p('all') ^ Expression_p('expression') ) + RPAR_p ) ^ \
-            ( SAMPLE_p('sample') + LPAR_p + Optional(DISTINCT_p('distinct')) + ( ALL_VALUES_p('all') ^ Expression_p('expression') ) + RPAR_p ) ^ \
-            ( GROUP_CONCAT_p('group_concat') + LPAR_p + Optional(DISTINCT_p('distinct')) + Expression_p('expression') + Optional( SEMICOL_p + SEPARATOR_p + '=' + String_p('separator') ) + RPAR_p )
+Aggregate_p = ( COUNT_kw_p('count') + LPAR_p + Optional(DISTINCT_kw_p('distinct')) + ( ALL_VALUES_st_p('all') ^ Expression_p('expression') ) + RPAR_p ) | \
+            ( SUM_kw_p('sum') + LPAR_p + Optional(DISTINCT_kw_p('distinct')) + ( ALL_VALUES_st_p('all') ^ Expression_p('expression') ) + RPAR_p ) | \
+            ( MIN_kw_p('min') + LPAR_p + Optional(DISTINCT_kw_p('distinct')) + ( ALL_VALUES_st_p('all') ^ Expression_p('expression') ) + RPAR_p ) | \
+            ( MAX_kw_p('max') + LPAR_p + Optional(DISTINCT_kw_p('distinct')) + ( ALL_VALUES_st_p('all') ^ Expression_p('expression') ) + RPAR_p ) | \
+            ( AVG_kw_p('avg') + LPAR_p + Optional(DISTINCT_kw_p('distinct')) + ( ALL_VALUES_st_p('all') ^ Expression_p('expression') ) + RPAR_p ) | \
+            ( SAMPLE_kw_p('sample') + LPAR_p + Optional(DISTINCT_kw_p('distinct')) + ( ALL_VALUES_st_p('all') ^ Expression_p('expression') ) + RPAR_p ) | \
+            ( GROUP_CONCAT_kw_p('group_concat') + LPAR_p + Optional(DISTINCT_kw_p('distinct')) + Expression_p('expression') + Optional( SEMICOL_p + SEPARATOR_kw_p + '=' + String_p('separator') ) + RPAR_p )
 class Aggregate(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
@@ -585,148 +981,94 @@ class GroupGraphPattern(SPARQLNonTerminal):
 if do_parseactions: GroupGraphPattern_p.setParseAction(parseInfoFunc('GroupGraphPattern'))
  
 # [126]   NotExistsFunc     ::=   'NOT' 'EXISTS' GroupGraphPattern 
-NotExistsFunc_p = NOT_p + EXISTS_p + GroupGraphPattern_p('groupgraph')
+NotExistsFunc_p = NOT_kw_p + EXISTS_kw_p + GroupGraphPattern_p('groupgraph')
 class NotExistsFunc(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: NotExistsFunc_p.setParseAction(parseInfoFunc('NotExistsFunc'))
  
 # [125]   ExistsFunc        ::=   'EXISTS' GroupGraphPattern 
-ExistsFunc_p = EXISTS_p + GroupGraphPattern_p('groupgraph')
+ExistsFunc_p = EXISTS_kw_p + GroupGraphPattern_p('groupgraph')
 class ExistsFunc(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: ExistsFunc_p.setParseAction(parseInfoFunc('ExistsFunc'))
  
 # [124]   StrReplaceExpression      ::=   'REPLACE' '(' Expression ',' Expression ',' Expression ( ',' Expression )? ')' 
-StrReplaceExpression_p = REPLACE_p + LPAR_p + Expression_p('arg') + COMMA_p + Expression_p('pattern') + COMMA_p + Expression_p('replacement') + Optional(COMMA_p + Expression_p('flags')) + RPAR_p
+StrReplaceExpression_p = REPLACE_kw_p + LPAR_p + Expression_p('arg') + COMMA_p + Expression_p('pattern') + COMMA_p + Expression_p('replacement') + Optional(COMMA_p + Expression_p('flags')) + RPAR_p
 class StrReplaceExpression(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: StrReplaceExpression_p.setParseAction(parseInfoFunc('StrReplaceExpression'))
  
 # [123]   SubstringExpression       ::=   'SUBSTR' '(' Expression ',' Expression ( ',' Expression )? ')' 
-SubstringExpression_p = SUBSTR_p + LPAR_p + Expression_p('source') + COMMA_p + Expression_p('startloc') + Optional(COMMA_p + Expression_p('length')) + RPAR_p
+SubstringExpression_p = SUBSTR_kw_p + LPAR_p + Expression_p('source') + COMMA_p + Expression_p('startloc') + Optional(COMMA_p + Expression_p('length')) + RPAR_p
 class SubstringExpression(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: SubstringExpression_p.setParseAction(parseInfoFunc('SubstringExpression'))
  
 # [122]   RegexExpression   ::=   'REGEX' '(' Expression ',' Expression ( ',' Expression )? ')' 
-RegexExpression_p = REGEX_p + LPAR_p + Expression_p('text') + COMMA_p + Expression_p('pattern') + Optional(COMMA_p + Expression_p('flags')) + RPAR_p
+RegexExpression_p = REGEX_kw_p + LPAR_p + Expression_p('text') + COMMA_p + Expression_p('pattern') + Optional(COMMA_p + Expression_p('flags')) + RPAR_p
 class RegexExpression(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
 if do_parseactions: RegexExpression_p.setParseAction(parseInfoFunc('RegexExpression'))
 
 # [121]   BuiltInCall       ::=     Aggregate 
-
 #             | 'STR' '(' Expression ')' 
-
 #             | 'LANG' '(' Expression ')' 
-
 #             | 'LANGMATCHES' '(' Expression ',' Expression ')' 
-
 #             | 'DATATYPE' '(' Expression ')' 
-
 #             | 'BOUND' '(' Var ')' 
-
 #             | 'IRI' '(' Expression ')' 
-
 #             | 'URI' '(' Expression ')' 
-
 #             | 'BNODE' ( '(' Expression ')' | NIL ) 
-
 #             | 'RAND' NIL 
-
 #             | 'ABS' '(' Expression ')' 
-
 #             | 'CEIL' '(' Expression ')' 
-
 #             | 'FLOOR' '(' Expression ')' 
-
 #             | 'ROUND' '(' Expression ')' 
-
 #             | 'CONCAT' ExpressionList 
-
 #             | SubstringExpression 
-
 #             | 'STRLEN' '(' Expression ')' 
-
 #             | StrReplaceExpression 
-
 #             | 'UCASE' '(' Expression ')' 
-
 #             | 'LCASE' '(' Expression ')' 
-
 #             | 'ENCODE_FOR_URI' '(' Expression ')' 
-
 #             | 'CONTAINS' '(' Expression ',' Expression ')' 
-
 #             | 'STRSTARTS' '(' Expression ',' Expression ')' 
-
 #             | 'STRENDS' '(' Expression ',' Expression ')' 
-
 #             | 'STRBEFORE' '(' Expression ',' Expression ')' 
-
 #             | 'STRAFTER' '(' Expression ',' Expression ')' 
-
 #             | 'YEAR' '(' Expression ')' 
-
 #             | 'MONTH' '(' Expression ')' 
-
 #             | 'DAY' '(' Expression ')' 
-
 #             | 'HOURS' '(' Expression ')' 
-
 #             | 'MINUTES' '(' Expression ')' 
-
 #             | 'SECONDS' '(' Expression ')' 
-
 #             | 'TIMEZONE' '(' Expression ')' 
-
 #             | 'TZ' '(' Expression ')' 
-
 #             | 'NOW' NIL 
-
 #             | 'UUID' NIL 
-
 #             | 'STRUUID' NIL 
-
 #             | 'MD5' '(' Expression ')' 
-
 #             | 'SHA1' '(' Expression ')' 
-
 #             | 'SHA256' '(' Expression ')' 
-
 #             | 'SHA384' '(' Expression ')' 
-
 #             | 'SHA512' '(' Expression ')' 
-
 #             | 'COALESCE' ExpressionList 
-
 #             | 'IF' '(' Expression ',' Expression ',' Expression ')' 
-
 #             | 'STRLANG' '(' Expression ',' Expression ')' 
-
 #             | 'STRDT' '(' Expression ',' Expression ')' 
-
 #             | 'sameTerm' '(' Expression ',' Expression ')' 
-
 #             | 'isIRI' '(' Expression ')' 
-
 #             | 'isURI' '(' Expression ')' 
-
 #             | 'isBLANK' '(' Expression ')' 
-
 #             | 'isLITERAL' '(' Expression ')' 
-
 #             | 'isNUMERIC' '(' Expression ')' 
-
 #             | RegexExpression 
-
 #             | ExistsFunc 
-
 #             | NotExistsFunc 
 
 # [120]   BrackettedExpression      ::=   '(' Expression ')' 

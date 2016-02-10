@@ -228,22 +228,24 @@ if __name__ == '__main__':
     l = ['NOT Exists *GroupGraphPattern*']
     printResults(l, 'NotExistsFunc')
 
-# [125]   ExistsFunc        ::=   'EXISTS' GroupGraphPattern 
+    # [125]   ExistsFunc        ::=   'EXISTS' GroupGraphPattern 
     # TODO: replace expression
     l = ['Exists *GroupGraphPattern*']
     printResults(l, 'ExistsFunc')
     
-# [124]   StrReplaceExpression      ::=   'REPLACE' '(' Expression ',' Expression ',' Expression ( ',' Expression )? ')' 
+    # [124]   StrReplaceExpression      ::=   'REPLACE' '(' Expression ',' Expression ',' Expression ( ',' Expression )? ')' 
     # TODO: replace expression
     l = ['REPLACE (*Expression*, *Expression*, *Expression*)', 'REPLACE (*Expression*, *Expression*, *Expression*, *Expression*)']
     printResults(l, 'StrReplaceExpression')
     
-# [123]   SubstringExpression       ::=   'SUBSTR' '(' Expression ',' Expression ( ',' Expression )? ')' 
+    # [123]   SubstringExpression       ::=   'SUBSTR' '(' Expression ',' Expression ( ',' Expression )? ')' 
     # TODO: replace expression
     l = ['SUBSTR (*Expression*, *Expression*)', 'SUBSTR (*Expression*, *Expression*, *Expression*)']
     printResults(l, 'SubstringExpression')
 
-# [122]   RegexExpression   ::=   'REGEX' '(' Expression ',' Expression ( ',' Expression )? ')' 
+    # [122]   RegexExpression   ::=   'REGEX' '(' Expression ',' Expression ( ',' Expression )? ')' 
     # TODO: replace expression
     l = ['REGEX (*Expression*, *Expression*)', 'REGEX (*Expression*, *Expression*, *Expression*)']
     printResults(l, 'RegexExpression')
+    
+    
