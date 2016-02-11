@@ -28,44 +28,39 @@ p.lexical_form.lexical_form = STRING_LITERAL1("'work'")
 assert p.lexical_form.render() == "'work'"
 assert p.render() == "'work' ^^ <work>"
 assert p.yieldsValidExpression()
-assert p.isKeyConsistent()
 assert p.isValid()
 assert p.isValid()
 assert r == p
+p.dump()
  
 p.lexical_form.lexical_form = STRING_LITERAL1("'work2'")
 assert p.lexical_form.render() == "'work2'"
 assert p.render() == "'work2' ^^ <work>"
 assert p.yieldsValidExpression()
-assert p.isKeyConsistent()
 assert p.isValid()
  
 q.lexical_form = STRING_LITERAL1("'work'")
 assert q.lexical_form.render() == "'work'"
 assert q.render() == "'work' ^^ <work>"
 assert q.yieldsValidExpression()
-assert q.isKeyConsistent()
 assert not q.isValid()
 assert not r == q
   
 r.lexical_form.lexical_form = String("'test2'")
 assert r.lexical_form.render() == "'test2'"
 assert r.render() == "'test2' ^^ <work>"
-assert r.isKeyConsistent()
 assert not r.isValid()
 assert r.yieldsValidExpression()
  
 r.lexical_form = STRING_LITERAL1("'test2'")
 assert r.lexical_form.render() == "'test2'"
 assert r.render() == "'test2' ^^ <work>"
-assert r.isKeyConsistent()
 assert r.yieldsValidExpression()
  
   
 r.datatype_uri = PN_LOCAL_ESC('\\&')
 assert r.datatype_uri.render() == '\\&'
 assert r.render() == "'test2' ^^ \\&"
-assert r.isKeyConsistent()
 assert not r.yieldsValidExpression()
  
 s = '(DISTINCT *Expression*,  *Expression*,   *Expression* )'

@@ -17,12 +17,13 @@ class ParseInfo():
     def __init__(self, *args):
         self.__dict__['pattern'] = self.assignPattern()
         if len(args) == 2:
-            self.__dict__['name'] = args[0] # name
-            self.__dict__['items'] = args[1] # items
+            self.__dict__['name'] = args[0] 
+            self.__dict__['items'] = args[1] 
         else:
             assert len(args) == 1 and isinstance(args[0], str)
             self.__dict__['name'] = None
             self.__dict__['items'] = self.pattern.parseString(args[0], parseAll=True)[0].items
+        assert self.__isKeyConsistent()
                 
     def __eq__(self, other):
         return self.__class__ == other.__class__ and self.name == other.name and self.items == other.items
@@ -42,10 +43,14 @@ class ParseInfo():
             assert items[0][0] == key
             oldtype = type(items[0][1])
             value.__dict__['name'] = items[0][0]
-            items[0][1] = value                    
+            items[0][1] = value     
+            assert self.__isKeyConsistent()               
         else:
             raise AttributeError('Unknown key: {}'.format(key))
    
+    def __isKeyConsistent(self):
+        return all([t[0] == t[1].name if isinstance(t[1], ParseInfo) else t[0] == None if isinstance(t[1], str) else False for t in self.getItems()])
+    
     def assignPattern(self):
         raise NotImplementedError
 
@@ -119,9 +124,6 @@ class ParseInfo():
                 assert isinstance(t[1], ParseInfo), type(t[1])
                 result.append(t[1].render())
         return sep.join(result)
-    
-    def isKeyConsistent(self):
-        return all([t[0] == t[1].name if isinstance(t[1], ParseInfo) else t[0] == None if isinstance(t[1], str) else False for t in self.getItems()])
     
     def yieldsValidExpression(self):
         try:
