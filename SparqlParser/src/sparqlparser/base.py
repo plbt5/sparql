@@ -42,9 +42,7 @@ class ParseInfo():
             assert items[0][0] == key
             oldtype = type(items[0][1])
             value.__dict__['name'] = items[0][0]
-            items[0][1] = value
-            if oldtype != type(value):
-                print('>>> INFO: value for key "{}" with type {} replaced with value of type {}. Result yields {} expression.'.format(key, oldtype.__name__, type(value).__name__, 'valid' if self.yieldsValidExpression() else '***invalid***')) 
+            items[0][1] = value                    
         else:
             raise AttributeError('Unknown key: {}'.format(key))
    
@@ -132,7 +130,7 @@ class ParseInfo():
         except ParseException:
             return False
         
-    def isParseConsistent(self):
+    def isValid(self):
         return self == self.pattern.parseString(self.render())[0]
 
 
