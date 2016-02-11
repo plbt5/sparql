@@ -24,7 +24,7 @@ class Test(unittest.TestCase):
                     if debug >= 3:
                         print(' ( = ' + ' '.join([str(ord(c)) for c in str(e)[2:-2]]), end=' )')
                 assert e[0] == e[0].pattern.parseString(e[0].render())[0]
-                assert e[0].isConsistent()
+                assert e[0].isKeyConsistent()
             for f in testCases[rule]['fail']:
                 if debug >= 1:
                     print('\nfail:', f, end='')

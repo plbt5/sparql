@@ -44,13 +44,12 @@ class ParseInfo():
             value.__dict__['name'] = items[0][0]
             items[0][1] = value
             if oldtype != type(value):
-                print('>>> INFO: value of type {} replaced with value of type {}. Result yields {} expression.'.format(oldtype.__name__, type(value).__name__, 'valid' if self.yieldsValidExpression() else '***invalid***')) 
+                print('>>> INFO: value for key "{}" with type {} replaced with value of type {}. Result yields {} expression.'.format(key, oldtype.__name__, type(value).__name__, 'valid' if self.yieldsValidExpression() else '***invalid***')) 
         else:
             raise AttributeError('Unknown key: {}'.format(key))
-
    
     def assignPattern(self):
-        pass
+        raise NotImplementedError
 
     def getName(self):
         return self.name
@@ -123,7 +122,7 @@ class ParseInfo():
                 result.append(t[1].render())
         return sep.join(result)
     
-    def isConsistent(self):
+    def isKeyConsistent(self):
         return all([t[0] == t[1].name if isinstance(t[1], ParseInfo) else t[0] == None if isinstance(t[1], str) else False for t in self.getItems()])
     
     def yieldsValidExpression(self):
@@ -132,6 +131,9 @@ class ParseInfo():
             return True
         except ParseException:
             return False
+        
+    def isParseConsistent(self):
+        return self == self.pattern.parseString(self.render())[0]
 
 
 

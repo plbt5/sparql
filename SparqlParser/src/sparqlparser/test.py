@@ -1,20 +1,15 @@
-import io
-test = io.StringIO()
+from pyparsing import *
+from sparqlparser.base import *
+from sparqlparser.grammar import *
 
-test.write('hello')
+print(PN_LOCAL_ESC.__name__)
 
-s = test.getvalue()
+r = PN_LOCAL_ESC('\\&')
 
-print(s, type(s))
-
-s = test.getvalue()
-
-print(s, type(s))
-
-test.write('world')
-
-print(test.getvalue())
-
-print('hereiam', file=test)
-
-print(test.getvalue())
+class A:
+    pattern = __name__
+    def printName(self): print(self.__class__.pattern)
+    
+x = A()
+x.printName()
+    
