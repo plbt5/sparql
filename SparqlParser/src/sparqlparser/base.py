@@ -82,22 +82,20 @@ class ParseInfo():
     def dump(self, indent='', step='  '):
         
         def dumpString(s, indent, step):
-            return indent + '- ' + s + ' <str>\n' 
+            print(indent + '- ' + s + ' <str>' )
         
         def dumpItems(items, indent, step):
             for _, v in items:
                 if isinstance(v, str):
-                    return dumpString(v, indent + step, step)
+                    dumpString(v, indent+step, step)
                 elif isinstance(v, list):
-                    return dumpItems(v, indent + step, step)
+                    dumpItems(v, indent+step, step)
                 else:
                     assert isinstance(v, ParseInfo)
-                    return v.dump(indent + step, step)       
-        
-        result = ''
-        result += indent + ('> '+ self.name + ':\n' + indent if self.name else '') + '[' + self.__class__.__name__ + '] ' + self.render() + '\n'
-        result += dumpItems(self.items, indent, step)
-        return result.rstrip()
+                    v.dump(indent+step, step)       
+       
+        print(indent + ('> '+ self.name + ':\n' + indent if self.name else '') + '[' + self.__class__.__name__ + '] ' + self.render())
+        dumpItems(self.items, indent, step)
 
     def render(self):
         sep = ' '
