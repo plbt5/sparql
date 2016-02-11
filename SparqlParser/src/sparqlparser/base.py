@@ -15,7 +15,7 @@ if sys.version_info < (3,3):
 class ParseInfo():
     
     def __init__(self, *args):
-        self.assignPattern()
+        self.__dict__['pattern'] = self.assignPattern()
         if len(args) == 2:
             self.__dict__['name'] = args[0] # name
             self.__dict__['items'] = args[1] # items
