@@ -629,6 +629,7 @@ class Test(unittest.TestCase):
                     print(' --> ' + str(e), end='')
                     if debug >= 3:
                         print(' ( = ' + ' '.join([str(ord(c)) for c in str(e)[2:-2]]), end=' )')
+                assert e[0] == e[0].pattern.parseString(e[0].render())[0]
             for f in testCases[rule]['fail']:
                 if debug >= 1:
                     print('\nfail:', f, end='')
@@ -646,31 +647,31 @@ class Test(unittest.TestCase):
                     
     def testPN_LOCAL_ESC(self):
         Test.makeTestFunc('PN_LOCAL_ESC', self.testCases)()   
-     
+      
     def testHEX(self):
         Test.makeTestFunc('HEX', self.testCases)()
-
+ 
     def testPERCENT(self):
         Test.makeTestFunc('PERCENT', self.testCases)()
-
+ 
     def testPLX(self):
         Test.makeTestFunc('PLX', self.testCases)()
-        
+         
     def testPN_CHARS_BASE(self):
         Test.makeTestFunc('PN_CHARS_BASE', self.testCases)()
-
+ 
     def testPN_CHARS_U(self):
         Test.makeTestFunc('PN_CHARS_U', self.testCases)()
-
+ 
     def testPN_CHARS(self):
         Test.makeTestFunc('PN_CHARS', self.testCases)()
-        
+         
     def testPN_LOCAL(self):
         Test.makeTestFunc('PN_LOCAL', self.testCases)()     
-    
+     
     def testPN_PREFIX(self):
         Test.makeTestFunc('PN_PREFIX', self.testCases)()
-        
+         
     def testVARNAME(self):
         Test.makeTestFunc('VARNAME', self.testCases)()
 
@@ -682,19 +683,19 @@ class Test(unittest.TestCase):
             
     def testNIL(self):
         Test.makeTestFunc('NIL', self.testCases)()       
-                
+                 
     def testECHAR(self):
         Test.makeTestFunc('ECHAR', self.testCases)()       
-          
+           
     def testSTRING_LITERAL_LONG2(self):
         Test.makeTestFunc('STRING_LITERAL_LONG2', self.testCases)()       
-   
+    
     def testSTRING_LITERAL_LONG1(self):
         Test.makeTestFunc('STRING_LITERAL_LONG1', self.testCases)()       
-           
+            
     def testSTRING_LITERAL2(self):
         Test.makeTestFunc('STRING_LITERAL2', self.testCases)()       
-               
+                
     def testSTRING_LITERAL1(self):
         Test.makeTestFunc('STRING_LITERAL1', self.testCases)()       
 #          
@@ -712,112 +713,112 @@ class Test(unittest.TestCase):
 #  
     def testDECIMAL(self):
         Test.makeTestFunc('DECIMAL', self.testCases)()                     
-               
+                
     def testDECIMAL_NEGATIVE(self):
         Test.makeTestFunc('DECIMAL_NEGATIVE', self.testCases)()       
-   
+    
     def testDECIMAL_POSITIVE(self):
         Test.makeTestFunc('DECIMAL_POSITIVE', self.testCases)()       
-   
+    
     def testINTEGER(self):
         Test.makeTestFunc('INTEGER', self.testCases)()       
-               
+                
     def testINTEGER_NEGATIVE(self):
         Test.makeTestFunc('INTEGER_NEGATIVE', self.testCases)()       
-   
+    
     def testINTEGER_POSITIVE(self):
         Test.makeTestFunc('INTEGER_POSITIVE', self.testCases)()       
-               
+                
     def testLANGTAG(self):
         Test.makeTestFunc('LANGTAG', self.testCases)()       
-   
+    
     def testVAR2(self):
         Test.makeTestFunc('VAR2', self.testCases)()       
-   
+    
     def testVAR1(self):
         Test.makeTestFunc('VAR1', self.testCases)()       
-    
+     
     def testBLANK_NODE_LABEL(self):
         Test.makeTestFunc('BLANK_NODE_LABEL', self.testCases)()       
-   
+    
     def testPNAME_NS(self):
         Test.makeTestFunc('PNAME_NS', self.testCases)()       
-   
+    
     def testPNAME_LN(self):
         Test.makeTestFunc('PNAME_LN', self.testCases)()
-   
+    
     def testIRIREF(self):
         Test.makeTestFunc('IRIREF', self.testCases)()
-     
+      
     def testBlankNode(self):
         Test.makeTestFunc('BlankNode', self.testCases)()
-   
+    
     def testPrefixedName(self):
         Test.makeTestFunc('PrefixedName', self.testCases)()
-   
+    
     def testiri(self):
         Test.makeTestFunc('iri', self.testCases)()
-   
+    
     def testString(self):
         Test.makeTestFunc('String', self.testCases)()
-  
+   
     def testBooleanLiteral(self):
         Test.makeTestFunc('BooleanLiteral', self.testCases)()
-
+ 
     def testNumericLiteralNegative(self):
         Test.makeTestFunc('NumericLiteralNegative', self.testCases)()
- 
+  
     def testNumericLiteralPositive(self):
         Test.makeTestFunc('NumericLiteralPositive', self.testCases)()
-  
+   
     def testNumericLiteralUnsigned(self):
         Test.makeTestFunc('NumericLiteralUnsigned', self.testCases)()
-  
+   
     def testNumericLiteral(self):
         Test.makeTestFunc('NumericLiteral', self.testCases)()
- 
+  
     def testRDFLiteral(self):
         Test.makeTestFunc('RDFLiteral', self.testCases)()
-
+ 
     def testExpression(self):
         Test.makeTestFunc('Expression', self.testCases)()
-
+ 
     def testExpressionList(self):
         Test.makeTestFunc('ExpressionList', self.testCases)()
-
+ 
     def testArgList(self):
         Test.makeTestFunc('ArgList', self.testCases)()
-
+ 
     def testiriOrFunction(self):
         Test.makeTestFunc('iriOrFunction', self.testCases)()
-
+ 
     def testAggregate(self):
         Test.makeTestFunc('GroupGraphPattern', self.testCases)()
-
+ 
     def testGroupGraphPattern(self):
         Test.makeTestFunc('GroupGraphPattern', self.testCases)()
-
+ 
     def testNotExistsFunc(self):
         Test.makeTestFunc('NotExistsFunc', self.testCases)()
-
+ 
     def testExistsFunc(self):
         Test.makeTestFunc('ExistsFunc', self.testCases)()
-
+ 
     def testStrReplaceExpression(self):
         Test.makeTestFunc('StrReplaceExpression', self.testCases)()
-
+ 
     def testSubstringExpression(self):
         Test.makeTestFunc('SubstringExpression', self.testCases)()
-
+ 
     def testRegexExpression(self):
         Test.makeTestFunc('RegexExpression', self.testCases)()
-
+ 
     def testVar(self):
         Test.makeTestFunc('Var', self.testCases)()
-
+ 
     def testBuiltInCall(self):
         Test.makeTestFunc('BuiltInCall', self.testCases)()
-
+ 
 # [121]   BuiltInCall       ::=     Aggregate 
 #             | 'STR' '(' Expression ')' 
 #             | 'LANG' '(' Expression ')' 
@@ -873,256 +874,256 @@ class Test(unittest.TestCase):
 #             | RegexExpression 
 #             | ExistsFunc 
 #             | NotExistsFunc 
-
-# [120]   BrackettedExpression      ::=   '(' Expression ')' 
-
-# [119]   PrimaryExpression         ::=   BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var 
-
-# [118]   UnaryExpression   ::=     '!' PrimaryExpression 
-
-#             | '+' PrimaryExpression 
-
-#             | '-' PrimaryExpression 
-
-#             | PrimaryExpression 
-
-# [117]   MultiplicativeExpression          ::=   UnaryExpression ( '*' UnaryExpression | '/' UnaryExpression )* 
-
-# [116]   AdditiveExpression        ::=   MultiplicativeExpression ( '+' MultiplicativeExpression | '-' MultiplicativeExpression | ( NumericLiteralPositive | NumericLiteralNegative ) ( ( '*' UnaryExpression ) | ( '/' UnaryExpression ) )* )* 
-
-# [115]   NumericExpression         ::=   AdditiveExpression 
-
-# [114]   RelationalExpression      ::=   NumericExpression ( '=' NumericExpression | '!=' NumericExpression | '<' NumericExpression | '>' NumericExpression | '<=' NumericExpression | '>=' NumericExpression | 'IN' ExpressionList | 'NOT' 'IN' ExpressionList )? 
-
-# [113]   ValueLogical      ::=   RelationalExpression 
-
-# [112]   ConditionalAndExpression          ::=   ValueLogical ( '&&' ValueLogical )* 
-
-# [111]   ConditionalOrExpression   ::=   ConditionalAndExpression ( '||' ConditionalAndExpression )* 
-
-# [110]   Expression        ::=   ConditionalOrExpression 
-
-# [109]   GraphTerm         ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | BlankNode | NIL 
-
-# [108]   Var       ::=   VAR1 | VAR2 
-
-# [107]   VarOrIri          ::=   Var | iri 
-
-# [106]   VarOrTerm         ::=   Var | GraphTerm 
-
-# [105]   GraphNodePath     ::=   VarOrTerm | TriplesNodePath 
-
-# [104]   GraphNode         ::=   VarOrTerm | TriplesNode 
-
-# [103]   CollectionPath    ::=   '(' GraphNodePath+ ')' 
-
-# [102]   Collection        ::=   '(' GraphNode+ ')' 
-
-# [101]   BlankNodePropertyListPath         ::=   '[' PropertyListPathNotEmpty ']' 
-
-# [100]   TriplesNodePath   ::=   CollectionPath | BlankNodePropertyListPath 
-
-# [99]    BlankNodePropertyList     ::=   '[' PropertyListNotEmpty ']' 
-
-# [98]    TriplesNode       ::=   Collection | BlankNodePropertyList 
-
-# [97]    Integer   ::=   INTEGER 
-
-# [96]    PathOneInPropertySet      ::=   iri | 'a' | '^' ( iri | 'a' ) 
-
-# [95]    PathNegatedPropertySet    ::=   PathOneInPropertySet | '(' ( PathOneInPropertySet ( '|' PathOneInPropertySet )* )? ')' 
-
-# [94]    PathPrimary       ::=   iri | 'a' | '!' PathNegatedPropertySet | '(' Path ')' 
-
-# [93]    PathMod   ::=   '?' | '*' | '+' 
-
-# [92]    PathEltOrInverse          ::=   PathElt | '^' PathElt 
-
-# [91]    PathElt   ::=   PathPrimary PathMod? 
-
-# [90]    PathSequence      ::=   PathEltOrInverse ( '/' PathEltOrInverse )* 
-
-# [89]    PathAlternative   ::=   PathSequence ( '|' PathSequence )* 
-
-# [88]    Path      ::=   PathAlternative 
-
-# [87]    ObjectPath        ::=   GraphNodePath 
-
-# [86]    ObjectListPath    ::=   ObjectPath ( ',' ObjectPath )* 
-
-# [85]    VerbSimple        ::=   Var 
-
-# [84]    VerbPath          ::=   Path 
-
-# [83]    PropertyListPathNotEmpty          ::=   ( VerbPath | VerbSimple ) ObjectListPath ( ';' ( ( VerbPath | VerbSimple ) ObjectList )? )* 
-
-# [82]    PropertyListPath          ::=   PropertyListPathNotEmpty? 
-
-# [81]    TriplesSameSubjectPath    ::=   VarOrTerm PropertyListPathNotEmpty | TriplesNodePath PropertyListPath 
-
-# [80]    Object    ::=   GraphNode 
-
-# [79]    ObjectList        ::=   Object ( ',' Object )* 
-
-# [78]    Verb      ::=   VarOrIri | 'a' 
-
-# [77]    PropertyListNotEmpty      ::=   Verb ObjectList ( ';' ( Verb ObjectList )? )* 
-
-# [76]    PropertyList      ::=   PropertyListNotEmpty? 
-
-# [75]    TriplesSameSubject        ::=   VarOrTerm PropertyListNotEmpty | TriplesNode PropertyList 
-
-# [74]    ConstructTriples          ::=   TriplesSameSubject ( '.' ConstructTriples? )? 
-
-# [73]    ConstructTemplate         ::=   '{' ConstructTriples? '}' 
-
-# [72]    ExpressionList    ::=   NIL | '(' Expression ( ',' Expression )* ')' 
-
-# [70]    FunctionCall      ::=   iri ArgList 
-
-# [69]    Constraint        ::=   BrackettedExpression | BuiltInCall | FunctionCall 
-
-# [68]    Filter    ::=   'FILTER' Constraint 
-
-# [67]    GroupOrUnionGraphPattern          ::=   GroupGraphPattern ( 'UNION' GroupGraphPattern )* 
-
-# [66]    MinusGraphPattern         ::=   'MINUS' GroupGraphPattern 
-
-# [65]    DataBlockValue    ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | 'UNDEF' 
-
-# [64]    InlineDataFull    ::=   ( NIL | '(' Var* ')' ) '{' ( '(' DataBlockValue* ')' | NIL )* '}' 
-
-# [63]    InlineDataOneVar          ::=   Var '{' DataBlockValue* '}' 
-
-# [62]    DataBlock         ::=   InlineDataOneVar | InlineDataFull 
-
-# [61]    InlineData        ::=   'VALUES' DataBlock 
-
-# [60]    Bind      ::=   'BIND' '(' Expression 'AS' Var ')' 
-
-# [59]    ServiceGraphPattern       ::=   'SERVICE' 'SILENT'? VarOrIri GroupGraphPattern 
-
-# [58]    GraphGraphPattern         ::=   'GRAPH' VarOrIri GroupGraphPattern 
-
-# [57]    OptionalGraphPattern      ::=   'OPTIONAL' GroupGraphPattern 
-
-# [56]    GraphPatternNotTriples    ::=   GroupOrUnionGraphPattern | OptionalGraphPattern | MinusGraphPattern | GraphGraphPattern | ServiceGraphPattern | Filter | Bind | InlineData 
-
-# [55]    TriplesBlock      ::=   TriplesSameSubjectPath ( '.' TriplesBlock? )? 
-
-# [54]    GroupGraphPatternSub      ::=   TriplesBlock? ( GraphPatternNotTriples '.'? TriplesBlock? )* 
-
-# [53]    GroupGraphPattern         ::=   '{' ( SubSelect | GroupGraphPatternSub ) '}' 
-
-# [52]    TriplesTemplate   ::=   TriplesSameSubject ( '.' TriplesTemplate? )? 
-
-# [51]    QuadsNotTriples   ::=   'GRAPH' VarOrIri '{' TriplesTemplate? '}' 
-
-# [50]    Quads     ::=   TriplesTemplate? ( QuadsNotTriples '.'? TriplesTemplate? )* 
-
-# [49]    QuadData          ::=   '{' Quads '}' 
-
-# [48]    QuadPattern       ::=   '{' Quads '}' 
-
-# [47]    GraphRefAll       ::=   GraphRef | 'DEFAULT' | 'NAMED' | 'ALL' 
-
-# [46]    GraphRef          ::=   'GRAPH' iri 
-
-# [45]    GraphOrDefault    ::=   'DEFAULT' | 'GRAPH'? iri 
-
-# [44]    UsingClause       ::=   'USING' ( iri | 'NAMED' iri ) 
-
-# [43]    InsertClause      ::=   'INSERT' QuadPattern 
-
-# [42]    DeleteClause      ::=   'DELETE' QuadPattern 
-
-# [41]    Modify    ::=   ( 'WITH' iri )? ( DeleteClause InsertClause? | InsertClause ) UsingClause* 'WHERE' GroupGraphPattern 
-
-# [40]    DeleteWhere       ::=   'DELETE WHERE' QuadPattern 
-
-# [39]    DeleteData        ::=   'DELETE DATA' QuadData 
-
-# [38]    InsertData        ::=   'INSERT DATA' QuadData 
-
-# [37]    Copy      ::=   'COPY' 'SILENT'? GraphOrDefault 'TO' GraphOrDefault 
-
-# [36]    Move      ::=   'MOVE' 'SILENT'? GraphOrDefault 'TO' GraphOrDefault 
-
-# [35]    Add       ::=   'ADD' 'SILENT'? GraphOrDefault 'TO' GraphOrDefault 
-
-# [34]    Create    ::=   'CREATE' 'SILENT'? GraphRef 
-
-# [33]    Drop      ::=   'DROP' 'SILENT'? GraphRefAll 
-
-# [32]    Clear     ::=   'CLEAR' 'SILENT'? GraphRefAll 
-
-# [31]    Load      ::=   'LOAD' 'SILENT'? iri ( 'INTO' GraphRef )? 
-
-# [30]    Update1   ::=   Load | Clear | Drop | Add | Move | Copy | Create | InsertData | DeleteData | DeleteWhere | Modify 
-
-# [29]    Update    ::=   Prologue ( Update1 ( ';' Update )? )? 
-
-# [28]    ValuesClause      ::=   ( 'VALUES' DataBlock )? 
-
-# [27]    OffsetClause      ::=   'OFFSET' INTEGER 
-
-# [26]    LimitClause       ::=   'LIMIT' INTEGER 
-
-# [25]    LimitOffsetClauses        ::=   LimitClause OffsetClause? | OffsetClause LimitClause? 
-
-# [24]    OrderCondition    ::=   ( ( 'ASC' | 'DESC' ) BrackettedExpression ) 
-
-#             | ( Constraint | Var ) 
-
-# [23]    OrderClause       ::=   'ORDER' 'BY' OrderCondition+ 
-
-# [22]    HavingCondition   ::=   Constraint 
-
-# [21]    HavingClause      ::=   'HAVING' HavingCondition+ 
-
-# [20]    GroupCondition    ::=   BuiltInCall | FunctionCall | '(' Expression ( 'AS' Var )? ')' | Var 
-
-# [19]    GroupClause       ::=   'GROUP' 'BY' GroupCondition+ 
-
-# [18]    SolutionModifier          ::=   GroupClause? HavingClause? OrderClause? LimitOffsetClauses? 
-
-# [17]    WhereClause       ::=   'WHERE'? GroupGraphPattern 
-
-# [16]    SourceSelector    ::=   iri 
-
-# [15]    NamedGraphClause          ::=   'NAMED' SourceSelector 
-
-# [14]    DefaultGraphClause        ::=   SourceSelector 
-
-# [13]    DatasetClause     ::=   'FROM' ( DefaultGraphClause | NamedGraphClause ) 
-
-# [12]    AskQuery          ::=   'ASK' DatasetClause* WhereClause SolutionModifier 
-
-# [11]    DescribeQuery     ::=   'DESCRIBE' ( VarOrIri+ | '*' ) DatasetClause* WhereClause? SolutionModifier 
-
-# [10]    ConstructQuery    ::=   'CONSTRUCT' ( ConstructTemplate DatasetClause* WhereClause SolutionModifier | DatasetClause* 'WHERE' '{' TriplesTemplate? '}' SolutionModifier ) 
-
-# [9]     SelectClause      ::=   'SELECT' ( 'DISTINCT' | 'REDUCED' )? ( ( Var | ( '(' Expression 'AS' Var ')' ) )+ | '*' ) 
-
-# [8]     SubSelect         ::=   SelectClause WhereClause SolutionModifier ValuesClause 
-
-# [7]     SelectQuery       ::=   SelectClause DatasetClause* WhereClause SolutionModifier 
-
-# [6]     PrefixDecl        ::=   'PREFIX' PNAME_NS IRIREF 
-
-# [5]     BaseDecl          ::=   'BASE' IRIREF 
-
-# [4]     Prologue          ::=   ( BaseDecl | PrefixDecl )* 
-
-# [3]     UpdateUnit        ::=   Update 
-
-# [2]     Query     ::=   Prologue 
-
-#             ( SelectQuery | ConstructQuery | DescribeQuery | AskQuery ) 
-
-#             ValuesClause 
-
-# [1]     QueryUnit         ::=   Query 
+# 
+# # [120]   BrackettedExpression      ::=   '(' Expression ')' 
+# 
+# # [119]   PrimaryExpression         ::=   BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var 
+# 
+# # [118]   UnaryExpression   ::=     '!' PrimaryExpression 
+# 
+# #             | '+' PrimaryExpression 
+# 
+# #             | '-' PrimaryExpression 
+# 
+# #             | PrimaryExpression 
+# 
+# # [117]   MultiplicativeExpression          ::=   UnaryExpression ( '*' UnaryExpression | '/' UnaryExpression )* 
+# 
+# # [116]   AdditiveExpression        ::=   MultiplicativeExpression ( '+' MultiplicativeExpression | '-' MultiplicativeExpression | ( NumericLiteralPositive | NumericLiteralNegative ) ( ( '*' UnaryExpression ) | ( '/' UnaryExpression ) )* )* 
+# 
+# # [115]   NumericExpression         ::=   AdditiveExpression 
+# 
+# # [114]   RelationalExpression      ::=   NumericExpression ( '=' NumericExpression | '!=' NumericExpression | '<' NumericExpression | '>' NumericExpression | '<=' NumericExpression | '>=' NumericExpression | 'IN' ExpressionList | 'NOT' 'IN' ExpressionList )? 
+# 
+# # [113]   ValueLogical      ::=   RelationalExpression 
+# 
+# # [112]   ConditionalAndExpression          ::=   ValueLogical ( '&&' ValueLogical )* 
+# 
+# # [111]   ConditionalOrExpression   ::=   ConditionalAndExpression ( '||' ConditionalAndExpression )* 
+# 
+# # [110]   Expression        ::=   ConditionalOrExpression 
+# 
+# # [109]   GraphTerm         ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | BlankNode | NIL 
+# 
+# # [108]   Var       ::=   VAR1 | VAR2 
+# 
+# # [107]   VarOrIri          ::=   Var | iri 
+# 
+# # [106]   VarOrTerm         ::=   Var | GraphTerm 
+# 
+# # [105]   GraphNodePath     ::=   VarOrTerm | TriplesNodePath 
+# 
+# # [104]   GraphNode         ::=   VarOrTerm | TriplesNode 
+# 
+# # [103]   CollectionPath    ::=   '(' GraphNodePath+ ')' 
+# 
+# # [102]   Collection        ::=   '(' GraphNode+ ')' 
+# 
+# # [101]   BlankNodePropertyListPath         ::=   '[' PropertyListPathNotEmpty ']' 
+# 
+# # [100]   TriplesNodePath   ::=   CollectionPath | BlankNodePropertyListPath 
+# 
+# # [99]    BlankNodePropertyList     ::=   '[' PropertyListNotEmpty ']' 
+# 
+# # [98]    TriplesNode       ::=   Collection | BlankNodePropertyList 
+# 
+# # [97]    Integer   ::=   INTEGER 
+# 
+# # [96]    PathOneInPropertySet      ::=   iri | 'a' | '^' ( iri | 'a' ) 
+# 
+# # [95]    PathNegatedPropertySet    ::=   PathOneInPropertySet | '(' ( PathOneInPropertySet ( '|' PathOneInPropertySet )* )? ')' 
+# 
+# # [94]    PathPrimary       ::=   iri | 'a' | '!' PathNegatedPropertySet | '(' Path ')' 
+# 
+# # [93]    PathMod   ::=   '?' | '*' | '+' 
+# 
+# # [92]    PathEltOrInverse          ::=   PathElt | '^' PathElt 
+# 
+# # [91]    PathElt   ::=   PathPrimary PathMod? 
+# 
+# # [90]    PathSequence      ::=   PathEltOrInverse ( '/' PathEltOrInverse )* 
+# 
+# # [89]    PathAlternative   ::=   PathSequence ( '|' PathSequence )* 
+# 
+# # [88]    Path      ::=   PathAlternative 
+# 
+# # [87]    ObjectPath        ::=   GraphNodePath 
+# 
+# # [86]    ObjectListPath    ::=   ObjectPath ( ',' ObjectPath )* 
+# 
+# # [85]    VerbSimple        ::=   Var 
+# 
+# # [84]    VerbPath          ::=   Path 
+# 
+# # [83]    PropertyListPathNotEmpty          ::=   ( VerbPath | VerbSimple ) ObjectListPath ( ';' ( ( VerbPath | VerbSimple ) ObjectList )? )* 
+# 
+# # [82]    PropertyListPath          ::=   PropertyListPathNotEmpty? 
+# 
+# # [81]    TriplesSameSubjectPath    ::=   VarOrTerm PropertyListPathNotEmpty | TriplesNodePath PropertyListPath 
+# 
+# # [80]    Object    ::=   GraphNode 
+# 
+# # [79]    ObjectList        ::=   Object ( ',' Object )* 
+# 
+# # [78]    Verb      ::=   VarOrIri | 'a' 
+# 
+# # [77]    PropertyListNotEmpty      ::=   Verb ObjectList ( ';' ( Verb ObjectList )? )* 
+# 
+# # [76]    PropertyList      ::=   PropertyListNotEmpty? 
+# 
+# # [75]    TriplesSameSubject        ::=   VarOrTerm PropertyListNotEmpty | TriplesNode PropertyList 
+# 
+# # [74]    ConstructTriples          ::=   TriplesSameSubject ( '.' ConstructTriples? )? 
+# 
+# # [73]    ConstructTemplate         ::=   '{' ConstructTriples? '}' 
+# 
+# # [72]    ExpressionList    ::=   NIL | '(' Expression ( ',' Expression )* ')' 
+# 
+# # [70]    FunctionCall      ::=   iri ArgList 
+# 
+# # [69]    Constraint        ::=   BrackettedExpression | BuiltInCall | FunctionCall 
+# 
+# # [68]    Filter    ::=   'FILTER' Constraint 
+# 
+# # [67]    GroupOrUnionGraphPattern          ::=   GroupGraphPattern ( 'UNION' GroupGraphPattern )* 
+# 
+# # [66]    MinusGraphPattern         ::=   'MINUS' GroupGraphPattern 
+# 
+# # [65]    DataBlockValue    ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | 'UNDEF' 
+# 
+# # [64]    InlineDataFull    ::=   ( NIL | '(' Var* ')' ) '{' ( '(' DataBlockValue* ')' | NIL )* '}' 
+# 
+# # [63]    InlineDataOneVar          ::=   Var '{' DataBlockValue* '}' 
+# 
+# # [62]    DataBlock         ::=   InlineDataOneVar | InlineDataFull 
+# 
+# # [61]    InlineData        ::=   'VALUES' DataBlock 
+# 
+# # [60]    Bind      ::=   'BIND' '(' Expression 'AS' Var ')' 
+# 
+# # [59]    ServiceGraphPattern       ::=   'SERVICE' 'SILENT'? VarOrIri GroupGraphPattern 
+# 
+# # [58]    GraphGraphPattern         ::=   'GRAPH' VarOrIri GroupGraphPattern 
+# 
+# # [57]    OptionalGraphPattern      ::=   'OPTIONAL' GroupGraphPattern 
+# 
+# # [56]    GraphPatternNotTriples    ::=   GroupOrUnionGraphPattern | OptionalGraphPattern | MinusGraphPattern | GraphGraphPattern | ServiceGraphPattern | Filter | Bind | InlineData 
+# 
+# # [55]    TriplesBlock      ::=   TriplesSameSubjectPath ( '.' TriplesBlock? )? 
+# 
+# # [54]    GroupGraphPatternSub      ::=   TriplesBlock? ( GraphPatternNotTriples '.'? TriplesBlock? )* 
+# 
+# # [53]    GroupGraphPattern         ::=   '{' ( SubSelect | GroupGraphPatternSub ) '}' 
+# 
+# # [52]    TriplesTemplate   ::=   TriplesSameSubject ( '.' TriplesTemplate? )? 
+# 
+# # [51]    QuadsNotTriples   ::=   'GRAPH' VarOrIri '{' TriplesTemplate? '}' 
+# 
+# # [50]    Quads     ::=   TriplesTemplate? ( QuadsNotTriples '.'? TriplesTemplate? )* 
+# 
+# # [49]    QuadData          ::=   '{' Quads '}' 
+# 
+# # [48]    QuadPattern       ::=   '{' Quads '}' 
+# 
+# # [47]    GraphRefAll       ::=   GraphRef | 'DEFAULT' | 'NAMED' | 'ALL' 
+# 
+# # [46]    GraphRef          ::=   'GRAPH' iri 
+# 
+# # [45]    GraphOrDefault    ::=   'DEFAULT' | 'GRAPH'? iri 
+# 
+# # [44]    UsingClause       ::=   'USING' ( iri | 'NAMED' iri ) 
+# 
+# # [43]    InsertClause      ::=   'INSERT' QuadPattern 
+# 
+# # [42]    DeleteClause      ::=   'DELETE' QuadPattern 
+# 
+# # [41]    Modify    ::=   ( 'WITH' iri )? ( DeleteClause InsertClause? | InsertClause ) UsingClause* 'WHERE' GroupGraphPattern 
+# 
+# # [40]    DeleteWhere       ::=   'DELETE WHERE' QuadPattern 
+# 
+# # [39]    DeleteData        ::=   'DELETE DATA' QuadData 
+# 
+# # [38]    InsertData        ::=   'INSERT DATA' QuadData 
+# 
+# # [37]    Copy      ::=   'COPY' 'SILENT'? GraphOrDefault 'TO' GraphOrDefault 
+# 
+# # [36]    Move      ::=   'MOVE' 'SILENT'? GraphOrDefault 'TO' GraphOrDefault 
+# 
+# # [35]    Add       ::=   'ADD' 'SILENT'? GraphOrDefault 'TO' GraphOrDefault 
+# 
+# # [34]    Create    ::=   'CREATE' 'SILENT'? GraphRef 
+# 
+# # [33]    Drop      ::=   'DROP' 'SILENT'? GraphRefAll 
+# 
+# # [32]    Clear     ::=   'CLEAR' 'SILENT'? GraphRefAll 
+# 
+# # [31]    Load      ::=   'LOAD' 'SILENT'? iri ( 'INTO' GraphRef )? 
+# 
+# # [30]    Update1   ::=   Load | Clear | Drop | Add | Move | Copy | Create | InsertData | DeleteData | DeleteWhere | Modify 
+# 
+# # [29]    Update    ::=   Prologue ( Update1 ( ';' Update )? )? 
+# 
+# # [28]    ValuesClause      ::=   ( 'VALUES' DataBlock )? 
+# 
+# # [27]    OffsetClause      ::=   'OFFSET' INTEGER 
+# 
+# # [26]    LimitClause       ::=   'LIMIT' INTEGER 
+# 
+# # [25]    LimitOffsetClauses        ::=   LimitClause OffsetClause? | OffsetClause LimitClause? 
+# 
+# # [24]    OrderCondition    ::=   ( ( 'ASC' | 'DESC' ) BrackettedExpression ) 
+# 
+# #             | ( Constraint | Var ) 
+# 
+# # [23]    OrderClause       ::=   'ORDER' 'BY' OrderCondition+ 
+# 
+# # [22]    HavingCondition   ::=   Constraint 
+# 
+# # [21]    HavingClause      ::=   'HAVING' HavingCondition+ 
+# 
+# # [20]    GroupCondition    ::=   BuiltInCall | FunctionCall | '(' Expression ( 'AS' Var )? ')' | Var 
+# 
+# # [19]    GroupClause       ::=   'GROUP' 'BY' GroupCondition+ 
+# 
+# # [18]    SolutionModifier          ::=   GroupClause? HavingClause? OrderClause? LimitOffsetClauses? 
+# 
+# # [17]    WhereClause       ::=   'WHERE'? GroupGraphPattern 
+# 
+# # [16]    SourceSelector    ::=   iri 
+# 
+# # [15]    NamedGraphClause          ::=   'NAMED' SourceSelector 
+# 
+# # [14]    DefaultGraphClause        ::=   SourceSelector 
+# 
+# # [13]    DatasetClause     ::=   'FROM' ( DefaultGraphClause | NamedGraphClause ) 
+# 
+# # [12]    AskQuery          ::=   'ASK' DatasetClause* WhereClause SolutionModifier 
+# 
+# # [11]    DescribeQuery     ::=   'DESCRIBE' ( VarOrIri+ | '*' ) DatasetClause* WhereClause? SolutionModifier 
+# 
+# # [10]    ConstructQuery    ::=   'CONSTRUCT' ( ConstructTemplate DatasetClause* WhereClause SolutionModifier | DatasetClause* 'WHERE' '{' TriplesTemplate? '}' SolutionModifier ) 
+# 
+# # [9]     SelectClause      ::=   'SELECT' ( 'DISTINCT' | 'REDUCED' )? ( ( Var | ( '(' Expression 'AS' Var ')' ) )+ | '*' ) 
+# 
+# # [8]     SubSelect         ::=   SelectClause WhereClause SolutionModifier ValuesClause 
+# 
+# # [7]     SelectQuery       ::=   SelectClause DatasetClause* WhereClause SolutionModifier 
+# 
+# # [6]     PrefixDecl        ::=   'PREFIX' PNAME_NS IRIREF 
+# 
+# # [5]     BaseDecl          ::=   'BASE' IRIREF 
+# 
+# # [4]     Prologue          ::=   ( BaseDecl | PrefixDecl )* 
+# 
+# # [3]     UpdateUnit        ::=   Update 
+# 
+# # [2]     Query     ::=   Prologue 
+# 
+# #             ( SelectQuery | ConstructQuery | DescribeQuery | AskQuery ) 
+# 
+# #             ValuesClause 
+# 
+# # [1]     QueryUnit         ::=   Query 
 
         
 

@@ -413,7 +413,7 @@ class NOT_EXISTS_kw(SPARQLKeyword):
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')
     def render(self):
-        return 'EXISTS'
+        return 'NOT EXISTS'
 NOT_EXISTS_kw_p.setParseAction(parseInfoFunc('NOT_EXISTS_kw'))
 
 REPLACE_kw_p = CaselessKeyword('REPLACE')
