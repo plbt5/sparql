@@ -910,7 +910,7 @@ class NumericLiteral(SPARQLNonTerminal):
 if do_parseactions: NumericLiteral_p.setParseAction(parseInfoFunc('NumericLiteral'))
 
 # [129]   RDFLiteral        ::=   String ( LANGTAG | ( '^^' iri ) )? 
-RDFLiteral_p = String_p('lexical_form') + Optional(Group ((LANGTAG_p('langtag') ^ ('^^' + iri_p('datatype')))))
+RDFLiteral_p = String_p('lexical_form') + Optional(Group ((LANGTAG_p('langtag') ^ ('^^' + iri_p('datatype_uri')))))
 class RDFLiteral(SPARQLNonTerminal):  
     def assignPattern(self):
         self.__dict__['pattern'] = eval(self.__class__.__name__ + '_p')

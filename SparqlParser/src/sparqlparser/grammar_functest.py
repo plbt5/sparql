@@ -9,7 +9,7 @@ def printResults(l, rule):
         r = rule_p.parseString(s, parseAll=True)
         print('\nParse : {}'.format(s))
         print()
-        r[0].dump()
+        print(r[0].dump())
         print()
         rendering = r[0].render()
         print('Render:', rendering)

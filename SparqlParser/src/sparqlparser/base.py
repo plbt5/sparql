@@ -27,26 +27,26 @@ class ParseInfo():
     def __eq__(self, other):
         return self.__class__ == other.__class__ and self.name == other.name and self.items == other.items
     
-    def __getattr__(self, name):
-        if name in self.getKeys():
-            values = self.getValuesForKey(name)
+    def __getattr__(self, key):
+        if key in self.getKeys():
+            values = self.getValuesForKey(key)
             assert len(values) == 1
             return values[0] 
         else:
-            raise AttributeError('Unknown key: {}'.format(name))
+            raise AttributeError('Unknown key: {}'.format(key))
 #     
-    def __setattr__(self, name, value):
-        if name in self.getKeys():
-            items = self.getItemsForKey(name)
+    def __setattr__(self, key, value):
+        if key in self.getKeys():
+            items = self.getItemsForKey(key)
             assert len(items) == 1
-            assert items[0][0] == name
+            assert items[0][0] == key
             oldtype = type(items[0][1])
             value.__dict__['name'] = items[0][0]
             items[0][1] = value
             if oldtype != type(value):
-                print('>>> Warning: value of type {} replaced with value of type {}. Result is {}.'.format(oldtype.__name__, type(value).__name__, 'valid' if self.isValid() else '***invalid***')) 
+                print('>>> INFO: value of type {} replaced with value of type {}. Result yields {} expression.'.format(oldtype.__name__, type(value).__name__, 'valid' if self.yieldsValidExpression() else '***invalid***')) 
         else:
-            raise AttributeError('Unknown key: {}'.format(name))
+            raise AttributeError('Unknown key: {}'.format(key))
 
    
     def assignPattern(self):
@@ -82,20 +82,22 @@ class ParseInfo():
     def dump(self, indent='', step='  '):
         
         def dumpString(s, indent, step):
-            print(indent + '- ' + s + ' <str>' )
+            return indent + '- ' + s + ' <str>\n' 
         
         def dumpItems(items, indent, step):
             for _, v in items:
                 if isinstance(v, str):
-                    dumpString(v, indent+step, step)
+                    return dumpString(v, indent + step, step)
                 elif isinstance(v, list):
-                    dumpItems(v, indent+step, step)
+                    return dumpItems(v, indent + step, step)
                 else:
                     assert isinstance(v, ParseInfo)
-                    v.dump(indent+step, step)       
-       
-        print(indent + ('> '+ self.name + ':\n' + indent if self.name else '') + '[' + self.__class__.__name__ + '] ' + self.render())
-        dumpItems(self.items, indent, step)
+                    return v.dump(indent + step, step)       
+        
+        result = ''
+        result += indent + ('> '+ self.name + ':\n' + indent if self.name else '') + '[' + self.__class__.__name__ + '] ' + self.render() + '\n'
+        result += dumpItems(self.items, indent, step)
+        return result.rstrip()
 
     def render(self):
         sep = ' '
@@ -123,7 +125,10 @@ class ParseInfo():
                 result.append(t[1].render())
         return sep.join(result)
     
-    def isValid(self):
+    def isConsistent(self):
+        return all([t[0] == t[1].name if isinstance(t[1], ParseInfo) else t[0] == None if isinstance(t[1], str) else False for t in self.getItems()])
+    
+    def yieldsValidExpression(self):
         try:
             self.pattern.parseString(self.render(), parseAll=True)
             return True

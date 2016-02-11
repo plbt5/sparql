@@ -4,6 +4,41 @@ from sparqlparser.grammar import *
 
 class Test(unittest.TestCase):
 
+    @classmethod
+    def makeTestFunc(self, rule, testCases, info=True, debug=0):
+        def testFunc():
+            if info:
+                print('\ntesting', rule, 'with', len(testCases[rule]['pass']), 'pass case(s) and', len(testCases[rule]['fail']), 'fail case(s)')
+            if debug >= 2:
+                print('\npass cases:', testCases[rule]['pass'])
+                print('\nfail cases:', testCases[rule]['fail'])
+                print()
+            for p in testCases[rule]['pass']:
+                if debug >= 1:
+                    print('\npass:', p, end=''), 
+                if debug >= 3:
+                    print(' ( = ' + ' '.join([str(ord(c)) for c in p]), end=' )')
+                e = eval(rule + '_p').parseString(p, parseAll=True)
+                if debug >= 1:
+                    print(' --> ' + str(e), end='')
+                    if debug >= 3:
+                        print(' ( = ' + ' '.join([str(ord(c)) for c in str(e)[2:-2]]), end=' )')
+                assert e[0] == e[0].pattern.parseString(e[0].render())[0]
+                assert e[0].isConsistent()
+            for f in testCases[rule]['fail']:
+                if debug >= 1:
+                    print('\nfail:', f, end='')
+                try:
+                    e = eval(rule + '_p').parseString(f, parseAll=True)
+                    if debug >= 1:
+                        print(' --> ', e)
+                    if debug >= 3:
+                        print(' '.join([str(ord(c)) for c in f]), end=' = ')
+                    assert False, 'Should raise ParseException'
+                except ParseException:
+                    pass
+        return testFunc
+    
     def setUp(self):
         self.testCases = {}
         
@@ -610,41 +645,7 @@ class Test(unittest.TestCase):
 # All Tests
 #
 #
-    @classmethod
-    def makeTestFunc(self, rule, testCases, info=True, debug=0):
-        def testFunc():
-            if info:
-                print('\ntesting', rule, 'with', len(testCases[rule]['pass']), 'pass case(s) and', len(testCases[rule]['fail']), 'fail case(s)')
-            if debug >= 2:
-                print('\npass cases:', testCases[rule]['pass'])
-                print('\nfail cases:', testCases[rule]['fail'])
-                print()
-            for p in testCases[rule]['pass']:
-                if debug >= 1:
-                    print('\npass:', p, end=''), 
-                if debug >= 3:
-                    print(' ( = ' + ' '.join([str(ord(c)) for c in p]), end=' )')
-                e = eval(rule + '_p').parseString(p, parseAll=True)
-                if debug >= 1:
-                    print(' --> ' + str(e), end='')
-                    if debug >= 3:
-                        print(' ( = ' + ' '.join([str(ord(c)) for c in str(e)[2:-2]]), end=' )')
-                assert e[0] == e[0].pattern.parseString(e[0].render())[0]
-            for f in testCases[rule]['fail']:
-                if debug >= 1:
-                    print('\nfail:', f, end='')
-                try:
-                    e = eval(rule + '_p').parseString(f, parseAll=True)
-                    if debug >= 1:
-                        print(' --> ', e)
-                    if debug >= 3:
-                        print(' '.join([str(ord(c)) for c in f]), end=' = ')
-                    assert False, 'Should raise ParseException'
-                except ParseException:
-                    pass
-        return testFunc
-                    
-                    
+                                       
     def testPN_LOCAL_ESC(self):
         Test.makeTestFunc('PN_LOCAL_ESC', self.testCases)()   
       
