@@ -1025,7 +1025,7 @@ class ALL_VALUES_st(SPARQLKeyword):
 ALL_VALUES_st_p.setParseAction(parseInfoFunc('ALL_VALUES_st'))
 
 # Brackets and separators
-LPAR_p, RPAR_p, SEMICOL_p, COMMA_p = map(Literal, '();,')
+LPAR_p, RPAR_p, SEMICOL_p, COMMA_p, EXCL_p, PLUS_p, MINUS_p, TIMES_p, DIV_p = map(Literal, '();,!+-*/')
 
 # [138]   BlankNode         ::=   BLANK_NODE_LABEL | ANON 
 BlankNode_p = BLANK_NODE_LABEL_p | ANON_p
@@ -1324,18 +1324,35 @@ class BracketedExpression(SPARQLNonTerminal):
 if do_parseactions: BracketedExpression_p.setParseAction(parseInfoFunc('BracketedExpression'))
 
 # [119]   PrimaryExpression         ::=   BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var 
+PrimaryExpression_p = BracketedExpression_p | BuiltInCall_p | iriOrFunction_p | RDFLiteral_p | NumericLiteral_p | BooleanLiteral_p | Var_p
+class PrimaryExpression(SPARQLNonTerminal):  
+    def assignPattern(self):
+        return eval(self.__class__.__name__ + '_p')
+if do_parseactions: PrimaryExpression_p.setParseAction(parseInfoFunc('PrimaryExpression'))
 
 # [118]   UnaryExpression   ::=     '!' PrimaryExpression 
-
 #             | '+' PrimaryExpression 
-
 #             | '-' PrimaryExpression 
-
 #             | PrimaryExpression 
+UnaryExpression_p = EXCL_p + PrimaryExpression_p | PLUS_p + PrimaryExpression_p | MINUS_p + PrimaryExpression_p | PrimaryExpression_p
+class UnaryExpression(SPARQLNonTerminal):  
+    def assignPattern(self):
+        return eval(self.__class__.__name__ + '_p')
+if do_parseactions: UnaryExpression_p.setParseAction(parseInfoFunc('UnaryExpression'))
 
 # [117]   MultiplicativeExpression          ::=   UnaryExpression ( '*' UnaryExpression | '/' UnaryExpression )* 
+MultiplicativeExpression_p = UnaryExpression_p + ZeroOrMore( TIMES_p + UnaryExpression_p | DIV_p + UnaryExpression_p )
+class MultiplicativeExpression(SPARQLNonTerminal):  
+    def assignPattern(self):
+        return eval(self.__class__.__name__ + '_p')
+if do_parseactions: MultiplicativeExpression_p.setParseAction(parseInfoFunc('MultiplicativeExpression'))
 
 # [116]   AdditiveExpression        ::=   MultiplicativeExpression ( '+' MultiplicativeExpression | '-' MultiplicativeExpression | ( NumericLiteralPositive | NumericLiteralNegative ) ( ( '*' UnaryExpression ) | ( '/' UnaryExpression ) )* )* 
+AdditiveExpression_p = MultiplicativeExpression_p + ZeroOrMore (PLUS_p + MultiplicativeExpression_p | MINUS_p  + MultiplicativeExpression_p | (NumericLiteralPositive_p | NumericLiteralNegative_p) + ZeroOrMore (TIMES_p + UnaryExpression_p | DIV_p + UnaryExpression_p))
+class AdditiveExpression(SPARQLNonTerminal):  
+    def assignPattern(self):
+        return eval(self.__class__.__name__ + '_p')
+if do_parseactions: AdditiveExpression_p.setParseAction(parseInfoFunc('AdditiveExpression'))
 
 # [115]   NumericExpression         ::=   AdditiveExpression 
 
@@ -1568,6 +1585,3 @@ if do_parseactions: BracketedExpression_p.setParseAction(parseInfoFunc('Brackete
 #             ValuesClause 
 
 # [1]     QueryUnit         ::=   Query 
-
-
- 

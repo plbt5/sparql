@@ -636,21 +636,44 @@ class Test(unittest.TestCase):
 
 # [120]   BrackettedExpression      ::=   '(' Expression ')' 
         self.testCases['BracketedExpression'] = {'pass': ['(' + p + ')' for p in self.testCases['Expression']['pass']],
-                                                  'fail': ['(' + p + ')' for p in self.testCases['Expression']['fail']]}    
-        
+                                                  'fail': ['(' + p + ')' for p in self.testCases['Expression']['fail']]}           
         
 # [119]   PrimaryExpression         ::=   BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var 
+        self.testCases['PrimaryExpression'] = {'pass': [],
+                                               'fail': []}     
+        self.testCases['PrimaryExpression']['pass'] += self.testCases['BracketedExpression']['pass']      
+        self.testCases['PrimaryExpression']['pass'] += self.testCases['BuiltInCall']['pass']      
+        self.testCases['PrimaryExpression']['pass'] += self.testCases['iriOrFunction']['pass']      
+        self.testCases['PrimaryExpression']['pass'] += self.testCases['RDFLiteral']['pass'][::10]     
+        self.testCases['PrimaryExpression']['pass'] += self.testCases['NumericLiteral']['pass']      
+        self.testCases['PrimaryExpression']['pass'] += self.testCases['BooleanLiteral']['pass']      
+        self.testCases['PrimaryExpression']['pass'] += self.testCases['Var']['pass']      
+        self.testCases['PrimaryExpression']['fail'] += ['algebra']    
 
 # [118]   UnaryExpression   ::=     '!' PrimaryExpression 
-
 #             | '+' PrimaryExpression 
-
 #             | '-' PrimaryExpression 
-
 #             | PrimaryExpression 
+        self.testCases['UnaryExpression'] = {'pass': [],
+                                               'fail': []}     
+        self.testCases['UnaryExpression']['pass'] += ['! ' + t for t in self.testCases['PrimaryExpression']['pass'][::4]]      
+        self.testCases['UnaryExpression']['pass'] += ['+' + t for t in self.testCases['PrimaryExpression']['pass'][1::4]]      
+        self.testCases['UnaryExpression']['pass'] += ['- ' + t for t in self.testCases['PrimaryExpression']['pass'][2::4]]      
+        self.testCases['UnaryExpression']['pass'] += self.testCases['PrimaryExpression']['pass'][3::4] 
+        self.testCases['UnaryExpression']['fail'] += ['algebra', '!meetkunde', '+ goniometrie', '-stereometrie']     
 
 # [117]   MultiplicativeExpression          ::=   UnaryExpression ( '*' UnaryExpression | '/' UnaryExpression )* 
-
+        self.testCases['MultiplicativeExpression'] = {'pass': [],
+                                                      'fail': []}   
+        self.testCases['MultiplicativeExpression']['pass'] += ['<test>()']  
+        for p1 in self.testCases['UnaryExpression']['pass'][::1000]:
+            for p2 in self.testCases['UnaryExpression']['pass'][1::1000]:
+                for p3 in self.testCases['UnaryExpression']['pass'][2::1000]:
+                    self.testCases['MultiplicativeExpression']['pass'] += [p1]
+                    self.testCases['MultiplicativeExpression']['pass'] += [p1 + '*' + p2]
+                    self.testCases['MultiplicativeExpression']['pass'] += [p1 + '/ ' + p2 + '*' + p3]
+        self.testCases['MultiplicativeExpression']['fail'] += ['* ' + '<test>']
+        
 # [116]   AdditiveExpression        ::=   MultiplicativeExpression ( '+' MultiplicativeExpression | '-' MultiplicativeExpression | ( NumericLiteralPositive | NumericLiteralNegative ) ( ( '*' UnaryExpression ) | ( '/' UnaryExpression ) )* )* 
 
 # [115]   NumericExpression         ::=   AdditiveExpression 
@@ -1072,16 +1095,16 @@ class Test(unittest.TestCase):
     def testBracketedExpression(self):
         Test.makeTestFunc('BracketedExpression', self.testCases)()
 
-# 
-# # [119]   PrimaryExpression         ::=   BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var 
-# 
-# # [118]   UnaryExpression   ::=     '!' PrimaryExpression 
-# 
-# #             | '+' PrimaryExpression 
-# 
-# #             | '-' PrimaryExpression 
-# 
-# #             | PrimaryExpression 
+    def testPrimaryExpression(self):
+        Test.makeTestFunc('PrimaryExpression', self.testCases)()
+ 
+    def testUnaryExpression(self):
+        Test.makeTestFunc('UnaryExpression', self.testCases)()
+ 
+    def testMultiplicativeExpression(self):
+        Test.makeTestFunc('MultiplicativeExpression', self.testCases)()
+ 
+
 # 
 # # [117]   MultiplicativeExpression          ::=   UnaryExpression ( '*' UnaryExpression | '/' UnaryExpression )* 
 # 

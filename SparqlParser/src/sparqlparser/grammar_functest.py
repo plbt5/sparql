@@ -319,17 +319,21 @@ if __name__ == '__main__':
     printResults(l, 'BracketedExpression')
     
     # [119]   PrimaryExpression         ::=   BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var 
+    l = ['(*Expression*)', 'AVG (*Expression*)', '<work:22?>()', '"work"^^<test>', '113.44', 'true', '$algebra']
+    # TODO: replace expression
+    printResults(l, 'PrimaryExpression')
     
     # [118]   UnaryExpression   ::=     '!' PrimaryExpression 
-    
     #             | '+' PrimaryExpression 
-    
     #             | '-' PrimaryExpression 
-    
     #             | PrimaryExpression 
-    
+    l = ['(*Expression*)', '!AVG (*Expression*)', '+ <work:22?>()', '-"work"^^<test>']
+    printResults(l, 'UnaryExpression')
+
     # [117]   MultiplicativeExpression          ::=   UnaryExpression ( '*' UnaryExpression | '/' UnaryExpression )* 
-    
+    l = ['<test()> * !$algebra / true']
+    printResults(l, 'MultiplicativeExpression')
+
     # [116]   AdditiveExpression        ::=   MultiplicativeExpression ( '+' MultiplicativeExpression | '-' MultiplicativeExpression | ( NumericLiteralPositive | NumericLiteralNegative ) ( ( '*' UnaryExpression ) | ( '/' UnaryExpression ) )* )* 
     
     # [115]   NumericExpression         ::=   AdditiveExpression 

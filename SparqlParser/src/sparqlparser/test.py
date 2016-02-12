@@ -6,11 +6,20 @@ from sparqlparser.base import *
 # 
 # r = RDFLiteral(s)
 
-s = 'a:z'
-r = PrefixedName(s)
-# r.test(render=True, dump=True)
-rc = r.copy()
-# rc.test(render=True, dump=True)
+# Aword_p = Word(alphas)
+# class Aword(SPARQLTerminal):
+#     def assignPattern(self):
+#         return eval(self.__class__.__name__ + '_p')
+# Aword_p.setParseAction(parseInfoFunc(Aword))
 
-assert rc == r
+
+s = 'algebra'
+
+r = Aword(s)
+
+r.dump()
+
+
+
+
     

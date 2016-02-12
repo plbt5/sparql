@@ -8,11 +8,18 @@ s = "'work' ^^<work>"
 r = RDFLiteral(s)
 
 # test copy 
+
+rc = r.copy()
+rc2 = rc
+assert rc is rc2
+assert rc2 == r
+assert not rc is r
+rc.lexical_form.lexical_form = STRING_LITERAL1("'work2'")
+assert rc == rc2
+assert not rc2 == r
+
 p = r.copy()
 q = p.copy()
-
-assert p == r
-assert q == r
 
 # test render functie
 
