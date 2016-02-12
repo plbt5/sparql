@@ -6,23 +6,27 @@ from sparqlparser.base import *
 s = "'work' ^^<work>"
 
 r = RDFLiteral(s)
-# rc = r.copy()
-p = RDFLiteral_p.parseString(s)[0]
-q = RDFLiteral(s)
-# work render functie
+
+# test copy 
+p = r.copy()
+q = p.copy()
+
+assert p == r
+assert q == r
+
+# test render functie
 
 assert r.render() == "'work' ^^ <work>" 
  
-# work init van ParseInfo (twee manieren) geeft hetzelfde resultaat
+# test init van ParseInfo (twee manieren) geeft hetzelfde resultaat
  
-assert r == p
-assert r.render() == p.render()
+assert r == RDFLiteral_p.parseString(s)[0]
  
-# work dot access (read)
+# test dot access (read)
  
 assert r.lexical_form.render() == "'work'"
 
-# work dot access (write)
+# test dot access (write)
  
 p.lexical_form.lexical_form = STRING_LITERAL1("'work'")
 assert p.lexical_form.render() == "'work'"

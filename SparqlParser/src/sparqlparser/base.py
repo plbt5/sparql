@@ -59,13 +59,24 @@ class ParseInfo():
                 result.append([k, v])
             else:
                 assert isinstance(v, ParseInfo)
-                result.append([k, v.__copyItems()])
+                result.append([k, v.copy()])
         return result
         
     def copy(self):
         result = globals()[self.__class__.__name__](self.name, self.__copyItems())
         assert result == self
         return result
+    
+    def test(self, render=False, dump=False):
+        print('{} is{}internally key-consistent'.format(self, ' ' if self.__isKeyConsistent() else ' not '))
+        print('{} renders a{}expression'.format(self, ' valid ' if self.yieldsValidExpression() else 'n invalid '))
+        print('{} is a{}valid parse object'.format(self, ' ' if self.isValid() else ' not '))
+        if render:
+            print('--rendering:')
+            print(self.render())
+        if dump:
+            print('--dump:')
+            self.dump()
     
     def assignPattern(self):
         raise NotImplementedError
