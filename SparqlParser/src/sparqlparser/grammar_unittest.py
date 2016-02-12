@@ -1,5 +1,5 @@
 import unittest
-from sparqlparser.grammar import *
+from sparqlparser.base import *
 
 
 class Test(unittest.TestCase):
@@ -635,7 +635,7 @@ class Test(unittest.TestCase):
         self.testCases['BuiltInCall']['fail'] += ['COUNT DISTINCT (*)', 'sameTerm (*Expression*, *Expression*, *Expression*)']
 
 # [120]   BrackettedExpression      ::=   '(' Expression ')' 
-        self.testCases['BrackettedExpression'] = {'pass': ['(' + p + ')' for p in self.testCases['Expression']['pass']],
+        self.testCases['BracketedExpression'] = {'pass': ['(' + p + ')' for p in self.testCases['Expression']['pass']],
                                                   'fail': ['(' + p + ')' for p in self.testCases['Expression']['fail']]}    
         
         
@@ -1069,8 +1069,8 @@ class Test(unittest.TestCase):
     def testBuiltInCall(self):
         Test.makeTestFunc('BuiltInCall', self.testCases)()
  
-    def testBrackettedExpression(self):
-        Test.makeTestFunc('BrackettedExpression', self.testCases)()
+    def testBracketedExpression(self):
+        Test.makeTestFunc('BracketedExpression', self.testCases)()
 
 # 
 # # [119]   PrimaryExpression         ::=   BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var 

@@ -1135,11 +1135,11 @@ class BuiltInCall(SPARQLNonTerminal):
 if do_parseactions: BuiltInCall_p.setParseAction(parseInfoFunc('BuiltInCall'))
 
 # [120]   BrackettedExpression      ::=   '(' Expression ')' 
-BrackettedExpression_p = LPAR_p + Expression_p('expression') + RPAR_p
-class BrackettedExpression(SPARQLNonTerminal):  
+BracketedExpression_p = LPAR_p + Expression_p('expression') + RPAR_p
+class BracketedExpression(SPARQLNonTerminal):  
     def assignPattern(self):
         return eval(self.__class__.__name__ + '_p')
-if do_parseactions: BrackettedExpression_p.setParseAction(parseInfoFunc('BrackettedExpression'))
+if do_parseactions: BracketedExpression_p.setParseAction(parseInfoFunc('BracketedExpression'))
 
 # [119]   PrimaryExpression         ::=   BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var 
 

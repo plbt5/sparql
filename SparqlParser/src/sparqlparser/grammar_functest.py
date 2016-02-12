@@ -1,4 +1,4 @@
-from sparqlparser.grammar import *
+from sparqlparser.base import *
 
 def printResults(l, rule):
     print('=' * 80)
@@ -316,7 +316,7 @@ if __name__ == '__main__':
     # [120]   BrackettedExpression      ::=   '(' Expression ')' 
     l = ['(*Expression*)']
     # TODO: replace expression
-    printResults(l, 'BrackettedExpression')
+    printResults(l, 'BracketedExpression')
     
     # [119]   PrimaryExpression         ::=   BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var 
     

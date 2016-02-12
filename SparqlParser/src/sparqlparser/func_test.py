@@ -1,12 +1,12 @@
 from pyparsing import *
 from sparqlparser.base import *
-from sparqlparser.grammar import *
 
 # setup
 
 s = "'work' ^^<work>"
 
 r = RDFLiteral(s)
+# rc = r.copy()
 p = RDFLiteral_p.parseString(s)[0]
 q = RDFLiteral(s)
 # work render functie
@@ -31,7 +31,6 @@ assert p.yieldsValidExpression()
 assert p.isValid()
 assert p.isValid()
 assert r == p
-p.dump()
  
 p.lexical_form.lexical_form = STRING_LITERAL1("'work2'")
 assert p.lexical_form.render() == "'work2'"
