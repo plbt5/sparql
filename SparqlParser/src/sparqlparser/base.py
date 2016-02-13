@@ -1305,6 +1305,7 @@ class AdditiveExpression(SPARQLNonTerminal):
 if do_parseactions: AdditiveExpression_p.setParseAction(parseInfoFunc('AdditiveExpression'))
 
 # [115]   NumericExpression         ::=   AdditiveExpression 
+NumericExpression_p = AdditiveExpression_p
 
 # [114]   RelationalExpression      ::=   NumericExpression ( '=' NumericExpression | '!=' NumericExpression | '<' NumericExpression | '>' NumericExpression | '<=' NumericExpression | '>=' NumericExpression | 'IN' ExpressionList | 'NOT' 'IN' ExpressionList )? 
 

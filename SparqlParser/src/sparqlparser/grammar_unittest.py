@@ -650,9 +650,33 @@ class Test(unittest.TestCase):
         
 # [116]   AdditiveExpression        ::=   MultiplicativeExpression ( '+' MultiplicativeExpression | '-' MultiplicativeExpression | ( NumericLiteralPositive | NumericLiteralNegative ) ( ( '*' UnaryExpression ) | ( '/' UnaryExpression ) )* )* 
         self.testCases['AdditiveExpression'] = {'pass': [], 'fail': []}
-#         TODO
+        for m in self.testCases['MultiplicativeExpression']['pass'][::10]:
+            for n in self.testCases['NumericLiteralPositive']['pass'][::4] + self.testCases['NumericLiteralNegative']['pass'][::4]:
+                for u in self.testCases['UnaryExpression']['pass'][::500]:
+                    self.testCases['AdditiveExpression']['pass'] += [m]
+                    self.testCases['AdditiveExpression']['pass'] += [m + '+ ' + m]
+                    self.testCases['AdditiveExpression']['pass'] += [m + '-' + m + '-' + m]
+                    self.testCases['AdditiveExpression']['pass'] += [m + n]
+                    self.testCases['AdditiveExpression']['pass'] += [m + n + '*' + u]
+                    self.testCases['AdditiveExpression']['pass'] += [m + n + '*' + u + '/' + u]
+        self.testCases['AdditiveExpression']['fail'] = ['algebra']
+
+            
+
         
 # [115]   NumericExpression         ::=   AdditiveExpression 
+        self.testCases['NumericExpression'] = {'pass': [], 'fail': []}
+        for m in self.testCases['MultiplicativeExpression']['pass'][::10]:
+            for n in self.testCases['NumericLiteralPositive']['pass'][::4] + self.testCases['NumericLiteralNegative']['pass'][::4]:
+                for u in self.testCases['UnaryExpression']['pass'][::500]:
+                    self.testCases['NumericExpression']['pass'] += [m]
+                    self.testCases['NumericExpression']['pass'] += [m + '+ ' + m]
+                    self.testCases['NumericExpression']['pass'] += [m + '-' + m + '-' + m]
+                    self.testCases['NumericExpression']['pass'] += [m + n]
+                    self.testCases['NumericExpression']['pass'] += [m + n + '*' + u]
+                    self.testCases['NumericExpression']['pass'] += [m + n + '*' + u + '/' + u]
+        self.testCases['NumericExpression']['fail'] = ['algebra']
+
 
 # [114]   RelationalExpression      ::=   NumericExpression ( '=' NumericExpression | '!=' NumericExpression | '<' NumericExpression | '>' NumericExpression | '<=' NumericExpression | '>=' NumericExpression | 'IN' ExpressionList | 'NOT' 'IN' ExpressionList )? 
 
@@ -1042,7 +1066,7 @@ class Test(unittest.TestCase):
         Test.makeTestFunc('iriOrFunction', self.testCases)()
  
     def testAggregate(self):
-        Test.makeTestFunc('GroupGraphPattern', self.testCases)()
+        Test.makeTestFunc('Aggregate', self.testCases)()
  
     def testGroupGraphPattern(self):
         Test.makeTestFunc('GroupGraphPattern', self.testCases)()
@@ -1080,12 +1104,14 @@ class Test(unittest.TestCase):
     def testMultiplicativeExpression(self):
         Test.makeTestFunc('MultiplicativeExpression', self.testCases)()
  
+    def testAdditiveExpression(self):
+        Test.makeTestFunc('AdditiveExpression', self.testCases)()
+ 
+    def testNumericExpression(self):
+        Test.makeTestFunc('NumericExpression', self.testCases)()
+ 
 
-# 
-# # [117]   MultiplicativeExpression          ::=   UnaryExpression ( '*' UnaryExpression | '/' UnaryExpression )* 
-# 
-# # [116]   AdditiveExpression        ::=   MultiplicativeExpression ( '+' MultiplicativeExpression | '-' MultiplicativeExpression | ( NumericLiteralPositive | NumericLiteralNegative ) ( ( '*' UnaryExpression ) | ( '/' UnaryExpression ) )* )* 
-# 
+
 # # [115]   NumericExpression         ::=   AdditiveExpression 
 # 
 # # [114]   RelationalExpression      ::=   NumericExpression ( '=' NumericExpression | '!=' NumericExpression | '<' NumericExpression | '>' NumericExpression | '<=' NumericExpression | '>=' NumericExpression | 'IN' ExpressionList | 'NOT' 'IN' ExpressionList )? 

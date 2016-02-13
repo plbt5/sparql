@@ -335,6 +335,9 @@ if __name__ == '__main__':
     printResults(l, 'MultiplicativeExpression')
 
     # [116]   AdditiveExpression        ::=   MultiplicativeExpression ( '+' MultiplicativeExpression | '-' MultiplicativeExpression | ( NumericLiteralPositive | NumericLiteralNegative ) ( ( '*' UnaryExpression ) | ( '/' UnaryExpression ) )* )* 
+    l = ['33*<test>() + 44*55 - 77']
+    printResults(l, 'AdditiveExpression')
+    
     
     # [115]   NumericExpression         ::=   AdditiveExpression 
     
