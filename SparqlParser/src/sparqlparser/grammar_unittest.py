@@ -100,8 +100,7 @@ class Test(unittest.TestCase):
         
 # [168]   PN_PREFIX         ::=   PN_CHARS_BASE ((PN_CHARS|'.')* PN_CHARS)?
     
-        self.testCases['PN_PREFIX'] = {'pass': [],
-                                       'fail': []}
+        self.testCases['PN_PREFIX'] = {'pass': [], 'fail': []}
         self.PN_PREFIXfirstPart = self.testCases['PN_CHARS_BASE']['pass'][::5]
         self.PN_PREFIXoptionalPart1 = self.testCases['PN_CHARS']['pass'][1::5] + ['.']
         self.PN_PREFIXoptionalPart2 = self.testCases['PN_CHARS']['pass'][2::5]
@@ -117,8 +116,7 @@ class Test(unittest.TestCase):
     
 # [166]   VARNAME   ::=   ( PN_CHARS_U | [0-9] ) ( PN_CHARS_U | [0-9] | #x00B7 | [#x0300-#x036F] | [#x203F-#x2040] )* 
 
-        self.testCases['VARNAME'] = {'pass': [],
-                               'fail': []}
+        self.testCases['VARNAME'] = {'pass': [], 'fail': []}
         self.VARNAMEfirstPart = self.testCases['PN_CHARS_U']['pass'][::6] + ['4']
         self.VARNAMEsecondPart = self.testCases['PN_CHARS_U']['pass'][1::6] + ['9'] + ['\u0301']
         for p1 in self.VARNAMEfirstPart:
@@ -136,8 +134,7 @@ class Test(unittest.TestCase):
 
 # [163]   ANON      ::=   '[' WS* ']' 
 
-        self.testCases['ANON'] = {'pass': [],
-                                  'fail': []}   
+        self.testCases['ANON'] = {'pass': [], 'fail': []}   
         for p1a in self.testCases['WS']['pass']:
             for p1b in self.testCases['WS']['pass']:
                 self.testCases['ANON']['pass'] += ['[' + ']']
@@ -147,8 +144,7 @@ class Test(unittest.TestCase):
 
 # [161]   NIL       ::=   '(' WS* ')' 
 
-        self.testCases['NIL'] = {'pass': [],
-                                 'fail': []}   
+        self.testCases['NIL'] = {'pass': [], 'fail': []}  
         for p1a in self.testCases['WS']['pass']:
             for p1b in self.testCases['WS']['pass']:
                 self.testCases['NIL']['pass'] += ['()']
@@ -163,8 +159,7 @@ class Test(unittest.TestCase):
 
 # [159]   STRING_LITERAL_LONG2      ::=   '"""' ( ( '"' | '""' )? ( [^"\] | ECHAR ) )* '"""' 
         
-        self.testCases['STRING_LITERAL_LONG2'] = {'pass': [],
-                                                  'fail': []}   
+        self.testCases['STRING_LITERAL_LONG2'] = {'pass': [], 'fail': []}  
         bracket = '"""' 
         quoteFills = ['','"', '""']
         text = ['\\t', '\\\\', 'a', '\u00C0\u00FA x\n', 'ab c', 'a \\r'] + self.testCases['ECHAR']['pass'][::3]
@@ -178,8 +173,7 @@ class Test(unittest.TestCase):
         
 # [158]   STRING_LITERAL_LONG1      ::=   "'''" ( ( "'" | "''" )? ( [^'\] | ECHAR ) )* "'''" 
         
-        self.testCases['STRING_LITERAL_LONG1'] = {'pass': [],
-                                                  'fail': []}   
+        self.testCases['STRING_LITERAL_LONG1'] = {'pass': [], 'fail': []}
         bracket = "'''" 
         quoteFills = ["","'", "''"]
         text = ['\\t', '\\\\', 'a', '\u00C0\u00FA x\n', 'ab c', 'a \\r'] + self.testCases['ECHAR']['pass'][::3]
@@ -258,8 +252,7 @@ class Test(unittest.TestCase):
 
 # [144]   VAR2      ::=   '$' VARNAME 
      
-        self.testCases['VAR2'] = {'pass':   [],
-                                  'fail':[]} 
+        self.testCases['VAR2'] = {'pass': [], 'fail': []}
         for v in self.testCases['VARNAME']['pass']:
             self.testCases['VAR2']['pass'] += ['$'+ v]
         for v in self.testCases['VARNAME']['fail']:
@@ -267,8 +260,7 @@ class Test(unittest.TestCase):
          
 # [143]   VAR1      ::=   '?' VARNAME
             
-        self.testCases['VAR1'] = {'pass':   [],
-                                  'fail':[]} 
+        self.testCases['VAR1'] = {'pass': [], 'fail': []}
         for v in self.testCases['VARNAME']['pass']:
             self.testCases['VAR1']['pass'] += ['?'+ v]
         for v in self.testCases['VARNAME']['fail']:
@@ -276,8 +268,7 @@ class Test(unittest.TestCase):
             
 # [142]   BLANK_NODE_LABEL          ::=   '_:' ( PN_CHARS_U | [0-9] ) ((PN_CHARS|'.')* PN_CHARS)?
 
-        self.testCases['BLANK_NODE_LABEL'] = {'pass': [],
-                                              'fail': []}
+        self.testCases['BLANK_NODE_LABEL'] = {'pass': [], 'fail': []}
         self.BLANK_NODE_LABELfirstPart = self.testCases['PN_CHARS_U']['pass'][::5] + ['0', '7']
         self.BLANK_NODE_LABELoptionalPart1 = self.testCases['PN_CHARS']['pass'][1::7] + ['.']
         self.BLANK_NODE_LABELoptionalPart2 = self.testCases['PN_CHARS']['pass'][2::7] 
@@ -298,8 +289,7 @@ class Test(unittest.TestCase):
 
 # [141]   PNAME_LN          ::=   PNAME_NS PN_LOCAL 
 
-        self.testCases['PNAME_LN'] = {'pass': [],
-                                      'fail': []}
+        self.testCases['PNAME_LN'] = {'pass': [], 'fail': []}
         for p1 in self.testCases['PNAME_NS']['pass'][::200]:
             for p2 in self.testCases['PN_LOCAL']['pass'][::2000]:
                 self.testCases['PNAME_LN']['pass'] += [p1 + p2]
@@ -385,8 +375,7 @@ class Test(unittest.TestCase):
                                             'fail': ['544,55.6', '', '33.8F34']} 
         
 # [129]   RDFLiteral        ::=   String ( LANGTAG | ( '^^' iri ) )? 
-        self.testCases['RDFLiteral'] = {'pass': [],
-                                        'fail': []}
+        self.testCases['RDFLiteral'] = {'pass': [], 'fail': []}
         for p1 in self.testCases['String']['pass'][::100]:
             for p2 in self.testCases['LANGTAG']['pass'][::100]:
                 for p3 in self.testCases['iri']['pass'][::100]:
@@ -397,8 +386,7 @@ class Test(unittest.TestCase):
         self.testCases['RDFLiteral']['fail'] += ['@sf^en', '@sf^^', 'sf^^<nl-be>', '"work string"^^testiri']
                
 # Expression - TODO
-        self.testCases['Expression'] = {'pass': [],
-                                        'fail': []}
+        self.testCases['Expression'] = {'pass': [], 'fail': []}
         self.testCases['Expression']['pass'] += ['*Expression*'] 
         self.testCases['Expression']['fail'] += ['*NoExpression*'] 
 
@@ -409,8 +397,7 @@ class Test(unittest.TestCase):
         self.testCases['ExpressionList']['fail'] += ['*NoExpression*'] 
                
 # [71]    ArgList   ::=   NIL | '(' 'DISTINCT'? Expression ( ',' Expression )* ')' 
-        self.testCases['ArgList'] = {'pass': [],
-                                     'fail': []}
+        self.testCases['ArgList'] = {'pass': [], 'fail': []}
         for p1a in self.testCases['Expression']['pass']:
             for p1b in self.testCases['Expression']['pass']:
                 self.testCases['ArgList']['pass'] += ['( )', '(Distinct ' + p1a + ')', '(DISTINCT ' + p1a +')', '(DISTINCT ' + p1a + ', ' + p1b + ')']
@@ -419,8 +406,7 @@ class Test(unittest.TestCase):
             self.testCases['ArgList']['fail'] += [p1]
         
 # [128]   iriOrFunction     ::=   iri ArgList? 
-        self.testCases['iriOrFunction'] = {'pass': [],
-                                           'fail': []}
+        self.testCases['iriOrFunction'] = {'pass': [], 'fail': []}
         for p1 in self.testCases['iri']['pass'][::100]:
             for p2 in self.testCases['ArgList']['pass'][::100]:
                 self.testCases['iriOrFunction']['pass'] += [p1]
@@ -429,8 +415,7 @@ class Test(unittest.TestCase):
         self.testCases['iriOrFunction']['fail'] += self.testCases['ArgList']['pass']
         
 # [127]   Aggregate         ::=     'COUNT' '(' 'DISTINCT'? ( '*' | Expression ) ')'
-        self.testCases['Aggregate'] = {'pass': [],
-                                       'fail': []}
+        self.testCases['Aggregate'] = {'pass': [], 'fail': []}
 #             | 'SUM' '(' 'DISTINCT'? Expression ')' 
 #             | 'MIN' '(' 'DISTINCT'? Expression ')' 
 #             | 'MAX' '(' 'DISTINCT'? Expression ')' 
@@ -449,28 +434,24 @@ class Test(unittest.TestCase):
         self.testCases['Aggregate']['fail'] += ['GROUP_CONCAT()', 'GROUP_CONCAT', 'GROUP_CONCAT (DISTINCT )']          
 
 # GroupGraphPattern - TODO
-        self.testCases['GroupGraphPattern'] = {'pass': [],
-                                               'fail': []}
+        self.testCases['GroupGraphPattern'] = {'pass': [], 'fail': []}
         self.testCases['GroupGraphPattern']['pass'] += ['*GroupGraphPattern*'] 
         self.testCases['GroupGraphPattern']['fail'] += ['*NoGroupGraphPattern*'] 
 
 # [126]   NotExistsFunc     ::=   'NOT' 'EXISTS' GroupGraphPattern 
-        self.testCases['NotExistsFunc'] = {'pass': [],
-                                           'fail': []}
+        self.testCases['NotExistsFunc'] = {'pass': [], 'fail': []}
         for p in self.testCases['GroupGraphPattern']['pass']:
             self.testCases['NotExistsFunc']['pass'] += ['NOT exists ' + p]
             self.testCases['NotExistsFunc']['fail'] += ['EXISTS ' + p]
 
 # [125]   ExistsFunc        ::=   'EXISTS' GroupGraphPattern 
-        self.testCases['ExistsFunc'] = {'pass': [],
-                                           'fail': []}
+        self.testCases['ExistsFunc'] = {'pass': [], 'fail': []}
         for p in self.testCases['GroupGraphPattern']['pass']:
             self.testCases['ExistsFunc']['pass'] += ['EXISTS ' + p]
             self.testCases['ExistsFunc']['fail'] += ['NOT EXISTS ' + p]
             
 # [124]   StrReplaceExpression      ::=   'REPLACE' '(' Expression ',' Expression ',' Expression ( ',' Expression )? ')' 
-        self.testCases['StrReplaceExpression'] = {'pass': [],
-                                           'fail': []}
+        self.testCases['StrReplaceExpression'] = {'pass': [], 'fail': []}
         for p1 in self.testCases['Expression']['pass']:
             for p2 in self.testCases['Expression']['pass']:
                 self.testCases['StrReplaceExpression']['pass'] += ['REPLACE (' + p1 + ' ,' + p2 + ',' + p1 + ')', 'REPLACE( ' + p1 + ' ,' + p2 + ',' + p1 + ' , ' + p2 + ')']
@@ -482,8 +463,7 @@ class Test(unittest.TestCase):
                 self.testCases['StrReplaceExpression']['fail'] += ['REPLACE ' + p1 + ')', 'REPLACE ' + p1 + ' ,' + p2 + ')', 'REPLACE ' + p2 + ' ,' + p1 + ',' + p2 + ')']
                 
 # [123]   SubstringExpression       ::=   'SUBSTR' '(' Expression ',' Expression ( ',' Expression )? ')' 
-        self.testCases['SubstringExpression'] = {'pass': [],
-                                           'fail': []}
+        self.testCases['SubstringExpression'] = {'pass': [], 'fail': []}
         for p1 in self.testCases['Expression']['pass']:
             for p2 in self.testCases['Expression']['pass']:
                 self.testCases['SubstringExpression']['pass'] += ['SUBSTR (' + p1 + ' ,' + p2 + ')', 'SUBSTR( ' + p2 + ',' + p1 + ' , ' + p2 + ')']
@@ -495,8 +475,7 @@ class Test(unittest.TestCase):
                 self.testCases['SubstringExpression']['fail'] += ['SUBSTR ' + p1 + ')', 'SUBSTR ' + p1 + ' ,' + p2 + ')']
                 
 # [122]   RegexExpression   ::=   'REGEX' '(' Expression ',' Expression ( ',' Expression )? ')' 
-        self.testCases['RegexExpression'] = {'pass': [],
-                                           'fail': []}
+        self.testCases['RegexExpression'] = {'pass': [], 'fail': []}
         for p1 in self.testCases['Expression']['pass']:
             for p2 in self.testCases['Expression']['pass']:
                 self.testCases['RegexExpression']['pass'] += ['REGEX (' + p1 + ' ,' + p2 + ')', 'REGEX( ' + p2 + ',' + p1 + ' , ' + p2 + ')']
@@ -508,8 +487,7 @@ class Test(unittest.TestCase):
                 self.testCases['RegexExpression']['fail'] += ['REGEX ' + p1 + ')', 'REGEX ' + p1 + ' ,' + p2 + ')']
                 
 # [108]   Var       ::=   VAR1 | VAR2             
-        self.testCases['Var'] = {'pass': [],
-                                 'fail': []}    
+        self.testCases['Var'] = {'pass': [], 'fail': []}
         self.testCases['Var']['pass'] += self.testCases['VAR1']['pass']
         self.testCases['Var']['pass'] += self.testCases['VAR2']['pass']
         self.testCases['Var']['fail'] += self.testCases['VARNAME']['pass']
@@ -570,8 +548,7 @@ class Test(unittest.TestCase):
 #             | RegexExpression 
 #             | ExistsFunc 
 #             | NotExistsFunc 
-        self.testCases['BuiltInCall'] = {'pass': [],
-                                         'fail': []}    
+        self.testCases['BuiltInCall'] = {'pass': [], 'fail': []} 
         self.testCases['BuiltInCall']['pass'] += self.testCases['Aggregate']['pass']
         self.testCases['BuiltInCall']['pass'] += ['STR ( *Expression* )',
                                                 'LANG ( *Expression* )',
@@ -636,11 +613,10 @@ class Test(unittest.TestCase):
 
 # [120]   BrackettedExpression      ::=   '(' Expression ')' 
         self.testCases['BracketedExpression'] = {'pass': ['(' + p + ')' for p in self.testCases['Expression']['pass']],
-                                                  'fail': ['(' + p + ')' for p in self.testCases['Expression']['fail']]}           
+                                                 'fail': ['(' + p + ')' for p in self.testCases['Expression']['fail']]}           
         
 # [119]   PrimaryExpression         ::=   BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var 
-        self.testCases['PrimaryExpression'] = {'pass': [],
-                                               'fail': []}     
+        self.testCases['PrimaryExpression'] = {'pass': [], 'fail': []}
         self.testCases['PrimaryExpression']['pass'] += self.testCases['BracketedExpression']['pass']      
         self.testCases['PrimaryExpression']['pass'] += self.testCases['BuiltInCall']['pass']      
         self.testCases['PrimaryExpression']['pass'] += self.testCases['iriOrFunction']['pass']      
@@ -654,8 +630,7 @@ class Test(unittest.TestCase):
 #             | '+' PrimaryExpression 
 #             | '-' PrimaryExpression 
 #             | PrimaryExpression 
-        self.testCases['UnaryExpression'] = {'pass': [],
-                                               'fail': []}     
+        self.testCases['UnaryExpression'] = {'pass': [], 'fail': []}
         self.testCases['UnaryExpression']['pass'] += ['! ' + t for t in self.testCases['PrimaryExpression']['pass'][::4]]      
         self.testCases['UnaryExpression']['pass'] += ['+' + t for t in self.testCases['PrimaryExpression']['pass'][1::4]]      
         self.testCases['UnaryExpression']['pass'] += ['- ' + t for t in self.testCases['PrimaryExpression']['pass'][2::4]]      
@@ -663,8 +638,7 @@ class Test(unittest.TestCase):
         self.testCases['UnaryExpression']['fail'] += ['algebra', '!meetkunde', '+ goniometrie', '-stereometrie']     
 
 # [117]   MultiplicativeExpression          ::=   UnaryExpression ( '*' UnaryExpression | '/' UnaryExpression )* 
-        self.testCases['MultiplicativeExpression'] = {'pass': [],
-                                                      'fail': []}   
+        self.testCases['MultiplicativeExpression'] = {'pass': [], 'fail': []}
         self.testCases['MultiplicativeExpression']['pass'] += ['<test>()']  
         for p1 in self.testCases['UnaryExpression']['pass'][::1000]:
             for p2 in self.testCases['UnaryExpression']['pass'][1::1000]:
@@ -675,7 +649,9 @@ class Test(unittest.TestCase):
         self.testCases['MultiplicativeExpression']['fail'] += ['* ' + '<test>']
         
 # [116]   AdditiveExpression        ::=   MultiplicativeExpression ( '+' MultiplicativeExpression | '-' MultiplicativeExpression | ( NumericLiteralPositive | NumericLiteralNegative ) ( ( '*' UnaryExpression ) | ( '/' UnaryExpression ) )* )* 
-
+        self.testCases['AdditiveExpression'] = {'pass': [], 'fail': []}
+#         TODO
+        
 # [115]   NumericExpression         ::=   AdditiveExpression 
 
 # [114]   RelationalExpression      ::=   NumericExpression ( '=' NumericExpression | '!=' NumericExpression | '<' NumericExpression | '>' NumericExpression | '<=' NumericExpression | '>=' NumericExpression | 'IN' ExpressionList | 'NOT' 'IN' ExpressionList )? 
