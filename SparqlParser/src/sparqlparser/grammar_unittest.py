@@ -23,7 +23,7 @@ class Test(unittest.TestCase):
                     print(' --> ' + str(e), end='')
                     if debug >= 3:
                         print(' ( = ' + ' '.join([str(ord(c)) for c in str(e)[2:-2]]), end=' )')
-                assert e[0] == e[0].pattern.parseString(e[0].render())[0]
+                assert e[0].isValid()
             for f in testCases[rule]['fail']:
                 if debug >= 1:
                     print('\nfail:', f, end='')
@@ -677,8 +677,22 @@ class Test(unittest.TestCase):
                     self.testCases['NumericExpression']['pass'] += [m + n + '*' + u + '/' + u]
         self.testCases['NumericExpression']['fail'] = ['algebra']
 
-
 # [114]   RelationalExpression      ::=   NumericExpression ( '=' NumericExpression | '!=' NumericExpression | '<' NumericExpression | '>' NumericExpression | '<=' NumericExpression | '>=' NumericExpression | 'IN' ExpressionList | 'NOT' 'IN' ExpressionList )? 
+        self.testCases['RelationalExpression'] = {'pass': [], 'fail': []}
+        for n1 in self.testCases['NumericExpression']['pass'][::50]:
+            for n2 in self.testCases['NumericExpression']['pass'][1::50]:
+                for e in self.testCases['ExpressionList']['pass']:
+                    self.testCases['RelationalExpression']['pass'] += [n1]
+                    self.testCases['RelationalExpression']['pass'] += [n1 + ' = ' + n2]
+                    self.testCases['RelationalExpression']['pass'] += [n1 + ' != ' + n2]
+                    self.testCases['RelationalExpression']['pass'] += [n1 + ' < ' + n2]
+                    self.testCases['RelationalExpression']['pass'] += [n1 + ' > ' + n2]
+                    self.testCases['RelationalExpression']['pass'] += [n1 + ' <= ' + n2]
+                    self.testCases['RelationalExpression']['pass'] += [n1 + ' >= ' + n2]
+                    self.testCases['RelationalExpression']['pass'] += [n1 + ' IN ' + e]
+                    self.testCases['RelationalExpression']['pass'] += [n1 + ' NOT IN ' + e]
+        self.testCases['RelationalExpression']['fail'] = ['algebra']
+
 
 # [113]   ValueLogical      ::=   RelationalExpression 
 
@@ -920,55 +934,55 @@ class Test(unittest.TestCase):
                                        
     def testPN_LOCAL_ESC(self):
         Test.makeTestFunc('PN_LOCAL_ESC', self.testCases)()   
-      
+       
     def testHEX(self):
         Test.makeTestFunc('HEX', self.testCases)()
- 
+  
     def testPERCENT(self):
         Test.makeTestFunc('PERCENT', self.testCases)()
- 
+  
     def testPLX(self):
         Test.makeTestFunc('PLX', self.testCases)()
-         
+          
     def testPN_CHARS_BASE(self):
         Test.makeTestFunc('PN_CHARS_BASE', self.testCases)()
- 
+  
     def testPN_CHARS_U(self):
         Test.makeTestFunc('PN_CHARS_U', self.testCases)()
- 
+  
     def testPN_CHARS(self):
         Test.makeTestFunc('PN_CHARS', self.testCases)()
-         
+          
     def testPN_LOCAL(self):
         Test.makeTestFunc('PN_LOCAL', self.testCases)()     
-     
+      
     def testPN_PREFIX(self):
         Test.makeTestFunc('PN_PREFIX', self.testCases)()
-         
+          
     def testVARNAME(self):
         Test.makeTestFunc('VARNAME', self.testCases)()
-
+ 
 # WS is not used
 # In the SPARWQL EBNF this production is used for defining NIL and ANON, but in this pyparsing implementation those are implemented independently     
-
+ 
     def testANON(self):
         Test.makeTestFunc('ANON', self.testCases)()    
-            
+             
     def testNIL(self):
         Test.makeTestFunc('NIL', self.testCases)()       
-                 
+                  
     def testECHAR(self):
         Test.makeTestFunc('ECHAR', self.testCases)()       
-           
+            
     def testSTRING_LITERAL_LONG2(self):
         Test.makeTestFunc('STRING_LITERAL_LONG2', self.testCases)()       
-    
+     
     def testSTRING_LITERAL_LONG1(self):
         Test.makeTestFunc('STRING_LITERAL_LONG1', self.testCases)()       
-            
+             
     def testSTRING_LITERAL2(self):
         Test.makeTestFunc('STRING_LITERAL2', self.testCases)()       
-                
+                 
     def testSTRING_LITERAL1(self):
         Test.makeTestFunc('STRING_LITERAL1', self.testCases)()       
 #          
@@ -986,136 +1000,134 @@ class Test(unittest.TestCase):
 #  
     def testDECIMAL(self):
         Test.makeTestFunc('DECIMAL', self.testCases)()                     
-                
+                 
     def testDECIMAL_NEGATIVE(self):
         Test.makeTestFunc('DECIMAL_NEGATIVE', self.testCases)()       
-    
+     
     def testDECIMAL_POSITIVE(self):
         Test.makeTestFunc('DECIMAL_POSITIVE', self.testCases)()       
-    
+     
     def testINTEGER(self):
         Test.makeTestFunc('INTEGER', self.testCases)()       
-                
+                 
     def testINTEGER_NEGATIVE(self):
         Test.makeTestFunc('INTEGER_NEGATIVE', self.testCases)()       
-    
+     
     def testINTEGER_POSITIVE(self):
         Test.makeTestFunc('INTEGER_POSITIVE', self.testCases)()       
-                
+                 
     def testLANGTAG(self):
         Test.makeTestFunc('LANGTAG', self.testCases)()       
-    
+     
     def testVAR2(self):
         Test.makeTestFunc('VAR2', self.testCases)()       
-    
+     
     def testVAR1(self):
         Test.makeTestFunc('VAR1', self.testCases)()       
-     
+      
     def testBLANK_NODE_LABEL(self):
         Test.makeTestFunc('BLANK_NODE_LABEL', self.testCases)()       
-    
+     
     def testPNAME_NS(self):
         Test.makeTestFunc('PNAME_NS', self.testCases)()       
-    
+     
     def testPNAME_LN(self):
         Test.makeTestFunc('PNAME_LN', self.testCases)()
-    
+     
     def testIRIREF(self):
         Test.makeTestFunc('IRIREF', self.testCases)()
-      
+       
     def testBlankNode(self):
         Test.makeTestFunc('BlankNode', self.testCases)()
-    
+     
     def testPrefixedName(self):
         Test.makeTestFunc('PrefixedName', self.testCases)()
-    
+     
     def testiri(self):
         Test.makeTestFunc('iri', self.testCases)()
-    
+     
     def testString(self):
         Test.makeTestFunc('String', self.testCases)()
-   
+    
     def testBooleanLiteral(self):
         Test.makeTestFunc('BooleanLiteral', self.testCases)()
- 
+  
     def testNumericLiteralNegative(self):
         Test.makeTestFunc('NumericLiteralNegative', self.testCases)()
-  
+   
     def testNumericLiteralPositive(self):
         Test.makeTestFunc('NumericLiteralPositive', self.testCases)()
-   
+    
     def testNumericLiteralUnsigned(self):
         Test.makeTestFunc('NumericLiteralUnsigned', self.testCases)()
-   
+    
     def testNumericLiteral(self):
         Test.makeTestFunc('NumericLiteral', self.testCases)()
-  
+   
     def testRDFLiteral(self):
         Test.makeTestFunc('RDFLiteral', self.testCases)()
- 
+  
     def testExpression(self):
         Test.makeTestFunc('Expression', self.testCases)()
- 
+  
     def testExpressionList(self):
         Test.makeTestFunc('ExpressionList', self.testCases)()
- 
+  
     def testArgList(self):
         Test.makeTestFunc('ArgList', self.testCases)()
- 
+  
     def testiriOrFunction(self):
         Test.makeTestFunc('iriOrFunction', self.testCases)()
- 
+  
     def testAggregate(self):
         Test.makeTestFunc('Aggregate', self.testCases)()
- 
+  
     def testGroupGraphPattern(self):
         Test.makeTestFunc('GroupGraphPattern', self.testCases)()
- 
+  
     def testNotExistsFunc(self):
         Test.makeTestFunc('NotExistsFunc', self.testCases)()
- 
+  
     def testExistsFunc(self):
         Test.makeTestFunc('ExistsFunc', self.testCases)()
- 
+  
     def testStrReplaceExpression(self):
         Test.makeTestFunc('StrReplaceExpression', self.testCases)()
- 
+  
     def testSubstringExpression(self):
         Test.makeTestFunc('SubstringExpression', self.testCases)()
- 
+  
     def testRegexExpression(self):
         Test.makeTestFunc('RegexExpression', self.testCases)()
- 
+  
     def testVar(self):
         Test.makeTestFunc('Var', self.testCases)()
- 
+  
     def testBuiltInCall(self):
         Test.makeTestFunc('BuiltInCall', self.testCases)()
- 
+  
     def testBracketedExpression(self):
         Test.makeTestFunc('BracketedExpression', self.testCases)()
-
+ 
     def testPrimaryExpression(self):
         Test.makeTestFunc('PrimaryExpression', self.testCases)()
- 
+  
     def testUnaryExpression(self):
         Test.makeTestFunc('UnaryExpression', self.testCases)()
- 
+  
     def testMultiplicativeExpression(self):
         Test.makeTestFunc('MultiplicativeExpression', self.testCases)()
- 
+  
     def testAdditiveExpression(self):
         Test.makeTestFunc('AdditiveExpression', self.testCases)()
- 
+  
     def testNumericExpression(self):
         Test.makeTestFunc('NumericExpression', self.testCases)()
  
+    def testRelationalExpression(self):
+        Test.makeTestFunc('RelationalExpression', self.testCases)()
+ 
 
-
-# # [115]   NumericExpression         ::=   AdditiveExpression 
-# 
-# # [114]   RelationalExpression      ::=   NumericExpression ( '=' NumericExpression | '!=' NumericExpression | '<' NumericExpression | '>' NumericExpression | '<=' NumericExpression | '>=' NumericExpression | 'IN' ExpressionList | 'NOT' 'IN' ExpressionList )? 
-# 
 # # [113]   ValueLogical      ::=   RelationalExpression 
 # 
 # # [112]   ConditionalAndExpression          ::=   ValueLogical ( '&&' ValueLogical )* 

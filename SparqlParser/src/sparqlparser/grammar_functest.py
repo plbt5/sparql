@@ -7,11 +7,11 @@ def printResults(l, rule):
     for s in l:
         rule_p = eval(rule + '_p')
         r = rule_p.parseString(s, parseAll=True)
-        print('\nParse : {}'.format(s))
         print()
         r[0].dump()
         print()
         rendering = r[0].render()
+        print('\nParse : {}'.format(s))
         print('Render:', rendering)
         if s != rendering:
             print()
@@ -338,11 +338,14 @@ if __name__ == '__main__':
     l = ['33*<test>() + 44*55 - 77']
     printResults(l, 'AdditiveExpression')
     
-    
     # [115]   NumericExpression         ::=   AdditiveExpression 
-    
+    l = ['33*<test>() + 44*55 - 77']
+    printResults(l, 'NumericExpression')
+        
     # [114]   RelationalExpression      ::=   NumericExpression ( '=' NumericExpression | '!=' NumericExpression | '<' NumericExpression | '>' NumericExpression | '<=' NumericExpression | '>=' NumericExpression | 'IN' ExpressionList | 'NOT' 'IN' ExpressionList )? 
-    
+    l = ['33*<test>() = 33 * 75', '33 IN *Expression*', '44 * 75 NOT IN *Expression*, *Expression*']
+    printResults(l, 'RelationalExpression')
+        
     # [113]   ValueLogical      ::=   RelationalExpression 
     
     # [112]   ConditionalAndExpression          ::=   ValueLogical ( '&&' ValueLogical )* 
