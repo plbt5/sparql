@@ -666,9 +666,9 @@ class Test(unittest.TestCase):
         
 # [115]   NumericExpression         ::=   AdditiveExpression 
         self.testCases['NumericExpression'] = {'pass': [], 'fail': []}
-        for m in self.testCases['MultiplicativeExpression']['pass'][::10]:
-            for n in self.testCases['NumericLiteralPositive']['pass'][::4] + self.testCases['NumericLiteralNegative']['pass'][::4]:
-                for u in self.testCases['UnaryExpression']['pass'][::500]:
+        for m in self.testCases['MultiplicativeExpression']['pass'][1::10]:
+            for n in self.testCases['NumericLiteralPositive']['pass'][1::4] + self.testCases['NumericLiteralNegative']['pass'][::4]:
+                for u in self.testCases['UnaryExpression']['pass'][1::500]:
                     self.testCases['NumericExpression']['pass'] += [m]
                     self.testCases['NumericExpression']['pass'] += [m + '+ ' + m]
                     self.testCases['NumericExpression']['pass'] += [m + '-' + m + '-' + m]
@@ -693,13 +693,29 @@ class Test(unittest.TestCase):
                     self.testCases['RelationalExpression']['pass'] += [n1 + ' NOT IN ' + e]
         self.testCases['RelationalExpression']['fail'] = ['algebra']
 
-
 # [113]   ValueLogical      ::=   RelationalExpression 
-
+        self.testCases['ValueLogical'] = {'pass': self.testCases['RelationalExpression']['pass'], 'fail': self.testCases['RelationalExpression']['fail']}
+        
 # [112]   ConditionalAndExpression          ::=   ValueLogical ( '&&' ValueLogical )* 
-
+        self.testCases['ConditionalAndExpression'] = {'pass': [], 'fail': []}
+        for v1 in self.testCases['ValueLogical']['pass'][::100]:
+            for v2 in self.testCases['ValueLogical']['pass'][1::100]:
+                for v3 in self.testCases['ValueLogical']['pass'][2::100]:
+                    self.testCases['ConditionalAndExpression']['pass'] += [v1]
+                    self.testCases['ConditionalAndExpression']['pass'] += [v1 + ' && ' + v2]
+                    self.testCases['ConditionalAndExpression']['pass'] += [v1 + ' && ' + v2 + ' && ' + v3]
+        self.testCases['ConditionalAndExpression'][ 'fail'] += ['true || false']
+        
 # [111]   ConditionalOrExpression   ::=   ConditionalAndExpression ( '||' ConditionalAndExpression )* 
-
+        self.testCases['ConditionalOrExpression'] = {'pass': [], 'fail': []}
+        for v1 in self.testCases['ConditionalAndExpression']['pass'][::100]:
+            for v2 in self.testCases['ConditionalAndExpression']['pass'][1::100]:
+                for v3 in self.testCases['ConditionalAndExpression']['pass'][2::100]:
+                    self.testCases['ConditionalOrExpression']['pass'] += [v1]
+                    self.testCases['ConditionalOrExpression']['pass'] += [v1 + ' || ' + v2]
+                    self.testCases['ConditionalOrExpression']['pass'] += [v1 + ' || ' + v2 + ' || ' + v3]
+        self.testCases['ConditionalOrExpression'][ 'fail'] += ['algebra']
+        
 # [110]   Expression        ::=   ConditionalOrExpression 
 
 # [109]   GraphTerm         ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | BlankNode | NIL 
@@ -1127,13 +1143,16 @@ class Test(unittest.TestCase):
     def testRelationalExpression(self):
         Test.makeTestFunc('RelationalExpression', self.testCases)()
  
+    def testValueLogical(self):
+        Test.makeTestFunc('ValueLogical', self.testCases)()
+ 
+    def testConditionalAndExpression(self):
+        Test.makeTestFunc('ConditionalAndExpression', self.testCases)()
 
-# # [113]   ValueLogical      ::=   RelationalExpression 
-# 
-# # [112]   ConditionalAndExpression          ::=   ValueLogical ( '&&' ValueLogical )* 
-# 
-# # [111]   ConditionalOrExpression   ::=   ConditionalAndExpression ( '||' ConditionalAndExpression )* 
-# 
+    def testConditionalOrExpression(self):
+        Test.makeTestFunc('ConditionalOrExpression', self.testCases)()
+
+ 
 # # [110]   Expression        ::=   ConditionalOrExpression 
 # 
 # # [109]   GraphTerm         ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | BlankNode | NIL 

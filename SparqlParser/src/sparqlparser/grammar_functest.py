@@ -347,9 +347,13 @@ if __name__ == '__main__':
     printResults(l, 'RelationalExpression')
         
     # [113]   ValueLogical      ::=   RelationalExpression 
+    l = ['33*<test>() = 33 * 75', '33 IN *Expression*', '44 * 75 NOT IN *Expression*, *Expression*']
+    printResults(l, 'ValueLogical')
     
     # [112]   ConditionalAndExpression          ::=   ValueLogical ( '&&' ValueLogical )* 
-    
+    l = ['33*<test>() = 33 * 44 && 33 IN *Expression*', '44 * 75 NOT IN *Expression*, *Expression* && 33 < 44']
+    printResults(l, 'ConditionalAndExpression')
+
     # [111]   ConditionalOrExpression   ::=   ConditionalAndExpression ( '||' ConditionalAndExpression )* 
     
     # [110]   Expression        ::=   ConditionalOrExpression 

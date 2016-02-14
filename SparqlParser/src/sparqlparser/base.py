@@ -222,6 +222,12 @@ class SPARQLNonTerminal(SPARQLNode):
 class SPARQLKeyword(SPARQLElement):
     pass
 
+
+class SPARQLOperator(SPARQLElement):
+    pass
+
+
+
 # Special tokens
 ALL_VALUES_st_p = Literal('*')
 class ALL_VALUES_st(SPARQLKeyword):
@@ -241,46 +247,55 @@ LPAR_p, RPAR_p, SEMICOL_p, COMMA_p, EXCL_p, PLUS_p, MINUS_p, TIMES_p, DIV_p = ma
 #
 
 EQ_op_p = Literal('=') 
-class EQ_op(SPARQLKeyword):
-    pass
+class EQ_op(SPARQLOperator):
     def render(self):
         return '='
 EQ_op_p.setParseAction(parseInfoFunc('EQ_op'))
 
 NE_op_p = Literal('!=') 
-class NE_op(SPARQLKeyword):
-    pass
+class NE_op(SPARQLOperator):
     def render(self):
         return '!='
 NE_op_p.setParseAction(parseInfoFunc('NE_op'))
 
 GT_op_p = Literal('>') 
-class GT_op(SPARQLKeyword):
-    pass
+class GT_op(SPARQLOperator):
     def render(self):
         return '>'
 GT_op_p.setParseAction(parseInfoFunc('GT_op'))
 
 LT_op_p = Literal('<') 
-class LT_op(SPARQLKeyword):
-    pass
+class LT_op(SPARQLOperator):
     def render(self):
         return '<'
 LT_op_p.setParseAction(parseInfoFunc('LT_op'))
 
 GE_op_p = Literal('>=') 
-class GE_op(SPARQLKeyword):
-    pass
+class GE_op(SPARQLOperator):
     def render(self):
         return '>='
 GE_op_p.setParseAction(parseInfoFunc('GE_op'))
 
 LE_op_p = Literal('<=') 
-class LE_op(SPARQLKeyword):
-    pass
+class LE_op(SPARQLOperator):
     def render(self):
         return '<='
 LE_op_p.setParseAction(parseInfoFunc('LE_op'))
+
+AND_op_p = Literal('&&')
+class AND_op(SPARQLOperator):
+    def render(self):
+        return '&&'
+AND_op_p.setParseAction(parseInfoFunc('AND_op'))
+  
+  
+OR_op_p = Literal('||')
+class OR_op(SPARQLOperator):
+    def render(self):
+        return '||'
+OR_op_p.setParseAction(parseInfoFunc('OR_op'))
+
+
 
 #
 # Keywords
@@ -1319,12 +1334,23 @@ class RelationalExpression(SPARQLNonTerminal):
     pass
 if do_parseactions: RelationalExpression_p.setParseAction(parseInfoFunc('RelationalExpression'))
 
-
 # [113]   ValueLogical      ::=   RelationalExpression 
+ValueLogical_p = RelationalExpression_p
+class ValueLogical(SPARQLNonTerminal):  
+    pass
+if do_parseactions: ValueLogical_p.setParseAction(parseInfoFunc('ValueLogical'))
 
 # [112]   ConditionalAndExpression          ::=   ValueLogical ( '&&' ValueLogical )* 
+ConditionalAndExpression_p = ValueLogical_p + ZeroOrMore(AND_op_p + ValueLogical_p)
+class ConditionalAndExpression(SPARQLNonTerminal):  
+    pass
+if do_parseactions: ConditionalAndExpression_p.setParseAction(parseInfoFunc('ConditionalAndExpression'))
 
 # [111]   ConditionalOrExpression   ::=   ConditionalAndExpression ( '||' ConditionalAndExpression )* 
+ConditionalOrExpression_p = ConditionalAndExpression_p + ZeroOrMore(OR_op_p + ConditionalAndExpression_p)
+class ConditionalOrExpression(SPARQLNonTerminal):  
+    pass
+if do_parseactions: ConditionalOrExpression_p.setParseAction(parseInfoFunc('ConditionalOrExpression'))
 
 # [110]   Expression        ::=   ConditionalOrExpression 
 
