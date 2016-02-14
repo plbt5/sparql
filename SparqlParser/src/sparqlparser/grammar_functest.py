@@ -355,7 +355,9 @@ if __name__ == '__main__':
     printResults(l, 'ConditionalAndExpression')
 
     # [111]   ConditionalOrExpression   ::=   ConditionalAndExpression ( '||' ConditionalAndExpression )* 
-    
+    l = ['33*<test>() = 33 * 44 && 33 IN *Expression*  || 44 * 75 NOT IN *Expression*, *Expression* && 33 < 44']
+    printResults(l, 'ConditionalOrExpression')
+        
     # [110]   Expression        ::=   ConditionalOrExpression 
     
     # [109]   GraphTerm         ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | BlankNode | NIL 
