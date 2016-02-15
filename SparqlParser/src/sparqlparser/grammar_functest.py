@@ -355,20 +355,32 @@ if __name__ == '__main__':
     printResults(l, 'ConditionalAndExpression')
 
     # [111]   ConditionalOrExpression   ::=   ConditionalAndExpression ( '||' ConditionalAndExpression )* 
-    l = ['("*Expression*")', '33*<test>() = 33 * 44 && 33 IN "*Expression*"  || 44 * 75 NOT IN "*Expression*", "*Expression*" && 33 && ("*Expression*")']
+    l = ['("*Expression*")', '33*<test>() = 33 * 44 && 33 IN "*Expression*"  || 44 * 75 NOT IN (44 * (55-33)), 77 && 33 && ("*Expression*")']
     printResults(l, 'ConditionalOrExpression')
         
     # [110]   Expression        ::=   ConditionalOrExpression 
-    
+    l = ['("*Expression*")', '33*<test>() = 33 * 44 && 33 IN "*Expression*"  || 44 * 75 NOT IN (44 * (55-33)), 77 && 33 && ("*Expression*")']
+    printResults(l, 'Expression')
+        
     # [109]   GraphTerm         ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | BlankNode | NIL 
-    
+    l = ['aA:Z.a', '"work" @en-bf', '-22.33e-44', 'true', '_:test9.33', '[ ]', '()']
+    printResults(l, 'GraphTerm')
+        
     # [107]   VarOrIri          ::=   Var | iri 
+    l = ['$algebra', '<test>', 'az:Xy']
+    printResults(l, 'VarOrIri')
     
     # [106]   VarOrTerm         ::=   Var | GraphTerm 
-    
+    l = ['$algebra', '"work" @en-bf', '-22.33e-44']
+    printResults(l, 'VarOrTerm')
+        
     # [105]   GraphNodePath     ::=   VarOrTerm | TriplesNodePath 
-    
+    l = ['$algebra', '*TriplesNodePath*']
+    printResults(l, 'GraphNodePath')
+            
     # [104]   GraphNode         ::=   VarOrTerm | TriplesNode 
+    l = ['$algebra', '*TriplesNode*']
+    printResults(l, 'GraphNode')
     
     # [103]   CollectionPath    ::=   '(' GraphNodePath+ ')' 
     

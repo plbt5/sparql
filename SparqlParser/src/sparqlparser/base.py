@@ -116,7 +116,9 @@ class ParseInfo(metaclass=ParsePattern):
     def dump(self, indent='', step='.'):
         
         def dumpString(s, indent, step):
-            print(indent + s + ' <str>' )
+#             print(indent + s + ' <str>' )
+            print(indent + '<str>')
+            print(indent + s)
         
         def dumpItems(items, indent, step):
             for _, v in items:
@@ -1072,13 +1074,7 @@ class RDFLiteral(SPARQLNonTerminal):
     pass
 if do_parseactions: RDFLiteral_p.setParseAction(parseInfoFunc('RDFLiteral'))
 
-
-# TODO
 Expression_p = Forward()
-# Expression_p << Literal('*Expression*')
-# class Expression(SPARQLNonTerminal):  
-#     pass
-# if do_parseactions: Expression_p.setParseAction(parseInfoFunc('Expression'))
 
 # pattern and class to parse and render delimited Expression lists
 ExpressionList_p = delimitedList(Expression_p)
@@ -1128,31 +1124,31 @@ class GroupGraphPattern(SPARQLNonTerminal):
 if do_parseactions: GroupGraphPattern_p.setParseAction(parseInfoFunc('GroupGraphPattern'))
  
 # [126]   NotExistsFunc     ::=   'NOT' 'EXISTS' GroupGraphPattern 
-NotExistsFunc_p = NOT_EXISTS_kw_p + GroupGraphPattern_p('groupgraph')
+NotExistsFunc_p = Group(NOT_EXISTS_kw_p + GroupGraphPattern_p('groupgraph'))
 class NotExistsFunc(SPARQLNonTerminal):  
     pass
 if do_parseactions: NotExistsFunc_p.setParseAction(parseInfoFunc('NotExistsFunc'))
  
 # [125]   ExistsFunc        ::=   'EXISTS' GroupGraphPattern 
-ExistsFunc_p = EXISTS_kw_p + GroupGraphPattern_p('groupgraph')
+ExistsFunc_p = Group(EXISTS_kw_p + GroupGraphPattern_p('groupgraph'))
 class ExistsFunc(SPARQLNonTerminal):  
     pass
 if do_parseactions: ExistsFunc_p.setParseAction(parseInfoFunc('ExistsFunc'))
  
 # [124]   StrReplaceExpression      ::=   'REPLACE' '(' Expression ',' Expression ',' Expression ( ',' Expression )? ')' 
-StrReplaceExpression_p = REPLACE_kw_p + LPAR_p + Expression_p('arg') + COMMA_p + Expression_p('pattern') + COMMA_p + Expression_p('replacement') + Optional(COMMA_p + Expression_p('flags')) + RPAR_p
+StrReplaceExpression_p = Group(REPLACE_kw_p + LPAR_p + Expression_p('arg') + COMMA_p + Expression_p('pattern') + COMMA_p + Expression_p('replacement') + Optional(COMMA_p + Expression_p('flags')) + RPAR_p)
 class StrReplaceExpression(SPARQLNonTerminal):  
     pass
 if do_parseactions: StrReplaceExpression_p.setParseAction(parseInfoFunc('StrReplaceExpression'))
  
 # [123]   SubstringExpression       ::=   'SUBSTR' '(' Expression ',' Expression ( ',' Expression )? ')' 
-SubstringExpression_p = SUBSTR_kw_p + LPAR_p + Expression_p('source') + COMMA_p + Expression_p('startloc') + Optional(COMMA_p + Expression_p('length')) + RPAR_p
+SubstringExpression_p = Group(SUBSTR_kw_p + LPAR_p + Expression_p('source') + COMMA_p + Expression_p('startloc') + Optional(COMMA_p + Expression_p('length')) + RPAR_p)
 class SubstringExpression(SPARQLNonTerminal):  
     pass
 if do_parseactions: SubstringExpression_p.setParseAction(parseInfoFunc('SubstringExpression'))
  
 # [122]   RegexExpression   ::=   'REGEX' '(' Expression ',' Expression ( ',' Expression )? ')' 
-RegexExpression_p = REGEX_kw_p + LPAR_p + Expression_p('text') + COMMA_p + Expression_p('pattern') + Optional(COMMA_p + Expression_p('flags')) + RPAR_p
+RegexExpression_p = Group(REGEX_kw_p + LPAR_p + Expression_p('text') + COMMA_p + Expression_p('pattern') + Optional(COMMA_p + Expression_p('flags')) + RPAR_p)
 class RegexExpression(SPARQLNonTerminal):  
     pass
 if do_parseactions: RegexExpression_p.setParseAction(parseInfoFunc('RegexExpression'))
@@ -1278,7 +1274,7 @@ class BuiltInCall(SPARQLNonTerminal):
 if do_parseactions: BuiltInCall_p.setParseAction(parseInfoFunc('BuiltInCall'))
 
 # [120]   BrackettedExpression      ::=   '(' Expression ')' 
-BracketedExpression_p = LPAR_p + Expression_p('expression') + RPAR_p
+BracketedExpression_p = Group(LPAR_p + Expression_p('expression') + RPAR_p)
 class BracketedExpression(SPARQLNonTerminal):  
     pass
 if do_parseactions: BracketedExpression_p.setParseAction(parseInfoFunc('BracketedExpression'))
@@ -1354,14 +1350,52 @@ class Expression(SPARQLNonTerminal):
 if do_parseactions: Expression_p.setParseAction(parseInfoFunc('Expression'))
 
 # [109]   GraphTerm         ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | BlankNode | NIL 
-
+GraphTerm_p =   iri_p | \
+                RDFLiteral_p | \
+                NumericLiteral_p | \
+                BooleanLiteral_p | \
+                BlankNode_p | \
+                NIL_p
+class GraphTerm(SPARQLNonTerminal):  
+    pass
+if do_parseactions: GraphTerm_p.setParseAction(parseInfoFunc('GraphTerm'))
+                
 # [107]   VarOrIri          ::=   Var | iri 
+VarOrIri_p = Var_p | iri_p
+class VarOrIri(SPARQLNonTerminal):  
+    pass
+if do_parseactions: VarOrIri_p.setParseAction(parseInfoFunc('VarOrIri'))
 
 # [106]   VarOrTerm         ::=   Var | GraphTerm 
+VarOrTerm_p = Var_p | GraphTerm_p
+class VarOrTerm(SPARQLNonTerminal):  
+    pass
+if do_parseactions: VarOrTerm_p.setParseAction(parseInfoFunc('VarOrTerm'))
+
+TriplesNodePath_p = Forward()
+# Needed for next production: GraphNodePath
+# TODO: remove following lines after proper definition of GraphNodePath attained
+TriplesNodePath_p << Literal('*TriplesNodePath*')
+class TriplesNodePath(SPARQLNonTerminal):  
+    pass
+if do_parseactions: TriplesNodePath_p.setParseAction(parseInfoFunc('TriplesNodePath'))
 
 # [105]   GraphNodePath     ::=   VarOrTerm | TriplesNodePath 
+GraphNodePath_p = VarOrTerm_p | TriplesNodePath_p 
+
+TriplesNode_p = Forward()
+# Needed for next production: GraphNode
+# TODO: remove following lines after proper definition of GraphNode attained
+TriplesNode_p << Literal('*TriplesNode*')
+class TriplesNode(SPARQLNonTerminal):  
+    pass
+if do_parseactions: TriplesNode_p.setParseAction(parseInfoFunc('TriplesNode'))
 
 # [104]   GraphNode         ::=   VarOrTerm | TriplesNode 
+GraphNode_p = VarOrTerm_p ^ TriplesNode_p
+class GraphNode(SPARQLNonTerminal):  
+    pass
+if do_parseactions: GraphNode_p.setParseAction(parseInfoFunc('GraphNode'))
 
 # [103]   CollectionPath    ::=   '(' GraphNodePath+ ')' 
 
