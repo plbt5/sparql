@@ -1,9 +1,4 @@
 from pyparsing import *
-import sys
-
-if sys.version_info < (3,3):
-    raise ParseFatalException('This parser only works with Python 3.3 or later (due to unicode handling and other issues)')
-
 
 # Conversion of EBNF syntax for SPARQL 1.1 to pyparsing. For the grammar see http://www.w3.org/TR/sparql11-query/#grammar.
 
@@ -118,10 +113,10 @@ class ParseInfo(metaclass=ParsePattern):
             raise NotImplementedError('Multiple items ({}) for key {} not yet supported'.format(result, k))
         return result
 
-    def dump(self, indent='', step='  '):
+    def dump(self, indent='', step='.'):
         
         def dumpString(s, indent, step):
-            print(indent + '- ' + s + ' <str>' )
+            print(indent + s + ' <str>' )
         
         def dumpItems(items, indent, step):
             for _, v in items:
@@ -1080,10 +1075,10 @@ if do_parseactions: RDFLiteral_p.setParseAction(parseInfoFunc('RDFLiteral'))
 
 # TODO
 Expression_p = Forward()
-Expression_p << Group(Literal('*Expression*'))
-class Expression(SPARQLNonTerminal):  
-    pass
-if do_parseactions: Expression_p.setParseAction(parseInfoFunc('Expression'))
+# Expression_p << Literal('*Expression*')
+# class Expression(SPARQLNonTerminal):  
+#     pass
+# if do_parseactions: Expression_p.setParseAction(parseInfoFunc('Expression'))
 
 # pattern and class to parse and render delimited Expression lists
 ExpressionList_p = delimitedList(Expression_p)
@@ -1353,6 +1348,10 @@ class ConditionalOrExpression(SPARQLNonTerminal):
 if do_parseactions: ConditionalOrExpression_p.setParseAction(parseInfoFunc('ConditionalOrExpression'))
 
 # [110]   Expression        ::=   ConditionalOrExpression 
+Expression_p << ConditionalOrExpression_p
+class Expression(SPARQLNonTerminal):  
+    pass
+if do_parseactions: Expression_p.setParseAction(parseInfoFunc('Expression'))
 
 # [109]   GraphTerm         ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | BlankNode | NIL 
 

@@ -387,13 +387,13 @@ class Test(unittest.TestCase):
                
 # Expression - TODO
         self.testCases['Expression'] = {'pass': [], 'fail': []}
-        self.testCases['Expression']['pass'] += ['*Expression*'] 
-        self.testCases['Expression']['fail'] += ['*NoExpression*'] 
+        self.testCases['Expression']['pass'] += ['"*Expression*"'] 
+        self.testCases['Expression']['fail'] += ['"*NoExpression*'] 
 
 # ExpressionList - TODO
         self.testCases['ExpressionList'] = {'pass': [],
                                         'fail': []}
-        self.testCases['ExpressionList']['pass'] += ['*Expression*, *Expression*'] 
+        self.testCases['ExpressionList']['pass'] += ['"*Expression*", "*Expression*"'] 
         self.testCases['ExpressionList']['fail'] += ['*NoExpression*'] 
                
 # [71]    ArgList   ::=   NIL | '(' 'DISTINCT'? Expression ( ',' Expression )* ')' 
@@ -550,66 +550,66 @@ class Test(unittest.TestCase):
 #             | NotExistsFunc 
         self.testCases['BuiltInCall'] = {'pass': [], 'fail': []} 
         self.testCases['BuiltInCall']['pass'] += self.testCases['Aggregate']['pass']
-        self.testCases['BuiltInCall']['pass'] += ['STR ( *Expression* )',
-                                                'LANG ( *Expression* )',
-                                                'LANGMATCHES ( *Expression* , *Expression* )',
-                                                'DATATYPE ( *Expression* )',
+        self.testCases['BuiltInCall']['pass'] += ['STR ( "*Expression*" )',
+                                                'LANG ( "*Expression*" )',
+                                                'LANGMATCHES ( "*Expression*" , "*Expression*" )',
+                                                'DATATYPE ( "*Expression*" )',
                                                 'BOUND ( $Var )',
                                                 'BOUND ( ?Var )',
-                                                'IRI ( *Expression* )',
-                                                'URI ( *Expression* )',
-                                                'BNODE ( *Expression* )',
+                                                'IRI ( "*Expression*" )',
+                                                'URI ( "*Expression*" )',
+                                                'BNODE ( "*Expression*" )',
                                                 'BNODE ()',
                                                 'RAND ()',
-                                                'ABS ( *Expression* )',
-                                                'CEIL ( *Expression* )',
-                                                'FLOOR ( *Expression* )',
-                                                'ROUND ( *Expression* )',
-                                                'CONCAT *Expression*',
-                                                'CONCAT *Expression*, *Expression*, *Expression*',
-                                                'SUBSTR ( *Expression* , *Expression* )',
-                                                'SUBSTR ( *Expression* , *Expression*, *Expression* )',
-                                                'STRLEN ( *Expression* )',
-                                                'REPLACE ( *Expression* , *Expression*, *Expression* )',
-                                                'REPLACE ( *Expression* , *Expression*, *Expression*, *Expression* )',
-                                                'UCASE ( *Expression* )',
-                                                'LCASE ( *Expression* )',
-                                                'ENCODE_FOR_URI ( *Expression* )',
-                                                'CONTAINS ( *Expression* , *Expression* )',
-                                                'STRSTARTS ( *Expression* , *Expression* )',
-                                                'STRENDS ( *Expression* , *Expression* )',
-                                                'STRBEFORE ( *Expression* , *Expression* )',
-                                                'STRAFTER ( *Expression* , *Expression* )',
-                                                'YEAR ( *Expression* )',
-                                                'MONTH ( *Expression* )',
-                                                'DAY ( *Expression* )',
-                                                'HOURS ( *Expression* )',
-                                                'MINUTES ( *Expression* )',
-                                                'SECONDS ( *Expression* )',
-                                                'TIMEZONE ( *Expression* )',
-                                                'TZ ( *Expression* )',
+                                                'ABS ( "*Expression*" )',
+                                                'CEIL ( "*Expression*" )',
+                                                'FLOOR ( "*Expression*" )',
+                                                'ROUND ( "*Expression*" )',
+                                                'CONCAT "*Expression*"',
+                                                'CONCAT "*Expression*", "*Expression*", "*Expression*"',
+                                                'SUBSTR ( "*Expression*" , "*Expression*" )',
+                                                'SUBSTR ( "*Expression*" , "*Expression*", "*Expression*" )',
+                                                'STRLEN ( "*Expression*" )',
+                                                'REPLACE ( "*Expression*" , "*Expression*", "*Expression*" )',
+                                                'REPLACE ( "*Expression*" , "*Expression*", "*Expression*", "*Expression*" )',
+                                                'UCASE ( "*Expression*" )',
+                                                'LCASE ( "*Expression*" )',
+                                                'ENCODE_FOR_URI ( "*Expression*" )',
+                                                'CONTAINS ( "*Expression*" , "*Expression*" )',
+                                                'STRSTARTS ( "*Expression*" , "*Expression*" )',
+                                                'STRENDS ( "*Expression*" , "*Expression*" )',
+                                                'STRBEFORE ( "*Expression*" , "*Expression*" )',
+                                                'STRAFTER ( "*Expression*" , "*Expression*" )',
+                                                'YEAR ( "*Expression*" )',
+                                                'MONTH ( "*Expression*" )',
+                                                'DAY ( "*Expression*" )',
+                                                'HOURS ( "*Expression*" )',
+                                                'MINUTES ( "*Expression*" )',
+                                                'SECONDS ( "*Expression*" )',
+                                                'TIMEZONE ( "*Expression*" )',
+                                                'TZ ( "*Expression*" )',
                                                 'NOW ()',
                                                 'UUID ()',
                                                 'STRUUID()',
-                                                'MD5 ( *Expression* )',
-                                                'SHA1 ( *Expression* )',
-                                                'SHA256 ( *Expression* )',
-                                                'SHA384 ( *Expression* )',
-                                                'SHA512 ( *Expression* )',
-                                                'COALESCE *Expression*, *Expression*',
-                                                'IF ( *Expression* , *Expression* , *Expression* )',
-                                                'STRLANG ( *Expression* , *Expression* )',
-                                                'STRDT ( *Expression* , *Expression* )',
-                                                'sameTerm ( *Expression* , *Expression* )',
-                                                'isIRI ( *Expression* )',
-                                                'isURI ( *Expression* )',
-                                                'isBLANK ( *Expression* )',
-                                                'isLITERAL ( *Expression* )',
-                                                'isNUMERIC ( *Expression* )',
-                                                'REGEX ( *Expression* , *Expression* , *Expression* )',
+                                                'MD5 ( "*Expression*" )',
+                                                'SHA1 ( "*Expression*" )',
+                                                'SHA256 ( "*Expression*" )',
+                                                'SHA384 ( "*Expression*" )',
+                                                'SHA512 ( "*Expression*" )',
+                                                'COALESCE "*Expression*", "*Expression*"',
+                                                'IF ( "*Expression*" , "*Expression*" , "*Expression*" )',
+                                                'STRLANG ( "*Expression*" , "*Expression*" )',
+                                                'STRDT ( "*Expression*" , "*Expression*" )',
+                                                'sameTerm ( "*Expression*" , "*Expression*" )',
+                                                'isIRI ( "*Expression*" )',
+                                                'isURI ( "*Expression*" )',
+                                                'isBLANK ( "*Expression*" )',
+                                                'isLITERAL ( "*Expression*" )',
+                                                'isNUMERIC ( "*Expression*" )',
+                                                'REGEX ( "*Expression*" , "*Expression*" , "*Expression*" )',
                                                 'EXISTS *GroupGraphPattern*',
                                                 'NOT EXISTS *GroupGraphPattern*']
-        self.testCases['BuiltInCall']['fail'] += ['COUNT DISTINCT (*)', 'sameTerm (*Expression*, *Expression*, *Expression*)']
+        self.testCases['BuiltInCall']['fail'] += ['COUNT DISTINCT (*)', 'sameTerm ("*Expression*", "*Expression*", "*Expression*")']
 
 # [120]   BrackettedExpression      ::=   '(' Expression ')' 
         self.testCases['BracketedExpression'] = {'pass': ['(' + p + ')' for p in self.testCases['Expression']['pass']],
@@ -717,6 +717,7 @@ class Test(unittest.TestCase):
         self.testCases['ConditionalOrExpression'][ 'fail'] += ['algebra']
         
 # [110]   Expression        ::=   ConditionalOrExpression 
+        self.testCases['Expression'] = {'pass': self.testCases['ConditionalOrExpression']['pass'], 'fail': self.testCases['ConditionalOrExpression']['fail']}
 
 # [109]   GraphTerm         ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | BlankNode | NIL 
 
@@ -1083,11 +1084,8 @@ class Test(unittest.TestCase):
     def testRDFLiteral(self):
         Test.makeTestFunc('RDFLiteral', self.testCases)()
   
-    def testExpression(self):
-        Test.makeTestFunc('Expression', self.testCases)()
-  
-    def testExpressionList(self):
-        Test.makeTestFunc('ExpressionList', self.testCases)()
+#     def testExpressionList(self):
+#         Test.makeTestFunc('ExpressionList', self.testCases)()
   
     def testArgList(self):
         Test.makeTestFunc('ArgList', self.testCases)()
@@ -1152,8 +1150,9 @@ class Test(unittest.TestCase):
     def testConditionalOrExpression(self):
         Test.makeTestFunc('ConditionalOrExpression', self.testCases)()
 
- 
-# # [110]   Expression        ::=   ConditionalOrExpression 
+    def testExpression(self):
+        Test.makeTestFunc('Expression', self.testCases)()
+        
 # 
 # # [109]   GraphTerm         ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | BlankNode | NIL 
 # 

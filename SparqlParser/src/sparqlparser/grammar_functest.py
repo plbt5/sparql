@@ -202,16 +202,16 @@ if __name__ == '__main__':
     # ExpressionList
     l = ['*Expression*, *Expression*']
     # TODO: replace expression
-    printResults(l, 'ExpressionList')
+#     printResults(l, 'ExpressionList')
            
     # [71]    ArgList   ::=   NIL | '(' 'DISTINCT'? Expression ( ',' Expression )* ')' 
     # TODO: replace expression
-    l = ['()', '( *Expression*) ', '(*Expression*, *Expression*)', '(DISTINCT *Expression*,  *Expression*,   *Expression* )']
+    l = ['()', '( "*Expression*") ', '("*Expression*", "*Expression*")', '(DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )']
     printResults(l, 'ArgList')
            
     # [128]   iriOrFunction     ::=   iri ArgList? 
     # TODO: replace expression
-    l = ['<work:22?>','aA:Z.a', 'Z.8:AA', 'aA:', 'Z.8:', ':', '<work:22?>()','aA:Z.a (*Expression*)']
+    l = ['<work:22?>','aA:Z.a', 'Z.8:AA', 'aA:', 'Z.8:', ':', '<work:22?>()','aA:Z.a ("*Expression*")']
     printResults(l, 'iriOrFunction')
  
     # [127]   Aggregate         ::=     'COUNT' '(' 'DISTINCT'? ( '*' | Expression ) ')' 
@@ -222,7 +222,7 @@ if __name__ == '__main__':
     #             | 'SAMPLE' '(' 'DISTINCT'? Expression ')' 
     #             | 'GROUP_CONCAT' '(' 'DISTINCT'? Expression ( ';' 'SEPARATOR' '=' String )? ')' 
     # TODO: replace expression
-    l = ['avg(*)', 'count (distinct *)', 'min(*Expression*)', 'GROUP_CONCAT ( distinct *Expression* ; SEPARATOR = "sep")']
+    l = ['avg(*)', 'count (distinct *)', 'min("*Expression*")', 'GROUP_CONCAT ( distinct "*Expression*" ; SEPARATOR = "sep")']
     printResults(l, 'Aggregate')
     
     # [126]   NotExistsFunc     ::=   'NOT' 'EXISTS' GroupGraphPattern 
@@ -237,17 +237,17 @@ if __name__ == '__main__':
     
     # [124]   StrReplaceExpression      ::=   'REPLACE' '(' Expression ',' Expression ',' Expression ( ',' Expression )? ')' 
     # TODO: replace expression
-    l = ['REPLACE (*Expression*, *Expression*, *Expression*)', 'REPLACE (*Expression*, *Expression*, *Expression*, *Expression*)']
+    l = ['REPLACE ("*Expression*", "*Expression*", "*Expression*")', 'REPLACE ("*Expression*", "*Expression*", "*Expression*", "*Expression*")']
     printResults(l, 'StrReplaceExpression')
     
     # [123]   SubstringExpression       ::=   'SUBSTR' '(' Expression ',' Expression ( ',' Expression )? ')' 
     # TODO: replace expression
-    l = ['SUBSTR (*Expression*, *Expression*)', 'SUBSTR (*Expression*, *Expression*, *Expression*)']
+    l = ['SUBSTR ("*Expression*", "*Expression*")', 'SUBSTR ("*Expression*", "*Expression*", "*Expression*")']
     printResults(l, 'SubstringExpression')
 
     # [122]   RegexExpression   ::=   'REGEX' '(' Expression ',' Expression ( ',' Expression )? ')' 
     # TODO: replace expression
-    l = ['REGEX (*Expression*, *Expression*)', 'REGEX (*Expression*, *Expression*, *Expression*)']
+    l = ['REGEX ("*Expression*", "*Expression*")', 'REGEX ("*Expression*", "*Expression*", "*Expression*")']
     printResults(l, 'RegexExpression')
     
     # [108]   Var       ::=   VAR1 | VAR2 
@@ -309,17 +309,17 @@ if __name__ == '__main__':
     #             | RegexExpression 
     #             | ExistsFunc 
     #             | NotExistsFunc 
-    l = ['STRUUID()', 'ROUND ( *Expression*)', 'isBLANK (*Expression*)', 'COUNT ( * )']
+    l = ['STRUUID()', 'ROUND ( "*Expression*")', 'isBLANK ("*Expression*")', 'COUNT ( * )']
     # TODO: replace expression
     printResults(l, 'BuiltInCall')
     
     # [120]   BrackettedExpression      ::=   '(' Expression ')' 
-    l = ['(*Expression*)']
+    l = ['("*Expression*")']
     # TODO: replace expression
     printResults(l, 'BracketedExpression')
     
     # [119]   PrimaryExpression         ::=   BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var 
-    l = ['(*Expression*)', 'AVG (*Expression*)', '<work:22?>()', '"work"^^<test>', '113.44', 'true', '$algebra']
+    l = ['("*Expression*")', 'AVG ("*Expression*")', '<work:22?>()', '"work"^^<test>', '113.44', 'true', '$algebra']
     # TODO: replace expression
     printResults(l, 'PrimaryExpression')
     
@@ -327,7 +327,7 @@ if __name__ == '__main__':
     #             | '+' PrimaryExpression 
     #             | '-' PrimaryExpression 
     #             | PrimaryExpression 
-    l = ['(*Expression*)', '!AVG (*Expression*)', '+ <work:22?>()', '-"work"^^<test>']
+    l = ['("*Expression*")', '!AVG ("*Expression*")', '+ <work:22?>()', '-"work"^^<test>']
     printResults(l, 'UnaryExpression')
 
     # [117]   MultiplicativeExpression          ::=   UnaryExpression ( '*' UnaryExpression | '/' UnaryExpression )* 
@@ -343,19 +343,19 @@ if __name__ == '__main__':
     printResults(l, 'NumericExpression')
         
     # [114]   RelationalExpression      ::=   NumericExpression ( '=' NumericExpression | '!=' NumericExpression | '<' NumericExpression | '>' NumericExpression | '<=' NumericExpression | '>=' NumericExpression | 'IN' ExpressionList | 'NOT' 'IN' ExpressionList )? 
-    l = ['33*<test>() = 33 * 75', '33 IN *Expression*', '44 * 75 NOT IN *Expression*, *Expression*']
+    l = ['33*<test>() = 33 * 75', '33 IN "*Expression*"', '44 * 75 NOT IN "*Expression*", "*Expression*"']
     printResults(l, 'RelationalExpression')
         
     # [113]   ValueLogical      ::=   RelationalExpression 
-    l = ['33*<test>() = 33 * 75', '33 IN *Expression*', '44 * 75 NOT IN *Expression*, *Expression*']
+    l = ['33*<test>() = 33 * 75', '33 IN "*Expression*"', '44 * 75 NOT IN "*Expression*", "*Expression*"']
     printResults(l, 'ValueLogical')
     
     # [112]   ConditionalAndExpression          ::=   ValueLogical ( '&&' ValueLogical )* 
-    l = ['33*<test>() = 33 * 44 && 33 IN *Expression*', '44 * 75 NOT IN *Expression*, *Expression* && 33 < 44']
+    l = ['33*<test>() = 33 * 44 && 33 IN "*Expression*"', '44 * 75 NOT IN "*Expression*", "*Expression*" && 33 < 44']
     printResults(l, 'ConditionalAndExpression')
 
     # [111]   ConditionalOrExpression   ::=   ConditionalAndExpression ( '||' ConditionalAndExpression )* 
-    l = ['33*<test>() = 33 * 44 && 33 IN *Expression*  || 44 * 75 NOT IN *Expression*, *Expression* && 33 < 44']
+    l = ['("*Expression*")', '33*<test>() = 33 * 44 && 33 IN "*Expression*"  || 44 * 75 NOT IN "*Expression*", "*Expression*" && 33 && ("*Expression*")']
     printResults(l, 'ConditionalOrExpression')
         
     # [110]   Expression        ::=   ConditionalOrExpression 
