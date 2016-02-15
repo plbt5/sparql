@@ -237,7 +237,7 @@ ALL_VALUES_st_p.setParseAction(parseInfoFunc('ALL_VALUES_st'))
 # Brackets and interpunction
 #
 
-LPAR_p, RPAR_p, SEMICOL_p, COMMA_p, EXCL_p, PLUS_p, MINUS_p, TIMES_p, DIV_p = map(Literal, '();,!+-*/')
+LPAR_p, RPAR_p, LBRACK_p, RBRACK_p, SEMICOL_p, COMMA_p, EXCL_p, PLUS_p, MINUS_p, TIMES_p, DIV_p = map(Literal, '()[];,!+-*/')
 
 #
 # Operators
@@ -1398,10 +1398,30 @@ class GraphNode(SPARQLNonTerminal):
 if do_parseactions: GraphNode_p.setParseAction(parseInfoFunc('GraphNode'))
 
 # [103]   CollectionPath    ::=   '(' GraphNodePath+ ')' 
+CollectionPath_p =  LPAR_p + OneOrMore(GraphNodePath_p) + RPAR_p
+class CollectionPath(SPARQLNonTerminal):  
+    pass
+if do_parseactions: CollectionPath_p.setParseAction(parseInfoFunc('CollectionPath'))
 
 # [102]   Collection        ::=   '(' GraphNode+ ')' 
+Collection_p =  LPAR_p + OneOrMore(GraphNode_p) + RPAR_p
+class Collection(SPARQLNonTerminal):  
+    pass
+if do_parseactions: Collection_p.setParseAction(parseInfoFunc('Collection'))
 
-# [101]   BlankNodePropertyListPath         ::=   '[' PropertyListPathNotEmpty ']' 
+PropertyListPathNotEmpty_p = Forward()
+# Needed for next production: BlankNodePropertyListPath
+# TODO: remove following lines after proper definition of PropertyListPathNotEmpty attained
+PropertyListPathNotEmpty_p << Literal('*PropertyListPathNotEmpty*')
+class PropertyListPathNotEmpty(SPARQLNonTerminal):  
+    pass
+if do_parseactions: PropertyListPathNotEmpty_p.setParseAction(parseInfoFunc('PropertyListPathNotEmpty'))
+
+# [101]   BlankNodePropertyListPath         ::=   '[' PropertyListPathNotEmpty ']'
+BlankNodePropertyListPath_p =   LBRACK_p + PropertyListPathNotEmpty_p + RBRACK_p 
+class BlankNodePropertyListPath(SPARQLNonTerminal):  
+    pass
+if do_parseactions: BlankNodePropertyListPath_p.setParseAction(parseInfoFunc('BlankNodePropertyListPath'))
 
 # [100]   TriplesNodePath   ::=   CollectionPath | BlankNodePropertyListPath 
 

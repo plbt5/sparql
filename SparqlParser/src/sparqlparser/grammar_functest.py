@@ -383,11 +383,17 @@ if __name__ == '__main__':
     printResults(l, 'GraphNode')
     
     # [103]   CollectionPath    ::=   '(' GraphNodePath+ ')' 
-    
+    l = ['($algebra)', '( *TriplesNodePath* $algebra )']
+    printResults(l, 'CollectionPath')
+        
     # [102]   Collection        ::=   '(' GraphNode+ ')' 
-    
+    l = ['($algebra)', '(*TriplesNode* $algebra)']
+    printResults(l, 'Collection')
+        
     # [101]   BlankNodePropertyListPath         ::=   '[' PropertyListPathNotEmpty ']' 
-    
+    l = ['[*PropertyListPathNotEmpty*]']
+    printResults(l, 'BlankNodePropertyListPath')
+            
     # [100]   TriplesNodePath   ::=   CollectionPath | BlankNodePropertyListPath 
     
     # [99]    BlankNodePropertyList     ::=   '[' PropertyListNotEmpty ']' 
