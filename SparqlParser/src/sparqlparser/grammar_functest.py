@@ -1,5 +1,11 @@
 from sparqlparser.base import *
 
+# Next lines are temporary during development, to be deleted as implementions added to .base
+GroupGraphPattern_p << Literal('{}')
+TriplesNodePath_p << Literal('($TriplesNodePath)')
+TriplesNode_p << Literal('($TriplesNode)')
+PropertyListPathNotEmpty_p << Literal('$VerbPath ?ObjectListPath') 
+
 def printResults(l, rule):
     print('=' * 80)
     print(rule)
@@ -227,12 +233,12 @@ if __name__ == '__main__':
     
     # [126]   NotExistsFunc     ::=   'NOT' 'EXISTS' GroupGraphPattern 
     # TODO: replace expression
-    l = ['NOT Exists *GroupGraphPattern*']
+    l = ['NOT Exists {}']
     printResults(l, 'NotExistsFunc')
 
     # [125]   ExistsFunc        ::=   'EXISTS' GroupGraphPattern 
     # TODO: replace expression
-    l = ['Exists *GroupGraphPattern*']
+    l = ['Exists {}']
     printResults(l, 'ExistsFunc')
     
     # [124]   StrReplaceExpression      ::=   'REPLACE' '(' Expression ',' Expression ',' Expression ( ',' Expression )? ')' 
@@ -375,23 +381,23 @@ if __name__ == '__main__':
     printResults(l, 'VarOrTerm')
         
     # [105]   GraphNodePath     ::=   VarOrTerm | TriplesNodePath 
-    l = ['$algebra', '*TriplesNodePath*']
+    l = ['$algebra', '($TriplesNodePath)']
     printResults(l, 'GraphNodePath')
             
     # [104]   GraphNode         ::=   VarOrTerm | TriplesNode 
-    l = ['$algebra', '*TriplesNode*']
+    l = ['$algebra', '($TriplesNode)']
     printResults(l, 'GraphNode')
     
     # [103]   CollectionPath    ::=   '(' GraphNodePath+ ')' 
-    l = ['($algebra)', '( *TriplesNodePath* $algebra )']
+    l = ['($algebra)', '(($TriplesNodePath) $algebra )']
     printResults(l, 'CollectionPath')
         
     # [102]   Collection        ::=   '(' GraphNode+ ')' 
-    l = ['($algebra)', '(*TriplesNode* $algebra)']
+    l = ['($algebra)', '($algebra ($TriplesNode))']
     printResults(l, 'Collection')
         
     # [101]   BlankNodePropertyListPath         ::=   '[' PropertyListPathNotEmpty ']' 
-    l = ['[*PropertyListPathNotEmpty*]']
+    l = ['[ $VerbPath ?ObjectListPath ]']
     printResults(l, 'BlankNodePropertyListPath')
             
     # [100]   TriplesNodePath   ::=   CollectionPath | BlankNodePropertyListPath 

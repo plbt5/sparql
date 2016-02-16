@@ -1075,6 +1075,9 @@ class RDFLiteral(SPARQLNonTerminal):
 if do_parseactions: RDFLiteral_p.setParseAction(parseInfoFunc('RDFLiteral'))
 
 Expression_p = Forward()
+class Expression(SPARQLNonTerminal):  
+    pass
+if do_parseactions: Expression_p.setParseAction(parseInfoFunc('Expression'))
 
 # pattern and class to parse and render delimited Expression lists
 ExpressionList_p = delimitedList(Expression_p)
@@ -1116,9 +1119,7 @@ class Aggregate(SPARQLNonTerminal):
     pass
 if do_parseactions: Aggregate_p.setParseAction(parseInfoFunc('Aggregate'))
 
-# # TODO
 GroupGraphPattern_p = Forward()
-GroupGraphPattern_p << Literal('*GroupGraphPattern*')
 class GroupGraphPattern(SPARQLNonTerminal):  
     pass
 if do_parseactions: GroupGraphPattern_p.setParseAction(parseInfoFunc('GroupGraphPattern'))
@@ -1345,9 +1346,6 @@ if do_parseactions: ConditionalOrExpression_p.setParseAction(parseInfoFunc('Cond
 
 # [110]   Expression        ::=   ConditionalOrExpression 
 Expression_p << ConditionalOrExpression_p
-class Expression(SPARQLNonTerminal):  
-    pass
-if do_parseactions: Expression_p.setParseAction(parseInfoFunc('Expression'))
 
 # [109]   GraphTerm         ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | BlankNode | NIL 
 GraphTerm_p =   iri_p | \
@@ -1373,9 +1371,6 @@ class VarOrTerm(SPARQLNonTerminal):
 if do_parseactions: VarOrTerm_p.setParseAction(parseInfoFunc('VarOrTerm'))
 
 TriplesNodePath_p = Forward()
-# Needed for next production: GraphNodePath
-# TODO: remove following lines after proper definition of GraphNodePath attained
-TriplesNodePath_p << Literal('*TriplesNodePath*')
 class TriplesNodePath(SPARQLNonTerminal):  
     pass
 if do_parseactions: TriplesNodePath_p.setParseAction(parseInfoFunc('TriplesNodePath'))
@@ -1384,9 +1379,6 @@ if do_parseactions: TriplesNodePath_p.setParseAction(parseInfoFunc('TriplesNodeP
 GraphNodePath_p = VarOrTerm_p | TriplesNodePath_p 
 
 TriplesNode_p = Forward()
-# Needed for next production: GraphNode
-# TODO: remove following lines after proper definition of GraphNode attained
-TriplesNode_p << Literal('*TriplesNode*')
 class TriplesNode(SPARQLNonTerminal):  
     pass
 if do_parseactions: TriplesNode_p.setParseAction(parseInfoFunc('TriplesNode'))
@@ -1410,9 +1402,6 @@ class Collection(SPARQLNonTerminal):
 if do_parseactions: Collection_p.setParseAction(parseInfoFunc('Collection'))
 
 PropertyListPathNotEmpty_p = Forward()
-# Needed for next production: BlankNodePropertyListPath
-# TODO: remove following lines after proper definition of PropertyListPathNotEmpty attained
-PropertyListPathNotEmpty_p << Literal('*PropertyListPathNotEmpty*')
 class PropertyListPathNotEmpty(SPARQLNonTerminal):  
     pass
 if do_parseactions: PropertyListPathNotEmpty_p.setParseAction(parseInfoFunc('PropertyListPathNotEmpty'))
