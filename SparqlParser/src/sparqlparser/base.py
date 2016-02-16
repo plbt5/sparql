@@ -237,11 +237,35 @@ ALL_VALUES_st_p.setParseAction(parseInfoFunc('ALL_VALUES_st'))
 # Brackets and interpunction
 #
 
-LPAR_p, RPAR_p, LBRACK_p, RBRACK_p, SEMICOL_p, COMMA_p, EXCL_p, PLUS_p, MINUS_p, TIMES_p, DIV_p = map(Literal, '()[];,!+-*/')
+LPAR_p, RPAR_p, LBRACK_p, RBRACK_p, SEMICOL_p, COMMA_p, EXCL_p = map(Literal, '()[];,!')
 
 #
 # Operators
 #
+
+PLUS_op_p = Literal('+')
+class PLUS_op(SPARQLOperator):
+    def render(self):
+        return '+'
+PLUS_op_p.setParseAction(parseInfoFunc('PLUS_op'))
+
+MINUS_op_p = Literal('-')
+class MINUS_op(SPARQLOperator):
+    def render(self):
+        return '-'
+MINUS_op_p.setParseAction(parseInfoFunc('MINUS_op'))
+
+TIMES_op_p = Literal('*')
+class TIMES_op(SPARQLOperator):
+    def render(self):
+        return '*'
+TIMES_op_p.setParseAction(parseInfoFunc('TIMES_op'))
+
+DIV_op_p = Literal('/')
+class DIV_op(SPARQLOperator):
+    def render(self):
+        return '/'
+DIV_op_p.setParseAction(parseInfoFunc('DIV_op'))
 
 EQ_op_p = Literal('=') 
 class EQ_op(SPARQLOperator):
@@ -300,462 +324,396 @@ OR_op_p.setParseAction(parseInfoFunc('OR_op'))
 
 DISTINCT_kw_p = CaselessKeyword('DISTINCT')
 class DISTINCT_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'DISTINCT'
 DISTINCT_kw_p.setParseAction(parseInfoFunc('DISTINCT_kw'))
 
 COUNT_kw_p = CaselessKeyword('COUNT')
 class COUNT_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'COUNT'
 COUNT_kw_p.setParseAction(parseInfoFunc('COUNT_kw'))
 
 SUM_kw_p = CaselessKeyword('SUM')
 class SUM_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'SUM'
 SUM_kw_p.setParseAction(parseInfoFunc('SUM_kw'))
 
 MIN_kw_p = CaselessKeyword('MIN') 
 class MIN_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'MIN'
 MIN_kw_p.setParseAction(parseInfoFunc('MIN_kw'))
 
 MAX_kw_p = CaselessKeyword('MAX') 
 class MAX_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'MAX'
 MAX_kw_p.setParseAction(parseInfoFunc('MAX_kw'))
 
 AVG_kw_p = CaselessKeyword('AVG') 
 class AVG_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'AVG'
 AVG_kw_p.setParseAction(parseInfoFunc('AVG_kw'))
 
 SAMPLE_kw_p = CaselessKeyword('SAMPLE') 
 class SAMPLE_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'SAMPLE'
 SAMPLE_kw_p.setParseAction(parseInfoFunc('SAMPLE_kw'))
 
 GROUP_CONCAT_kw_p = CaselessKeyword('GROUP_CONCAT') 
 class GROUP_CONCAT_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'GROUP_CONCAT'
 GROUP_CONCAT_kw_p.setParseAction(parseInfoFunc('GROUP_CONCAT_kw'))
 
 SEPARATOR_kw_p = CaselessKeyword('SEPARATOR')
 class SEPARATOR_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'SEPARATOR'
 SEPARATOR_kw_p.setParseAction(parseInfoFunc('SEPARATOR_kw'))
 
 NOT_kw_p = CaselessKeyword('NOT') + NotAny(CaselessKeyword('EXISTS') | CaselessKeyword('IN'))
 class NOT_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'NOT'
 NOT_kw_p.setParseAction(parseInfoFunc('NOT_kw'))
 
 EXISTS_kw_p = CaselessKeyword('EXISTS')
 class EXISTS_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'EXISTS'
 EXISTS_kw_p.setParseAction(parseInfoFunc('EXISTS_kw'))
 
 NOT_EXISTS_kw_p = CaselessKeyword('NOT') + CaselessKeyword('EXISTS')
 class NOT_EXISTS_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'NOT EXISTS'
 NOT_EXISTS_kw_p.setParseAction(parseInfoFunc('NOT_EXISTS_kw'))
 
 REPLACE_kw_p = CaselessKeyword('REPLACE')
 class REPLACE_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'REPLACE'
 REPLACE_kw_p.setParseAction(parseInfoFunc('REPLACE_kw'))
 
 SUBSTR_kw_p = CaselessKeyword('SUBSTR')
 class SUBSTR_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'SUBSTR'
 SUBSTR_kw_p.setParseAction(parseInfoFunc('SUBSTR_kw'))
 
 REGEX_kw_p = CaselessKeyword('REGEX')
 class REGEX_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'REGEX'
 REGEX_kw_p.setParseAction(parseInfoFunc('REGEX_kw'))
 
 STR_kw_p = CaselessKeyword('STR') 
 class STR_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'STR'
 STR_kw_p.setParseAction(parseInfoFunc('STR_kw'))
 
 LANG_kw_p = CaselessKeyword('LANG') 
 class LANG_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'LANG'
 LANG_kw_p.setParseAction(parseInfoFunc('LANG_kw'))
 
 LANGMATCHES_kw_p = CaselessKeyword('LANGMATCHES') 
 class LANGMATCHES_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'LANGMATCHES'
 LANGMATCHES_kw_p.setParseAction(parseInfoFunc('LANGMATCHES_kw'))
 
 DATATYPE_kw_p = CaselessKeyword('DATATYPE') 
 class DATATYPE_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'DATATYPE'
 DATATYPE_kw_p.setParseAction(parseInfoFunc('DATATYPE_kw'))
 
 BOUND_kw_p = CaselessKeyword('BOUND') 
 class BOUND_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'BOUND'
 BOUND_kw_p.setParseAction(parseInfoFunc('BOUND_kw'))
 
 IRI_kw_p = CaselessKeyword('IRI') 
 class IRI_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'IRI'
 IRI_kw_p.setParseAction(parseInfoFunc('IRI_kw'))
 
 URI_kw_p = CaselessKeyword('URI') 
 class URI_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'URI'
 URI_kw_p.setParseAction(parseInfoFunc('URI_kw'))
 
 BNODE_kw_p = CaselessKeyword('BNODE') 
 class BNODE_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'BNODE'
 BNODE_kw_p.setParseAction(parseInfoFunc('BNODE_kw'))
 
 RAND_kw_p = CaselessKeyword('RAND') 
 class RAND_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'RAND'
 RAND_kw_p.setParseAction(parseInfoFunc('RAND_kw'))
 
 ABS_kw_p = CaselessKeyword('ABS') 
 class ABS_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'ABS'
 ABS_kw_p.setParseAction(parseInfoFunc('ABS_kw'))
 
 CEIL_kw_p = CaselessKeyword('CEIL') 
 class CEIL_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'CEIL'
 CEIL_kw_p.setParseAction(parseInfoFunc('CEIL_kw'))
 
 FLOOR_kw_p = CaselessKeyword('FLOOR') 
 class FLOOR_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'FLOOR'
 FLOOR_kw_p.setParseAction(parseInfoFunc('FLOOR_kw'))
 
 ROUND_kw_p = CaselessKeyword('ROUND') 
 class ROUND_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'ROUND'
 ROUND_kw_p.setParseAction(parseInfoFunc('ROUND_kw'))
 
 CONCAT_kw_p = CaselessKeyword('CONCAT') 
 class CONCAT_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'CONCAT'
 CONCAT_kw_p.setParseAction(parseInfoFunc('CONCAT_kw'))
 
 STRLEN_kw_p = CaselessKeyword('STRLEN') 
 class STRLEN_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'STRLEN'
 STRLEN_kw_p.setParseAction(parseInfoFunc('STRLEN_kw'))
 
 UCASE_kw_p = CaselessKeyword('UCASE') 
 class UCASE_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'UCASE'
 UCASE_kw_p.setParseAction(parseInfoFunc('UCASE_kw'))
 
 LCASE_kw_p = CaselessKeyword('LCASE') 
 class LCASE_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'LCASE'
 LCASE_kw_p.setParseAction(parseInfoFunc('LCASE_kw'))
 
 ENCODE_FOR_URI_kw_p = CaselessKeyword('ENCODE_FOR_URI') 
 class ENCODE_FOR_URI_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'ENCODE_FOR_URI'
 ENCODE_FOR_URI_kw_p.setParseAction(parseInfoFunc('ENCODE_FOR_URI_kw'))
 
 CONTAINS_kw_p = CaselessKeyword('CONTAINS') 
 class CONTAINS_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'CONTAINS'
 CONTAINS_kw_p.setParseAction(parseInfoFunc('CONTAINS_kw'))
 
 STRSTARTS_kw_p = CaselessKeyword('STRSTARTS') 
 class STRSTARTS_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'STRSTARTS'
 STRSTARTS_kw_p.setParseAction(parseInfoFunc('STRSTARTS_kw'))
 
 STRENDS_kw_p = CaselessKeyword('STRENDS') 
 class STRENDS_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'STRENDS'
 STRENDS_kw_p.setParseAction(parseInfoFunc('STRENDS_kw'))
 
 STRBEFORE_kw_p = CaselessKeyword('STRBEFORE') 
 class STRBEFORE_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'STRBEFORE'
 STRBEFORE_kw_p.setParseAction(parseInfoFunc('STRBEFORE_kw'))
 
 STRAFTER_kw_p = CaselessKeyword('STRAFTER') 
 class STRAFTER_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'STRAFTER'
 STRAFTER_kw_p.setParseAction(parseInfoFunc('STRAFTER_kw'))
 
 YEAR_kw_p = CaselessKeyword('YEAR') 
 class YEAR_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'YEAR'
 YEAR_kw_p.setParseAction(parseInfoFunc('YEAR_kw'))
 
 MONTH_kw_p = CaselessKeyword('MONTH') 
 class MONTH_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'MONTH'
 MONTH_kw_p.setParseAction(parseInfoFunc('MONTH_kw'))
 
 DAY_kw_p = CaselessKeyword('DAY') 
 class DAY_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'DAY'
 DAY_kw_p.setParseAction(parseInfoFunc('DAY_kw'))
 
 HOURS_kw_p = CaselessKeyword('HOURS') 
 class HOURS_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'HOURS'
 HOURS_kw_p.setParseAction(parseInfoFunc('HOURS_kw'))
 
 MINUTES_kw_p = CaselessKeyword('MINUTES') 
 class MINUTES_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'MINUTES'
 MINUTES_kw_p.setParseAction(parseInfoFunc('MINUTES_kw'))
 
 SECONDS_kw_p = CaselessKeyword('SECONDS') 
 class SECONDS_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'SECONDS'
 SECONDS_kw_p.setParseAction(parseInfoFunc('SECONDS_kw'))
 
 TIMEZONE_kw_p = CaselessKeyword('TIMEZONE') 
 class TIMEZONE_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'TIMEZONE'
 TIMEZONE_kw_p.setParseAction(parseInfoFunc('TIMEZONE_kw'))
 
 TZ_kw_p = CaselessKeyword('TZ') 
 class TZ_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'TZ'
 TZ_kw_p.setParseAction(parseInfoFunc('TZ_kw'))
 
 NOW_kw_p = CaselessKeyword('NOW') 
 class NOW_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'NOW'
 NOW_kw_p.setParseAction(parseInfoFunc('NOW_kw'))
 
 UUID_kw_p = CaselessKeyword('UUID') 
 class UUID_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'UUID'
 UUID_kw_p.setParseAction(parseInfoFunc('UUID_kw'))
 
 STRUUID_kw_p = CaselessKeyword('STRUUID') 
 class STRUUID_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'STRUUID'
 STRUUID_kw_p.setParseAction(parseInfoFunc('STRUUID_kw'))
 
 MD5_kw_p = CaselessKeyword('MD5') 
 class MD5_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'MD5'
 MD5_kw_p.setParseAction(parseInfoFunc('MD5_kw'))
 
 SHA1_kw_p = CaselessKeyword('SHA1') 
 class SHA1_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'SHA1'
 SHA1_kw_p.setParseAction(parseInfoFunc('SHA1_kw'))
 
 SHA256_kw_p = CaselessKeyword('SHA256') 
 class SHA256_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'SHA256'
 SHA256_kw_p.setParseAction(parseInfoFunc('SHA256_kw'))
 
 SHA384_kw_p = CaselessKeyword('SHA384') 
 class SHA384_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'SHA384'
 SHA384_kw_p.setParseAction(parseInfoFunc('SHA384_kw'))
 
 SHA512_kw_p = CaselessKeyword('SHA512') 
 class SHA512_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'SHA512'
 SHA512_kw_p.setParseAction(parseInfoFunc('SHA512_kw'))
 
 COALESCE_kw_p = CaselessKeyword('COALESCE') 
 class COALESCE_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'COALESCE'
 COALESCE_kw_p.setParseAction(parseInfoFunc('COALESCE_kw'))
 
 IF_kw_p = CaselessKeyword('IF') 
 class IF_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'IF'
 IF_kw_p.setParseAction(parseInfoFunc('IF_kw'))
 
 STRLANG_kw_p = CaselessKeyword('STRLANG') 
 class STRLANG_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'STRLANG'
 STRLANG_kw_p.setParseAction(parseInfoFunc('STRLANG_kw'))
 
 STRDT_kw_p = CaselessKeyword('STRDT') 
 class STRDT_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'STRDT'
 STRDT_kw_p.setParseAction(parseInfoFunc('STRDT_kw'))
 
 sameTerm_kw_p = CaselessKeyword('sameTerm') 
 class sameTerm_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'sameTerm'
 sameTerm_kw_p.setParseAction(parseInfoFunc('sameTerm_kw'))
 
 isIRI_kw_p = CaselessKeyword('isIRI') 
 class isIRI_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'isIRI'
 isIRI_kw_p.setParseAction(parseInfoFunc('isIRI_kw'))
 
 isURI_kw_p = CaselessKeyword('isURI') 
 class isURI_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'isURI'
 isURI_kw_p.setParseAction(parseInfoFunc('isURI_kw'))
 
 isBLANK_kw_p = CaselessKeyword('isBLANK') 
 class isBLANK_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'isBLANK'
 isBLANK_kw_p.setParseAction(parseInfoFunc('isBLANK_kw'))
 
 isLITERAL_kw_p = CaselessKeyword('isLITERAL') 
 class isLITERAL_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'isLITERAL'
 isLITERAL_kw_p.setParseAction(parseInfoFunc('isLITERAL_kw'))
 
 isNUMERIC_kw_p = CaselessKeyword('isNUMERIC') 
 class isNUMERIC_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'isNUMERIC'
 isNUMERIC_kw_p.setParseAction(parseInfoFunc('isNUMERIC_kw'))
 
 IN_kw_p = CaselessKeyword('IN') 
 class IN_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'IN'
 IN_kw_p.setParseAction(parseInfoFunc('IN_kw'))
 
 NOT_IN_kw_p = CaselessKeyword('NOT') + CaselessKeyword('IN')
 class NOT_IN_kw(SPARQLKeyword):
-    pass
     def render(self):
         return 'NOT IN'
 NOT_IN_kw_p.setParseAction(parseInfoFunc('NOT_IN_kw'))
@@ -1290,19 +1248,19 @@ if do_parseactions: PrimaryExpression_p.setParseAction(parseInfoFunc('PrimaryExp
 #             | '+' PrimaryExpression 
 #             | '-' PrimaryExpression 
 #             | PrimaryExpression 
-UnaryExpression_p = EXCL_p + PrimaryExpression_p | PLUS_p + PrimaryExpression_p | MINUS_p + PrimaryExpression_p | PrimaryExpression_p
+UnaryExpression_p = EXCL_p + PrimaryExpression_p | PLUS_op_p + PrimaryExpression_p | MINUS_op_p + PrimaryExpression_p | PrimaryExpression_p
 class UnaryExpression(SPARQLNonTerminal):  
     pass
 if do_parseactions: UnaryExpression_p.setParseAction(parseInfoFunc('UnaryExpression'))
 
 # [117]   MultiplicativeExpression          ::=   UnaryExpression ( '*' UnaryExpression | '/' UnaryExpression )* 
-MultiplicativeExpression_p = UnaryExpression_p + ZeroOrMore( TIMES_p + UnaryExpression_p | DIV_p + UnaryExpression_p )
+MultiplicativeExpression_p = UnaryExpression_p + ZeroOrMore( TIMES_op_p + UnaryExpression_p | DIV_op_p + UnaryExpression_p )
 class MultiplicativeExpression(SPARQLNonTerminal):  
     pass
 if do_parseactions: MultiplicativeExpression_p.setParseAction(parseInfoFunc('MultiplicativeExpression'))
 
 # [116]   AdditiveExpression        ::=   MultiplicativeExpression ( '+' MultiplicativeExpression | '-' MultiplicativeExpression | ( NumericLiteralPositive | NumericLiteralNegative ) ( ( '*' UnaryExpression ) | ( '/' UnaryExpression ) )* )* 
-AdditiveExpression_p = MultiplicativeExpression_p + ZeroOrMore (PLUS_p + MultiplicativeExpression_p | MINUS_p  + MultiplicativeExpression_p | (NumericLiteralPositive_p | NumericLiteralNegative_p) + ZeroOrMore (TIMES_p + UnaryExpression_p | DIV_p + UnaryExpression_p))
+AdditiveExpression_p = MultiplicativeExpression_p + ZeroOrMore (PLUS_op_p + MultiplicativeExpression_p | MINUS_op_p  + MultiplicativeExpression_p | (NumericLiteralPositive_p | NumericLiteralNegative_p) + ZeroOrMore (TIMES_op_p + UnaryExpression_p | DIV_op_p + UnaryExpression_p))
 class AdditiveExpression(SPARQLNonTerminal):  
     pass
 if do_parseactions: AdditiveExpression_p.setParseAction(parseInfoFunc('AdditiveExpression'))
