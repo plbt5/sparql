@@ -237,11 +237,17 @@ ALL_VALUES_st_p.setParseAction(parseInfoFunc('ALL_VALUES_st'))
 # Brackets and interpunction
 #
 
-LPAR_p, RPAR_p, LBRACK_p, RBRACK_p, SEMICOL_p, COMMA_p, EXCL_p = map(Literal, '()[];,!')
+LPAR_p, RPAR_p, LBRACK_p, RBRACK_p, SEMICOL_p, COMMA_p = map(Literal, '()[];,')
 
 #
 # Operators
 #
+
+NOT_op_p = Literal('!')
+class NOT_op(SPARQLOperator):
+    def render(self):
+        return '!'
+NOT_op_p.setParseAction(parseInfoFunc('NOT_op'))
 
 PLUS_op_p = Literal('+')
 class PLUS_op(SPARQLOperator):
@@ -1258,7 +1264,7 @@ if do_parseactions: PrimaryExpression_p.setParseAction(parseInfoFunc('PrimaryExp
 #             | '+' PrimaryExpression 
 #             | '-' PrimaryExpression 
 #             | PrimaryExpression 
-UnaryExpression_p = EXCL_p + PrimaryExpression_p | PLUS_op_p + PrimaryExpression_p | MINUS_op_p + PrimaryExpression_p | PrimaryExpression_p
+UnaryExpression_p = NOT_op_p + PrimaryExpression_p | PLUS_op_p + PrimaryExpression_p | MINUS_op_p + PrimaryExpression_p | PrimaryExpression_p
 class UnaryExpression(SPARQLNonTerminal):  
     pass
 if do_parseactions: UnaryExpression_p.setParseAction(parseInfoFunc('UnaryExpression'))
@@ -1414,7 +1420,7 @@ PathOneInPropertySetList_p = delimitedList(PathOneInPropertySet_p, delim='|')
 class PathOneInPropertySetList(SPARQLNonTerminal):
     pass
     def render(self):
-        return '| '.join([v[1] if isinstance(v[1], str) else v[1].render() for v in self.getItems()])
+        return ' | '.join([v[1] if isinstance(v[1], str) else v[1].render() for v in self.getItems()])
 if do_parseactions: PathOneInPropertySetList_p.setParseAction(parseInfoFunc('PathOneInPropertySetList'))
 
 # [95]    PathNegatedPropertySet    ::=   PathOneInPropertySet | '(' ( PathOneInPropertySet ( '|' PathOneInPropertySet )* )? ')' 
@@ -1423,7 +1429,16 @@ class PathNegatedPropertySet(SPARQLNonTerminal):
     pass
 if do_parseactions: PathNegatedPropertySet_p.setParseAction(parseInfoFunc('PathNegatedPropertySet'))
 
+Path_p = Forward()
+class Path(SPARQLNonTerminal):  
+    pass
+if do_parseactions: Path_p.setParseAction(parseInfoFunc('Path'))
+
 # [94]    PathPrimary       ::=   iri | 'a' | '!' PathNegatedPropertySet | '(' Path ')' 
+PathPrimary_p = iri_p | TYPE_kw_p | (NOT_op_p + PathNegatedPropertySet_p) | (LPAR_p + Path_p + RPAR_p)
+class PathPrimary(SPARQLNonTerminal):  
+    pass
+if do_parseactions: PathPrimary_p.setParseAction(parseInfoFunc('PathPrimary'))
 
 # [93]    PathMod   ::=   '?' | '*' | '+' 
 

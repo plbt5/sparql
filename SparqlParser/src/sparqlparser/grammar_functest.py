@@ -7,6 +7,7 @@ GroupGraphPattern_p << Literal('{}')
 # TriplesNode_p << Literal('($TriplesNode)')
 PropertyListPathNotEmpty_p << Literal('$VerbPath ?ObjectListPath') 
 PropertyListNotEmpty_p << Literal('$Verb $ObjectList')
+Path_p << Literal('<Path>')
 
 def printResults(l, rule):
     print('=' * 80)
@@ -427,7 +428,9 @@ if __name__ == '__main__':
     printResults(l, 'PathNegatedPropertySet')    
     
     # [94]    PathPrimary       ::=   iri | 'a' | '!' PathNegatedPropertySet | '(' Path ')' 
-    
+    l = ['<testIri>', 'a', '(^<testIri>|^<testIri>)', '()', '(^ a|^<testIri>)', '(<Path>)']
+    printResults(l, 'PathNegatedPropertySet')    
+        
     # [93]    PathMod   ::=   '?' | '*' | '+' 
     
     # [92]    PathEltOrInverse          ::=   PathElt | '^' PathElt 
