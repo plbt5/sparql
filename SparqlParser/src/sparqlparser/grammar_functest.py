@@ -423,6 +423,8 @@ if __name__ == '__main__':
     printResults(l, 'PathOneInPropertySet')    
     
     # [95]    PathNegatedPropertySet    ::=   PathOneInPropertySet | '(' ( PathOneInPropertySet ( '|' PathOneInPropertySet )* )? ')' 
+    l = ['(^<testIri>|^<testIri>)', '()', '(^ a|^<testIri>)']
+    printResults(l, 'PathNegatedPropertySet')    
     
     # [94]    PathPrimary       ::=   iri | 'a' | '!' PathNegatedPropertySet | '(' Path ')' 
     

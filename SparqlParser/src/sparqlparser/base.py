@@ -1409,7 +1409,19 @@ class PathOneInPropertySet(SPARQLNonTerminal):
     pass
 if do_parseactions: PathOneInPropertySet_p.setParseAction(parseInfoFunc('PathOneInPropertySet'))
 
+# pattern and class to parse and render delimited PathOneInPropertySet lists
+PathOneInPropertySetList_p = delimitedList(PathOneInPropertySet_p, delim='|')
+class PathOneInPropertySetList(SPARQLNonTerminal):
+    pass
+    def render(self):
+        return '| '.join([v[1] if isinstance(v[1], str) else v[1].render() for v in self.getItems()])
+if do_parseactions: PathOneInPropertySetList_p.setParseAction(parseInfoFunc('PathOneInPropertySetList'))
+
 # [95]    PathNegatedPropertySet    ::=   PathOneInPropertySet | '(' ( PathOneInPropertySet ( '|' PathOneInPropertySet )* )? ')' 
+PathNegatedPropertySet_p = PathOneInPropertySet_p | (LPAR_p + Optional(PathOneInPropertySetList_p) + RPAR_p)
+class PathNegatedPropertySet(SPARQLNonTerminal):  
+    pass
+if do_parseactions: PathNegatedPropertySet_p.setParseAction(parseInfoFunc('PathNegatedPropertySet'))
 
 # [94]    PathPrimary       ::=   iri | 'a' | '!' PathNegatedPropertySet | '(' Path ')' 
 
