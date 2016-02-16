@@ -419,6 +419,8 @@ if __name__ == '__main__':
     printResults(l, 'Integer')
     
     # [96]    PathOneInPropertySet      ::=   iri | 'a' | '^' ( iri | 'a' ) 
+    l = ['<test>', 'a', '^<test>', '^ a']
+    printResults(l, 'PathOneInPropertySet')    
     
     # [95]    PathNegatedPropertySet    ::=   PathOneInPropertySet | '(' ( PathOneInPropertySet ( '|' PathOneInPropertySet )* )? ')' 
     

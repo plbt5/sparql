@@ -309,18 +309,28 @@ class AND_op(SPARQLOperator):
         return '&&'
 AND_op_p.setParseAction(parseInfoFunc('AND_op'))
   
-  
 OR_op_p = Literal('||')
 class OR_op(SPARQLOperator):
     def render(self):
         return '||'
 OR_op_p.setParseAction(parseInfoFunc('OR_op'))
 
+INVERSE_op_p = Literal('^')
+class INVERSE_op(SPARQLOperator):
+    def render(self):
+        return '^'
+INVERSE_op_p.setParseAction(parseInfoFunc('INVERSE_op'))
 
 
 #
 # Keywords
 #
+
+TYPE_kw_p = Keyword('a')
+class TYPE_kw(SPARQLKeyword):
+    def render(self):
+        return 'a'
+TYPE_kw_p.setParseAction(parseInfoFunc('TYPE_kw'))
 
 DISTINCT_kw_p = CaselessKeyword('DISTINCT')
 class DISTINCT_kw(SPARQLKeyword):
@@ -1394,6 +1404,10 @@ class Integer(SPARQLNonTerminal):
 if do_parseactions: Integer_p.setParseAction(parseInfoFunc('Integer'))
 
 # [96]    PathOneInPropertySet      ::=   iri | 'a' | '^' ( iri | 'a' ) 
+PathOneInPropertySet_p =   iri_p | TYPE_kw_p | (INVERSE_op_p  + ( iri_p | TYPE_kw_p ))
+class PathOneInPropertySet(SPARQLNonTerminal):  
+    pass
+if do_parseactions: PathOneInPropertySet_p.setParseAction(parseInfoFunc('PathOneInPropertySet'))
 
 # [95]    PathNegatedPropertySet    ::=   PathOneInPropertySet | '(' ( PathOneInPropertySet ( '|' PathOneInPropertySet )* )? ')' 
 
