@@ -1,8 +1,9 @@
 from sparqlparser.base import *
 
 # Next lines are temporary during development, to be deleted as implementions added to .base
+# Expression_p << Literal('"*Expression*"')
 GroupGraphPattern_p << Literal('{}')
-TriplesNodePath_p << Literal('($TriplesNodePath)')
+# TriplesNodePath_p << Literal('($TriplesNodePath)')
 TriplesNode_p << Literal('($TriplesNode)')
 PropertyListPathNotEmpty_p << Literal('$VerbPath ?ObjectListPath') 
 
@@ -401,7 +402,9 @@ if __name__ == '__main__':
     printResults(l, 'BlankNodePropertyListPath')
             
     # [100]   TriplesNodePath   ::=   CollectionPath | BlankNodePropertyListPath 
-    
+    l = ['($algebra)', '(($TriplesNodePath) $algebra )', '[ $VerbPath ?ObjectListPath ]']
+    printResults(l, 'TriplesNodePath')
+        
     # [99]    BlankNodePropertyList     ::=   '[' PropertyListNotEmpty ']' 
     
     # [98]    TriplesNode       ::=   Collection | BlankNodePropertyList 

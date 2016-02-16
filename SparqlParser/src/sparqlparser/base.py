@@ -1413,6 +1413,7 @@ class BlankNodePropertyListPath(SPARQLNonTerminal):
 if do_parseactions: BlankNodePropertyListPath_p.setParseAction(parseInfoFunc('BlankNodePropertyListPath'))
 
 # [100]   TriplesNodePath   ::=   CollectionPath | BlankNodePropertyListPath 
+TriplesNodePath_p << (CollectionPath_p | BlankNodePropertyListPath_p) 
 
 # [99]    BlankNodePropertyList     ::=   '[' PropertyListNotEmpty ']' 
 
