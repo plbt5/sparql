@@ -1427,6 +1427,7 @@ class BlankNodePropertyList(SPARQLNonTerminal):
 if do_parseactions: BlankNodePropertyList_p.setParseAction(parseInfoFunc('BlankNodePropertyList'))
 
 # [98]    TriplesNode       ::=   Collection | BlankNodePropertyList 
+TriplesNode_p << (Collection_p | BlankNodePropertyList_p)
 
 # [97]    Integer   ::=   INTEGER 
 

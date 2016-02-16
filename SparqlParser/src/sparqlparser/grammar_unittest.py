@@ -5,7 +5,7 @@ from sparqlparser.base import *
 # Expression_p << Literal('"*Expression*"')
 GroupGraphPattern_p << Literal('{}')
 # TriplesNodePath_p << Literal('($TriplesNodePath)')
-TriplesNode_p << Literal('($TriplesNode)')
+# TriplesNode_p << Literal('($TriplesNode)')
 PropertyListPathNotEmpty_p << Literal('$VerbPath ?ObjectListPath') 
 PropertyListNotEmpty_p << Literal('$Verb $ObjectList')
 
@@ -822,7 +822,7 @@ class Test(unittest.TestCase):
 # "PropertyListNotEmpty" at this point is a Forward declaration.
 # Testcases are valid.
         self.testCases['PropertyListNotEmpty'] = {'pass': [], 'fail': []}
-        self.testCases['PropertyListNotEmpty']['pass'] += ['$Verb ?ObjectList'] 
+        self.testCases['PropertyListNotEmpty']['pass'] += ['$Verb $ObjectList'] 
         self.testCases['PropertyListNotEmpty']['fail'] += ['*NoPropertyListNotEmpty*'] 
         
 # [99]    BlankNodePropertyList     ::=   '[' PropertyListNotEmpty ']' 
@@ -832,6 +832,10 @@ class Test(unittest.TestCase):
         self.testCases['BlankNodePropertyList']['fail'] += ['[*NoPropertyListPathNotEmpty*]', '[PropertyListPathNotEmpty]'] 
         
 # [98]    TriplesNode       ::=   Collection | BlankNodePropertyList 
+        self.testCases['TriplesNode'] = {'pass': [], 'fail': []}
+        self.testCases['TriplesNode']['pass'] += self.testCases['Collection']['pass']
+        self.testCases['TriplesNode']['pass'] += self.testCases['BlankNodePropertyList']['pass']
+        self.testCases['TriplesNode']['fail'] += ['algebra']
 
 # [97]    Integer   ::=   INTEGER 
 
@@ -1043,58 +1047,58 @@ class Test(unittest.TestCase):
                                        
     def testPN_LOCAL_ESC(self):
         Test.makeTestFunc('PN_LOCAL_ESC', self.testCases)()   
-             
+              
     def testHEX(self):
         Test.makeTestFunc('HEX', self.testCases)()
-        
+         
     def testPERCENT(self):
         Test.makeTestFunc('PERCENT', self.testCases)()
-        
+         
     def testPLX(self):
         Test.makeTestFunc('PLX', self.testCases)()
-                
+                 
     def testPN_CHARS_BASE(self):
         Test.makeTestFunc('PN_CHARS_BASE', self.testCases)()
-        
+         
     def testPN_CHARS_U(self):
         Test.makeTestFunc('PN_CHARS_U', self.testCases)()
-        
+         
     def testPN_CHARS(self):
         Test.makeTestFunc('PN_CHARS', self.testCases)()
-                
+                 
     def testPN_LOCAL(self):
         Test.makeTestFunc('PN_LOCAL', self.testCases)()     
-            
+             
     def testPN_PREFIX(self):
         Test.makeTestFunc('PN_PREFIX', self.testCases)()
-                
+                 
     def testVARNAME(self):
         Test.makeTestFunc('VARNAME', self.testCases)()
-       
+        
 # WS is not used
 # In the SPARWQL EBNF this production is used for defining NIL and ANON, but in this pyparsing implementation those are implemented independently     
-       
+        
     def testANON(self):
         Test.makeTestFunc('ANON', self.testCases)()    
-                   
+                    
     def testNIL(self):
         Test.makeTestFunc('NIL', self.testCases)()       
-                        
+                         
     def testECHAR(self):
         Test.makeTestFunc('ECHAR', self.testCases)()       
-                  
+                   
     def testSTRING_LITERAL_LONG2(self):
         Test.makeTestFunc('STRING_LITERAL_LONG2', self.testCases)()       
-           
+            
     def testSTRING_LITERAL_LONG1(self):
         Test.makeTestFunc('STRING_LITERAL_LONG1', self.testCases)()       
-                   
+                    
     def testSTRING_LITERAL2(self):
         Test.makeTestFunc('STRING_LITERAL2', self.testCases)()       
-                       
+                        
     def testSTRING_LITERAL1(self):
         Test.makeTestFunc('STRING_LITERAL1', self.testCases)()       
-               
+                
     def testEXPONENT(self):
         Test.makeTestFunc('EXPONENT', self.testCases)()       
 #              
@@ -1109,165 +1113,171 @@ class Test(unittest.TestCase):
 #  
     def testDECIMAL(self):
         Test.makeTestFunc('DECIMAL', self.testCases)()                     
-                       
+                        
     def testDECIMAL_NEGATIVE(self):
         Test.makeTestFunc('DECIMAL_NEGATIVE', self.testCases)()       
-           
+            
     def testDECIMAL_POSITIVE(self):
         Test.makeTestFunc('DECIMAL_POSITIVE', self.testCases)()       
-           
+            
     def testINTEGER(self):
         Test.makeTestFunc('INTEGER', self.testCases)()       
-                       
+                        
     def testINTEGER_NEGATIVE(self):
         Test.makeTestFunc('INTEGER_NEGATIVE', self.testCases)()       
-           
+            
     def testINTEGER_POSITIVE(self):
         Test.makeTestFunc('INTEGER_POSITIVE', self.testCases)()       
-                       
+                        
     def testLANGTAG(self):
         Test.makeTestFunc('LANGTAG', self.testCases)()       
-           
+            
     def testVAR2(self):
         Test.makeTestFunc('VAR2', self.testCases)()       
-           
+            
     def testVAR1(self):
         Test.makeTestFunc('VAR1', self.testCases)()       
-            
+             
     def testBLANK_NODE_LABEL(self):
         Test.makeTestFunc('BLANK_NODE_LABEL', self.testCases)()       
-           
+            
     def testPNAME_NS(self):
         Test.makeTestFunc('PNAME_NS', self.testCases)()       
-           
+            
     def testPNAME_LN(self):
         Test.makeTestFunc('PNAME_LN', self.testCases)()
-           
+            
     def testIRIREF(self):
         Test.makeTestFunc('IRIREF', self.testCases)()
-             
+              
     def testBlankNode(self):
         Test.makeTestFunc('BlankNode', self.testCases)()
-           
+            
     def testPrefixedName(self):
         Test.makeTestFunc('PrefixedName', self.testCases)()
-           
+            
     def testiri(self):
         Test.makeTestFunc('iri', self.testCases)()
-           
+            
     def testString(self):
         Test.makeTestFunc('String', self.testCases)()
-          
+           
     def testBooleanLiteral(self):
         Test.makeTestFunc('BooleanLiteral', self.testCases)()
-        
+         
     def testNumericLiteralNegative(self):
         Test.makeTestFunc('NumericLiteralNegative', self.testCases)()
-         
+          
     def testNumericLiteralPositive(self):
         Test.makeTestFunc('NumericLiteralPositive', self.testCases)()
-          
+           
     def testNumericLiteralUnsigned(self):
         Test.makeTestFunc('NumericLiteralUnsigned', self.testCases)()
-          
+           
     def testNumericLiteral(self):
         Test.makeTestFunc('NumericLiteral', self.testCases)()
-         
+          
     def testRDFLiteral(self):
         Test.makeTestFunc('RDFLiteral', self.testCases)()
-        
+         
     def testArgList(self):
         Test.makeTestFunc('ArgList', self.testCases)()
-        
+         
     def testiriOrFunction(self):
         Test.makeTestFunc('iriOrFunction', self.testCases)()
-        
+         
     def testAggregate(self):
         Test.makeTestFunc('Aggregate', self.testCases)()
-        
+         
     def testGroupGraphPattern(self):
         Test.makeTestFunc('GroupGraphPattern', self.testCases)()
-        
+         
     def testNotExistsFunc(self):
         Test.makeTestFunc('NotExistsFunc', self.testCases)()
-        
+         
     def testExistsFunc(self):
         Test.makeTestFunc('ExistsFunc', self.testCases)()
-        
+         
     def testStrReplaceExpression(self):
         Test.makeTestFunc('StrReplaceExpression', self.testCases)()
-        
+         
     def testSubstringExpression(self):
         Test.makeTestFunc('SubstringExpression', self.testCases)()
-        
+         
     def testRegexExpression(self):
         Test.makeTestFunc('RegexExpression', self.testCases)()
-        
+         
     def testVar(self):
         Test.makeTestFunc('Var', self.testCases)()
-        
+         
     def testBuiltInCall(self):
         Test.makeTestFunc('BuiltInCall', self.testCases)()
-        
+         
     def testBracketedExpression(self):
         Test.makeTestFunc('BracketedExpression', self.testCases)()
-        
+         
     def testPrimaryExpression(self):
         Test.makeTestFunc('PrimaryExpression', self.testCases)()
-         
+          
     def testUnaryExpression(self):
         Test.makeTestFunc('UnaryExpression', self.testCases)()
-         
+          
     def testMultiplicativeExpression(self):
         Test.makeTestFunc('MultiplicativeExpression', self.testCases)()
-         
+          
     def testAdditiveExpression(self):
         Test.makeTestFunc('AdditiveExpression', self.testCases)()
-         
+          
     def testNumericExpression(self):
         Test.makeTestFunc('NumericExpression', self.testCases)()
-        
+         
     def testRelationalExpression(self):
         Test.makeTestFunc('RelationalExpression', self.testCases)()
-        
+         
     def testValueLogical(self):
         Test.makeTestFunc('ValueLogical', self.testCases)()
-        
+         
     def testConditionalAndExpression(self):
         Test.makeTestFunc('ConditionalAndExpression', self.testCases)()
-       
+        
     def testConditionalOrExpression(self):
         Test.makeTestFunc('ConditionalOrExpression', self.testCases)()
-       
+        
     def testExpression(self):
         Test.makeTestFunc('Expression', self.testCases)()
-              
+               
     def testGraphTerm(self):
         Test.makeTestFunc('GraphTerm', self.testCases)()
-              
+               
     def testVarOrIri(self):
         Test.makeTestFunc('VarOrIri', self.testCases)()
-       
+        
     def testVarOrTerm(self):
         Test.makeTestFunc('VarOrTerm', self.testCases)()
-     
+      
     def testGraphNodePath(self):
         Test.makeTestFunc('GraphNodePath', self.testCases)()
-     
+      
     def testGraphNode(self):
         Test.makeTestFunc('GraphNode', self.testCases)()
-      
+       
     def testCollectionPath(self):
         Test.makeTestFunc('CollectionPath', self.testCases)()
-   
+    
     def testCollection(self):
         Test.makeTestFunc('Collection', self.testCases)()
-   
+    
     def testBlankNodePropertyListPath(self):
         Test.makeTestFunc('BlankNodePropertyListPath', self.testCases)()
-
+ 
     def testTriplesNodePath(self):
         Test.makeTestFunc('TriplesNodePath', self.testCases)()
+
+    def testBlankNodePropertyList(self):
+        Test.makeTestFunc('BlankNodePropertyList', self.testCases)()
+
+    def testTriplesNode(self):
+        Test.makeTestFunc('TriplesNode', self.testCases)()
 
 # 
 # # [99]    BlankNodePropertyList     ::=   '[' PropertyListNotEmpty ']' 
