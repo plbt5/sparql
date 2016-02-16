@@ -1415,7 +1415,16 @@ if do_parseactions: BlankNodePropertyListPath_p.setParseAction(parseInfoFunc('Bl
 # [100]   TriplesNodePath   ::=   CollectionPath | BlankNodePropertyListPath 
 TriplesNodePath_p << (CollectionPath_p | BlankNodePropertyListPath_p) 
 
+PropertyListNotEmpty_p = Forward()
+class PropertyListNotEmpty(SPARQLNonTerminal):  
+    pass
+if do_parseactions: PropertyListNotEmpty_p.setParseAction(parseInfoFunc('PropertyListNotEmpty'))
+
 # [99]    BlankNodePropertyList     ::=   '[' PropertyListNotEmpty ']' 
+BlankNodePropertyList_p =   LBRACK_p + PropertyListNotEmpty_p + RBRACK_p 
+class BlankNodePropertyList(SPARQLNonTerminal):  
+    pass
+if do_parseactions: BlankNodePropertyList_p.setParseAction(parseInfoFunc('BlankNodePropertyList'))
 
 # [98]    TriplesNode       ::=   Collection | BlankNodePropertyList 
 

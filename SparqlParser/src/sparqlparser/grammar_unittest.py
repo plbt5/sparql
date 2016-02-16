@@ -7,6 +7,7 @@ GroupGraphPattern_p << Literal('{}')
 # TriplesNodePath_p << Literal('($TriplesNodePath)')
 TriplesNode_p << Literal('($TriplesNode)')
 PropertyListPathNotEmpty_p << Literal('$VerbPath ?ObjectListPath') 
+PropertyListNotEmpty_p << Literal('$Verb $ObjectList')
 
 class Test(unittest.TestCase):
     @classmethod
@@ -396,6 +397,7 @@ class Test(unittest.TestCase):
                
 # Expression
 # "Expression" at this point is a Forward declaration.
+# Testcases are valid.
         self.testCases['Expression'] = {'pass': [], 'fail': []}
         self.testCases['Expression']['pass'] += ['"*Expression*"'] 
         self.testCases['Expression']['fail'] += ['"*NoExpression*'] 
@@ -447,6 +449,7 @@ class Test(unittest.TestCase):
 
 # GroupGraphPattern
 # "GroupGraphPattern" at this point is a Forward declaration.
+# Testcases are valid.
         self.testCases['GroupGraphPattern'] = {'pass': [], 'fail': []}
         self.testCases['GroupGraphPattern']['pass'] += ['{}'] 
         self.testCases['GroupGraphPattern']['fail'] += ['*NoGroupGraphPattern*'] 
@@ -756,6 +759,7 @@ class Test(unittest.TestCase):
         
 # TriplesNodePath
 # "TriplesNodePath" at this point is a Forward declaration.
+# Testcases are valid.
         self.testCases['TriplesNodePath'] = {'pass': [], 'fail': []}
         self.testCases['TriplesNodePath']['pass'] += ['($TriplesNodePath)'] 
         self.testCases['TriplesNodePath']['fail'] += ['*NoTriplesNodePath*'] 
@@ -768,6 +772,7 @@ class Test(unittest.TestCase):
 
 # TriplesNode
 # "TriplesNode" at this point is a Forward declaration.
+# Testcases are valid.
         self.testCases['TriplesNode'] = {'pass': [], 'fail': []}
         self.testCases['TriplesNode']['pass'] += ['($TriplesNode)'] 
         self.testCases['TriplesNode']['fail'] += ['*NoTriplesNode*'] 
@@ -796,6 +801,7 @@ class Test(unittest.TestCase):
         
 # PropertyListPathNotEmpty
 # "PropertyListPathNotEmpty" at this point is a Forward declaration.
+# Testcases are valid.
         self.testCases['PropertyListPathNotEmpty'] = {'pass': [], 'fail': []}
         self.testCases['PropertyListPathNotEmpty']['pass'] += ['$VerbPath ?ObjectListPath'] 
         self.testCases['PropertyListPathNotEmpty']['fail'] += ['*NoPropertyListPathNotEmpty*'] 
@@ -812,8 +818,19 @@ class Test(unittest.TestCase):
         self.testCases['TriplesNodePath']['pass'] += self.testCases['BlankNodePropertyListPath']['pass']      
         self.testCases['TriplesNodePath']['fail'] += ['algebra']
 
+# PropertyListNotEmpty
+# "PropertyListNotEmpty" at this point is a Forward declaration.
+# Testcases are valid.
+        self.testCases['PropertyListNotEmpty'] = {'pass': [], 'fail': []}
+        self.testCases['PropertyListNotEmpty']['pass'] += ['$Verb ?ObjectList'] 
+        self.testCases['PropertyListNotEmpty']['fail'] += ['*NoPropertyListNotEmpty*'] 
+        
 # [99]    BlankNodePropertyList     ::=   '[' PropertyListNotEmpty ']' 
-
+        self.testCases['BlankNodePropertyList'] = {'pass': [], 'fail': []}
+        for p in self.testCases['PropertyListNotEmpty']['pass']:
+            self.testCases['BlankNodePropertyList']['pass'] += ['[ ' + p + ' ]'] 
+        self.testCases['BlankNodePropertyList']['fail'] += ['[*NoPropertyListPathNotEmpty*]', '[PropertyListPathNotEmpty]'] 
+        
 # [98]    TriplesNode       ::=   Collection | BlankNodePropertyList 
 
 # [97]    Integer   ::=   INTEGER 
@@ -1247,10 +1264,10 @@ class Test(unittest.TestCase):
         Test.makeTestFunc('Collection', self.testCases)()
    
     def testBlankNodePropertyListPath(self):
-        Test.makeTestFunc('BlankNodePropertyListPath', self.testCases, debug=1)()
+        Test.makeTestFunc('BlankNodePropertyListPath', self.testCases)()
 
     def testTriplesNodePath(self):
-        Test.makeTestFunc('TriplesNodePath', self.testCases, debug=1)()
+        Test.makeTestFunc('TriplesNodePath', self.testCases)()
 
 # 
 # # [99]    BlankNodePropertyList     ::=   '[' PropertyListNotEmpty ']' 

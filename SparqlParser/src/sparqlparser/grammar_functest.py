@@ -6,6 +6,7 @@ GroupGraphPattern_p << Literal('{}')
 # TriplesNodePath_p << Literal('($TriplesNodePath)')
 TriplesNode_p << Literal('($TriplesNode)')
 PropertyListPathNotEmpty_p << Literal('$VerbPath ?ObjectListPath') 
+PropertyListNotEmpty_p << Literal('$Verb $ObjectList')
 
 def printResults(l, rule):
     print('=' * 80)
@@ -406,7 +407,9 @@ if __name__ == '__main__':
     printResults(l, 'TriplesNodePath')
         
     # [99]    BlankNodePropertyList     ::=   '[' PropertyListNotEmpty ']' 
-    
+    l = ['[ $Verb $ObjectList ]']
+    printResults(l, 'BlankNodePropertyList')
+        
     # [98]    TriplesNode       ::=   Collection | BlankNodePropertyList 
     
     # [97]    Integer   ::=   INTEGER 
