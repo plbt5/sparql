@@ -415,6 +415,8 @@ if __name__ == '__main__':
     printResults(l, 'TriplesNode')    
     
     # [97]    Integer   ::=   INTEGER 
+    l = ['33']
+    printResults(l, 'Integer')
     
     # [96]    PathOneInPropertySet      ::=   iri | 'a' | '^' ( iri | 'a' ) 
     

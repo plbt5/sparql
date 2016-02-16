@@ -1266,7 +1266,7 @@ class AdditiveExpression(SPARQLNonTerminal):
 if do_parseactions: AdditiveExpression_p.setParseAction(parseInfoFunc('AdditiveExpression'))
 
 # [115]   NumericExpression         ::=   AdditiveExpression 
-NumericExpression_p = AdditiveExpression_p
+NumericExpression_p = AdditiveExpression_p + Empty()
 class NumericExpression(SPARQLNonTerminal):  
     pass
 if do_parseactions: NumericExpression_p.setParseAction(parseInfoFunc('NumericExpression'))
@@ -1285,7 +1285,7 @@ class RelationalExpression(SPARQLNonTerminal):
 if do_parseactions: RelationalExpression_p.setParseAction(parseInfoFunc('RelationalExpression'))
 
 # [113]   ValueLogical      ::=   RelationalExpression 
-ValueLogical_p = RelationalExpression_p
+ValueLogical_p = RelationalExpression_p + Empty()
 class ValueLogical(SPARQLNonTerminal):  
     pass
 if do_parseactions: ValueLogical_p.setParseAction(parseInfoFunc('ValueLogical'))
@@ -1303,7 +1303,7 @@ class ConditionalOrExpression(SPARQLNonTerminal):
 if do_parseactions: ConditionalOrExpression_p.setParseAction(parseInfoFunc('ConditionalOrExpression'))
 
 # [110]   Expression        ::=   ConditionalOrExpression 
-Expression_p << ConditionalOrExpression_p
+Expression_p << (ConditionalOrExpression_p + Empty())
 
 # [109]   GraphTerm         ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | BlankNode | NIL 
 GraphTerm_p =   iri_p | \
@@ -1388,6 +1388,10 @@ if do_parseactions: BlankNodePropertyList_p.setParseAction(parseInfoFunc('BlankN
 TriplesNode_p << (Collection_p | BlankNodePropertyList_p)
 
 # [97]    Integer   ::=   INTEGER 
+Integer_p = INTEGER_p + Empty()
+class Integer(SPARQLNonTerminal):  
+    pass
+if do_parseactions: Integer_p.setParseAction(parseInfoFunc('Integer'))
 
 # [96]    PathOneInPropertySet      ::=   iri | 'a' | '^' ( iri | 'a' ) 
 
