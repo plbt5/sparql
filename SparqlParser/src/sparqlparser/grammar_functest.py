@@ -5,7 +5,7 @@ from sparqlparser.base import *
 GroupGraphPattern_p << Literal('{}')
 # TriplesNodePath_p << Literal('($TriplesNodePath)')
 # TriplesNode_p << Literal('($TriplesNode)')
-PropertyListPathNotEmpty_p << Literal('$VerbPath ?ObjectListPath') 
+# PropertyListPathNotEmpty_p << Literal('$VerbPath ?ObjectListPath') 
 PropertyListNotEmpty_p << Literal('$Verb $ObjectList')
 # Path_p << Literal('<Path>')
 
@@ -210,16 +210,13 @@ if __name__ == '__main__':
             
     # ExpressionList
     l = ['*Expression*, *Expression*']
-    # TODO: replace expression
 #     printResults(l, 'ExpressionList')
            
     # [71]    ArgList   ::=   NIL | '(' 'DISTINCT'? Expression ( ',' Expression )* ')' 
-    # TODO: replace expression
     l = ['()', '( "*Expression*") ', '("*Expression*", "*Expression*")', '(DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )']
     printResults(l, 'ArgList')
            
     # [128]   iriOrFunction     ::=   iri ArgList? 
-    # TODO: replace expression
     l = ['<work:22?>','aA:Z.a', 'Z.8:AA', 'aA:', 'Z.8:', ':', '<work:22?>()','aA:Z.a ("*Expression*")']
     printResults(l, 'iriOrFunction')
  
@@ -230,32 +227,26 @@ if __name__ == '__main__':
     #             | 'AVG' '(' 'DISTINCT'? Expression ')' 
     #             | 'SAMPLE' '(' 'DISTINCT'? Expression ')' 
     #             | 'GROUP_CONCAT' '(' 'DISTINCT'? Expression ( ';' 'SEPARATOR' '=' String )? ')' 
-    # TODO: replace expression
     l = ['avg(*)', 'count (distinct *)', 'min("*Expression*")', 'GROUP_CONCAT ( distinct "*Expression*" ; SEPARATOR = "sep")']
     printResults(l, 'Aggregate')
     
     # [126]   NotExistsFunc     ::=   'NOT' 'EXISTS' GroupGraphPattern 
-    # TODO: replace expression
     l = ['NOT Exists {}']
     printResults(l, 'NotExistsFunc')
 
     # [125]   ExistsFunc        ::=   'EXISTS' GroupGraphPattern 
-    # TODO: replace expression
     l = ['Exists {}']
     printResults(l, 'ExistsFunc')
     
     # [124]   StrReplaceExpression      ::=   'REPLACE' '(' Expression ',' Expression ',' Expression ( ',' Expression )? ')' 
-    # TODO: replace expression
     l = ['REPLACE ("*Expression*", "*Expression*", "*Expression*")', 'REPLACE ("*Expression*", "*Expression*", "*Expression*", "*Expression*")']
     printResults(l, 'StrReplaceExpression')
     
     # [123]   SubstringExpression       ::=   'SUBSTR' '(' Expression ',' Expression ( ',' Expression )? ')' 
-    # TODO: replace expression
     l = ['SUBSTR ("*Expression*", "*Expression*")', 'SUBSTR ("*Expression*", "*Expression*", "*Expression*")']
     printResults(l, 'SubstringExpression')
 
     # [122]   RegexExpression   ::=   'REGEX' '(' Expression ',' Expression ( ',' Expression )? ')' 
-    # TODO: replace expression
     l = ['REGEX ("*Expression*", "*Expression*")', 'REGEX ("*Expression*", "*Expression*", "*Expression*")']
     printResults(l, 'RegexExpression')
     
@@ -319,17 +310,14 @@ if __name__ == '__main__':
     #             | ExistsFunc 
     #             | NotExistsFunc 
     l = ['STRUUID()', 'ROUND ( "*Expression*")', 'isBLANK ("*Expression*")', 'COUNT ( * )']
-    # TODO: replace expression
     printResults(l, 'BuiltInCall')
     
     # [120]   BrackettedExpression      ::=   '(' Expression ')' 
     l = ['("*Expression*")']
-    # TODO: replace expression
     printResults(l, 'BracketedExpression')
     
     # [119]   PrimaryExpression         ::=   BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var 
     l = ['("*Expression*")', 'AVG ("*Expression*")', '<work:22?>()', '"work"^^<test>', '113.44', 'true', '$algebra']
-    # TODO: replace expression
     printResults(l, 'PrimaryExpression')
     
     # [118]   UnaryExpression   ::=     '!' PrimaryExpression 
@@ -460,7 +448,7 @@ if __name__ == '__main__':
     printResults(l, 'ObjectPath')   
     
     # [86]    ObjectListPath    ::=   ObjectPath ( ',' ObjectPath )* 
-    l = ['$algebra', '($TriplesNodePath), $algebra']
+    l = ['$algebra', '(?TriplesNodePath), $algebra']
     printResults(l, 'ObjectListPath')     
     
     # [85]    VerbSimple        ::=   Var 
@@ -471,16 +459,23 @@ if __name__ == '__main__':
     l = ['a ? / ^ ! ( ^ <testIri> | ^ <testIri> ) | a ? / ^ ! ( ^ <testIri> | ^ <testIri> )']
     printResults(l, 'VerbPath')  
         
+    # [80]    Object    ::=   GraphNode 
+    l = ['$algebra', '($TriplesNode)']
+    printResults(l, 'Object')
+        
+    # [79]    ObjectList        ::=   Object ( ',' Object )* 
+    l = ['$algebra, ($TriplesNode)']
+    printResults(l, 'ObjectList')
+        
     # [83]    PropertyListPathNotEmpty          ::=   ( VerbPath | VerbSimple ) ObjectListPath ( ';' ( ( VerbPath | VerbSimple ) ObjectList )? )* 
-    
+    l = ['<test> ?path ; <test2> $algebra, ($TriplesNode) ;;']
+    printResults(l, 'PropertyListPathNotEmpty')
+        
     # [82]    PropertyListPath          ::=   PropertyListPathNotEmpty? 
     
     # [81]    TriplesSameSubjectPath    ::=   VarOrTerm PropertyListPathNotEmpty | TriplesNodePath PropertyListPath 
     
-    # [80]    Object    ::=   GraphNode 
-    
-    # [79]    ObjectList        ::=   Object ( ',' Object )* 
-    
+
     # [78]    Verb      ::=   VarOrIri | 'a' 
     
     # [77]    PropertyListNotEmpty      ::=   Verb ObjectList ( ';' ( Verb ObjectList )? )* 
