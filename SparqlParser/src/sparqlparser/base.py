@@ -1441,10 +1441,22 @@ class PathPrimary(SPARQLNonTerminal):
 if do_parseactions: PathPrimary_p.setParseAction(parseInfoFunc('PathPrimary'))
 
 # [93]    PathMod   ::=   '?' | '*' | '+' 
-
-# [92]    PathEltOrInverse          ::=   PathElt | '^' PathElt 
+PathMod_p = Literal('?') | Literal('*') | Literal('+')
+class PathMod(SPARQLNonTerminal):  
+    pass
+if do_parseactions: PathMod_p.setParseAction(parseInfoFunc('PathMod'))
 
 # [91]    PathElt   ::=   PathPrimary PathMod? 
+PathElt_p = PathPrimary_p + Optional(PathMod_p) 
+class PathElt(SPARQLNonTerminal):  
+    pass
+if do_parseactions: PathElt_p.setParseAction(parseInfoFunc('PathElt'))
+
+# [92]    PathEltOrInverse          ::=   PathElt | '^' PathElt 
+PathEltOrInverse_p = PathElt_p | (INVERSE_op_p + PathElt_p)
+class PathEltOrInverse(SPARQLNonTerminal):  
+    pass
+if do_parseactions: PathEltOrInverse_p.setParseAction(parseInfoFunc('PathEltOrInverse'))
 
 # [90]    PathSequence      ::=   PathEltOrInverse ( '/' PathEltOrInverse )* 
 

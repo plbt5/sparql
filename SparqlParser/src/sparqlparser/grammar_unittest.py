@@ -874,11 +874,22 @@ class Test(unittest.TestCase):
         self.testCases['PathPrimary']['fail'] += ['[]']
         
 # [93]    PathMod   ::=   '?' | '*' | '+' 
-
-# [92]    PathEltOrInverse          ::=   PathElt | '^' PathElt 
+        self.testCases['PathMod'] = {'pass': [], 'fail': []}
+        self.testCases['PathMod']['pass'] += ['?', '*', '+']
+        self.testCases['PathMod']['fail'] += ['/']
 
 # [91]    PathElt   ::=   PathPrimary PathMod? 
+        self.testCases['PathElt'] = {'pass': [], 'fail': []}
+        self.testCases['PathElt']['pass'] += [p for p in self.testCases['PathPrimary']['pass'][::100]]
+        self.testCases['PathElt']['pass'] += [p1 + p2 for p1 in self.testCases['PathPrimary']['pass'][1::100] for p2 in self.testCases['PathMod']['pass']]
+        self.testCases['PathMod']['fail'] += ['/']
 
+# [92]    PathEltOrInverse          ::=   PathElt | '^' PathElt 
+        self.testCases['PathEltOrInverse'] = {'pass': [], 'fail': []}
+        self.testCases['PathEltOrInverse']['pass'] += [p for p in self.testCases['PathElt']['pass']]
+        self.testCases['PathEltOrInverse']['pass'] += ['^ ' + p for p in self.testCases['PathElt']['pass']]
+        self.testCases['PathMod']['fail'] += ['algebra']
+        
 # [90]    PathSequence      ::=   PathEltOrInverse ( '/' PathEltOrInverse )* 
 
 # [89]    PathAlternative   ::=   PathSequence ( '|' PathSequence )* 
@@ -1319,13 +1330,14 @@ class Test(unittest.TestCase):
     def testPathPrimary(self):
         Test.makeTestFunc('PathPrimary', self.testCases)()
 
+    def testPathMod(self):
+        Test.makeTestFunc('PathMod', self.testCases)()
 
-# 
-# # [93]    PathMod   ::=   '?' | '*' | '+' 
-# 
-# # [92]    PathEltOrInverse          ::=   PathElt | '^' PathElt 
-# 
-# # [91]    PathElt   ::=   PathPrimary PathMod? 
+    def testPathEltOrInverse(self):
+        Test.makeTestFunc('PathEltOrInverse', self.testCases)()
+
+    def testPathElt(self):
+        Test.makeTestFunc('PathElt', self.testCases)()
 # 
 # # [90]    PathSequence      ::=   PathEltOrInverse ( '/' PathEltOrInverse )* 
 # 

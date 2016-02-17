@@ -428,15 +428,21 @@ if __name__ == '__main__':
     printResults(l, 'PathNegatedPropertySet')    
     
     # [94]    PathPrimary       ::=   iri | 'a' | '!' PathNegatedPropertySet | '(' Path ')' 
-    l = ['<testIri>', 'a', '(^<testIri>|^<testIri>)', '()', '(^ a|^<testIri>)', '(<Path>)']
-    printResults(l, 'PathNegatedPropertySet')    
+    l = ['<testIri>', 'a', '!(^<testIri>|^<testIri>)', '! ( )', '! ( ^ a | ^ <testIri> )', '(<Path>)']
+    printResults(l, 'PathPrimary')    
         
     # [93]    PathMod   ::=   '?' | '*' | '+' 
-    
-    # [92]    PathEltOrInverse          ::=   PathElt | '^' PathElt 
-    
+    l = ['*']
+    printResults(l, 'PathMod')    
+     
     # [91]    PathElt   ::=   PathPrimary PathMod? 
-    
+    l = ['! ( ^ <testIri> | ^ <testIri> )', 'a ?']
+    printResults(l, 'PathElt')    
+
+    # [92]    PathEltOrInverse          ::=   PathElt | '^' PathElt 
+    l = ['! ( ^ <testIri> | ^ <testIri> )', 'a ?', '^ ! ( ^ <testIri> | ^ <testIri> )', '^a ?']
+    printResults(l, 'PathEltOrInverse')   
+        
     # [90]    PathSequence      ::=   PathEltOrInverse ( '/' PathEltOrInverse )* 
     
     # [89]    PathAlternative   ::=   PathSequence ( '|' PathSequence )* 
