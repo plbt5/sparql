@@ -1468,13 +1468,40 @@ class PathSequence(SPARQLNonTerminal):
     pass
 if do_parseactions: PathSequence_p.setParseAction(parseInfoFunc('PathSequence'))
 
-# [89]    PathAlternative   ::=   PathSequence ( '|' PathSequence )* 
+# pattern and class to parse and render delimited PathSequence lists
+PathSequenceList_p = delimitedList(PathSequence_p, delim='|')
+class PathSequenceList(SPARQLNonTerminal):
+    def render(self):
+        return ' | '.join([v[1] if isinstance(v[1], str) else v[1].render() for v in self.getItems()])
+if do_parseactions: PathSequenceList_p.setParseAction(parseInfoFunc('PathSequenceList'))
 
-# [88]    Path      ::=   PathAlternative 
+# [89]    PathAlternative   ::=   PathSequence ( '|' PathSequence )* 
+PathAlternative_p = PathSequenceList_p + Empty()
+class PathAlternative(SPARQLNonTerminal):
+    pass
+if do_parseactions: PathAlternative_p.setParseAction(parseInfoFunc('PathAlternative'))
+ 
+# [88]    Path      ::=   PathAlternative
+Path_p << (PathAlternative_p + Empty()) 
 
 # [87]    ObjectPath        ::=   GraphNodePath 
+ObjectPath_p = GraphNodePath_p + Empty() 
+class ObjectPath(SPARQLNonTerminal):
+    pass
+if do_parseactions: ObjectPath_p.setParseAction(parseInfoFunc('ObjectPath'))
+
+# pattern and class to parse and render delimited ObjectPath lists
+ObjectPathList_p = delimitedList(ObjectPath_p)
+class ObjectPathList(SPARQLNonTerminal):
+    def render(self):
+        return ', '.join([v[1] if isinstance(v[1], str) else v[1].render() for v in self.getItems()])
+if do_parseactions: ObjectPathList_p.setParseAction(parseInfoFunc('ObjectPathList'))
 
 # [86]    ObjectListPath    ::=   ObjectPath ( ',' ObjectPath )* 
+ObjectListPath_p = ObjectPathList_p + Empty()
+class ObjectListPath(SPARQLNonTerminal):
+    pass
+if do_parseactions: ObjectListPath_p.setParseAction(parseInfoFunc('ObjectListPath'))
 
 # [85]    VerbSimple        ::=   Var 
 

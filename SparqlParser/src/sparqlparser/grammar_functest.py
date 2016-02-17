@@ -7,7 +7,7 @@ GroupGraphPattern_p << Literal('{}')
 # TriplesNode_p << Literal('($TriplesNode)')
 PropertyListPathNotEmpty_p << Literal('$VerbPath ?ObjectListPath') 
 PropertyListNotEmpty_p << Literal('$Verb $ObjectList')
-Path_p << Literal('<Path>')
+# Path_p << Literal('<Path>')
 
 def printResults(l, rule):
     print('=' * 80)
@@ -446,13 +446,22 @@ if __name__ == '__main__':
     # [90]    PathSequence      ::=   PathEltOrInverse ( '/' PathEltOrInverse )* 
     l = ['a ? / ^ ! ( ^ <testIri> | ^ <testIri> )']
     printResults(l, 'PathSequence')    
+    
     # [89]    PathAlternative   ::=   PathSequence ( '|' PathSequence )* 
-    
+    l = ['a ? / ^ ! ( ^ <testIri> | ^ <testIri> ) | a ? / ^ ! ( ^ <testIri> | ^ <testIri> )']
+    printResults(l, 'PathAlternative')   
+        
     # [88]    Path      ::=   PathAlternative 
-    
+    l = ['a ? / ^ ! ( ^ <testIri> | ^ <testIri> ) | a ? / ^ ! ( ^ <testIri> | ^ <testIri> )']
+    printResults(l, 'Path')   
+            
     # [87]    ObjectPath        ::=   GraphNodePath 
+    l = ['$algebra', '($TriplesNodePath)']
+    printResults(l, 'ObjectPath')   
     
     # [86]    ObjectListPath    ::=   ObjectPath ( ',' ObjectPath )* 
+    l = ['$algebra', '($TriplesNodePath), $algebra']
+    printResults(l, 'ObjectListPath')     
     
     # [85]    VerbSimple        ::=   Var 
     
