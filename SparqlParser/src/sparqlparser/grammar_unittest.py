@@ -919,8 +919,14 @@ class Test(unittest.TestCase):
         self.testCases['ObjectListPath']['fail'] += ['algebra']
         
 # [85]    VerbSimple        ::=   Var 
-
+        self.testCases['VerbSimple'] = {'pass': [], 'fail': []}
+        self.testCases['VerbSimple']['pass'] += [p for p in self.testCases['Var']['pass']]
+        self.testCases['VerbSimple']['fail'] += [p for p in self.testCases['Var']['fail']]
+        
 # [84]    VerbPath          ::=   Path 
+        self.testCases['VerbPath'] = {'pass': [], 'fail': []}
+        self.testCases['VerbPath']['pass'] += [p for p in self.testCases['Path']['pass']]
+        self.testCases['VerbPath']['fail'] += [p for p in self.testCases['Path']['fail']]
 
 # [83]    PropertyListPathNotEmpty          ::=   ( VerbPath | VerbSimple ) ObjectListPath ( ';' ( ( VerbPath | VerbSimple ) ObjectList )? )* 
 
@@ -1372,10 +1378,12 @@ class Test(unittest.TestCase):
     def testObjectListPath(self):
         Test.makeTestFunc('ObjectListPath', self.testCases)()
 
-# 
-# # [85]    VerbSimple        ::=   Var 
-# 
-# # [84]    VerbPath          ::=   Path 
+    def testVerbSimple(self):
+        Test.makeTestFunc('VerbSimple', self.testCases)()
+ 
+    def testVerbPath(self):
+        Test.makeTestFunc('VerbPath', self.testCases)()
+ 
 # 
 # # [83]    PropertyListPathNotEmpty          ::=   ( VerbPath | VerbSimple ) ObjectListPath ( ';' ( ( VerbPath | VerbSimple ) ObjectList )? )* 
 # 

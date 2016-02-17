@@ -1504,8 +1504,16 @@ class ObjectListPath(SPARQLNonTerminal):
 if do_parseactions: ObjectListPath_p.setParseAction(parseInfoFunc('ObjectListPath'))
 
 # [85]    VerbSimple        ::=   Var 
+VerbSimple_p = Var_p + Empty() 
+class VerbSimple(SPARQLNonTerminal):
+    pass
+if do_parseactions: VerbSimple_p.setParseAction(parseInfoFunc('VerbSimple'))
 
-# [84]    VerbPath          ::=   Path 
+# [84]    VerbPath          ::=   Path
+VerbPath_p = Path_p + Empty() 
+class VerbPath(SPARQLNonTerminal):
+    pass
+if do_parseactions: VerbPath_p.setParseAction(parseInfoFunc('VerbPath'))
 
 # [83]    PropertyListPathNotEmpty          ::=   ( VerbPath | VerbSimple ) ObjectListPath ( ';' ( ( VerbPath | VerbSimple ) ObjectList )? )* 
 

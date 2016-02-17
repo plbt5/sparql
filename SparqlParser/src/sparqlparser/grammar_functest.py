@@ -464,9 +464,13 @@ if __name__ == '__main__':
     printResults(l, 'ObjectListPath')     
     
     # [85]    VerbSimple        ::=   Var 
+    l = ['$aA', '?9_\u218B7']
+    printResults(l, 'VerbSimple')
     
     # [84]    VerbPath          ::=   Path 
-    
+    l = ['a ? / ^ ! ( ^ <testIri> | ^ <testIri> ) | a ? / ^ ! ( ^ <testIri> | ^ <testIri> )']
+    printResults(l, 'VerbPath')  
+        
     # [83]    PropertyListPathNotEmpty          ::=   ( VerbPath | VerbSimple ) ObjectListPath ( ';' ( ( VerbPath | VerbSimple ) ObjectList )? )* 
     
     # [82]    PropertyListPath          ::=   PropertyListPathNotEmpty? 
