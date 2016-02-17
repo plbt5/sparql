@@ -1,5 +1,4 @@
 from pyparsing import *
-
 # Conversion of EBNF syntax for SPARQL 1.1 to pyparsing. For the grammar see http://www.w3.org/TR/sparql11-query/#grammar.
 
 #
@@ -1056,7 +1055,6 @@ if do_parseactions: Expression_p.setParseAction(parseInfoFunc('Expression'))
 # pattern and class to parse and render delimited Expression lists
 ExpressionList_p = delimitedList(Expression_p)
 class ExpressionList(SPARQLNonTerminal):
-    pass
     def render(self):
         return ', '.join([v[1] if isinstance(v[1], str) else v[1].render() for v in self.getItems()])
 if do_parseactions: ExpressionList_p.setParseAction(parseInfoFunc('ExpressionList'))
@@ -1418,7 +1416,6 @@ if do_parseactions: PathOneInPropertySet_p.setParseAction(parseInfoFunc('PathOne
 # pattern and class to parse and render delimited PathOneInPropertySet lists
 PathOneInPropertySetList_p = delimitedList(PathOneInPropertySet_p, delim='|')
 class PathOneInPropertySetList(SPARQLNonTerminal):
-    pass
     def render(self):
         return ' | '.join([v[1] if isinstance(v[1], str) else v[1].render() for v in self.getItems()])
 if do_parseactions: PathOneInPropertySetList_p.setParseAction(parseInfoFunc('PathOneInPropertySetList'))
@@ -1458,7 +1455,18 @@ class PathEltOrInverse(SPARQLNonTerminal):
     pass
 if do_parseactions: PathEltOrInverse_p.setParseAction(parseInfoFunc('PathEltOrInverse'))
 
+# pattern and class to parse and render delimited PathEltOrInverse lists
+PathEltOrInverseList_p = delimitedList(PathEltOrInverse_p, delim='/')
+class PathEltOrInverseList(SPARQLNonTerminal):
+    def render(self):
+        return ' / '.join([v[1] if isinstance(v[1], str) else v[1].render() for v in self.getItems()])
+if do_parseactions: PathEltOrInverseList_p.setParseAction(parseInfoFunc('PathEltOrInverseList'))
+
 # [90]    PathSequence      ::=   PathEltOrInverse ( '/' PathEltOrInverse )* 
+PathSequence_p = PathEltOrInverseList_p + Empty()
+class PathSequence(SPARQLNonTerminal):  
+    pass
+if do_parseactions: PathSequence_p.setParseAction(parseInfoFunc('PathSequence'))
 
 # [89]    PathAlternative   ::=   PathSequence ( '|' PathSequence )* 
 

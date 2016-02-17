@@ -444,7 +444,8 @@ if __name__ == '__main__':
     printResults(l, 'PathEltOrInverse')   
         
     # [90]    PathSequence      ::=   PathEltOrInverse ( '/' PathEltOrInverse )* 
-    
+    l = ['a ? / ^ ! ( ^ <testIri> | ^ <testIri> )']
+    printResults(l, 'PathSequence')    
     # [89]    PathAlternative   ::=   PathSequence ( '|' PathSequence )* 
     
     # [88]    Path      ::=   PathAlternative 

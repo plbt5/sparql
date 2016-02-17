@@ -882,15 +882,19 @@ class Test(unittest.TestCase):
         self.testCases['PathElt'] = {'pass': [], 'fail': []}
         self.testCases['PathElt']['pass'] += [p for p in self.testCases['PathPrimary']['pass'][::100]]
         self.testCases['PathElt']['pass'] += [p1 + p2 for p1 in self.testCases['PathPrimary']['pass'][1::100] for p2 in self.testCases['PathMod']['pass']]
-        self.testCases['PathMod']['fail'] += ['/']
+        self.testCases['PathElt']['fail'] += ['/']
 
 # [92]    PathEltOrInverse          ::=   PathElt | '^' PathElt 
         self.testCases['PathEltOrInverse'] = {'pass': [], 'fail': []}
         self.testCases['PathEltOrInverse']['pass'] += [p for p in self.testCases['PathElt']['pass']]
         self.testCases['PathEltOrInverse']['pass'] += ['^ ' + p for p in self.testCases['PathElt']['pass']]
-        self.testCases['PathMod']['fail'] += ['algebra']
+        self.testCases['PathEltOrInverse']['fail'] += ['algebra']
         
 # [90]    PathSequence      ::=   PathEltOrInverse ( '/' PathEltOrInverse )* 
+        self.testCases['PathSequence'] = {'pass': [], 'fail': []}
+        self.testCases['PathSequence']['pass'] += [p for p in self.testCases['PathEltOrInverse']['pass'][::100]]
+        self.testCases['PathSequence']['pass'] += [p1 + ' / ' + p2 for p1 in self.testCases['PathEltOrInverse']['pass'][::10] for p1 in self.testCases['PathEltOrInverse']['pass'][::10]]
+        self.testCases['PathSequence']['fail'] += ['algebra']
 
 # [89]    PathAlternative   ::=   PathSequence ( '|' PathSequence )* 
 
@@ -1338,8 +1342,9 @@ class Test(unittest.TestCase):
 
     def testPathElt(self):
         Test.makeTestFunc('PathElt', self.testCases)()
-# 
-# # [90]    PathSequence      ::=   PathEltOrInverse ( '/' PathEltOrInverse )* 
+
+    def testPathSequence(self):
+        Test.makeTestFunc('PathSequence', self.testCases)()
 # 
 # # [89]    PathAlternative   ::=   PathSequence ( '|' PathSequence )* 
 # 
