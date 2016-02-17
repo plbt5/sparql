@@ -468,13 +468,14 @@ if __name__ == '__main__':
     printResults(l, 'ObjectList')
         
     # [83]    PropertyListPathNotEmpty          ::=   ( VerbPath | VerbSimple ) ObjectListPath ( ';' ( ( VerbPath | VerbSimple ) ObjectList )? )* 
-    l = ['<test> ?path ; <test2> $algebra, ($TriplesNode) ;;']
+    l = ['<test> ?path ; <test2> $algebra, ($TriplesNode) ;;', '<test> ? ?path']
     printResults(l, 'PropertyListPathNotEmpty')
         
     # [82]    PropertyListPath          ::=   PropertyListPathNotEmpty? 
-    
+    l = ['<test> ?path ; <test2> $algebra, ($TriplesNode) ;;', '<test> ? ?path', '']
+    printResults(l, 'PropertyListPath')
+        
     # [81]    TriplesSameSubjectPath    ::=   VarOrTerm PropertyListPathNotEmpty | TriplesNodePath PropertyListPath 
-    
 
     # [78]    Verb      ::=   VarOrIri | 'a' 
     

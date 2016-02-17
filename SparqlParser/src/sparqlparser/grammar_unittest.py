@@ -948,9 +948,14 @@ class Test(unittest.TestCase):
                 for o1 in self.testCases['ObjectListPath']['pass'][1::200]
                 for v2 in self.testCases['VerbPath']['pass'] + self.testCases['VerbSimple']['pass'][3::500]
                 for o2 in self.testCases['ObjectList']['pass'][::200]]
+        self.testCases['PropertyListPathNotEmpty']['fail'] += ['algebra', '']
 
 # [82]    PropertyListPath          ::=   PropertyListPathNotEmpty? 
-
+        self.testCases['PropertyListPath'] = {'pass': [], 'fail': []}
+        self.testCases['PropertyListPath']['pass'] += self.testCases['PropertyListPathNotEmpty']['pass']
+        self.testCases['PropertyListPath']['pass'] += ['']
+        self.testCases['PropertyListPath']['fail'] += ['algebra']
+        
 # [81]    TriplesSameSubjectPath    ::=   VarOrTerm PropertyListPathNotEmpty | TriplesNodePath PropertyListPath 
 
 
@@ -1409,10 +1414,9 @@ class Test(unittest.TestCase):
     def testPropertyListPathNotEmpty(self):
         Test.makeTestFunc('PropertyListPathNotEmpty', self.testCases)()
 
-# # 
-# # [83]    PropertyListPathNotEmpty          ::=   ( VerbPath | VerbSimple ) ObjectListPath ( ';' ( ( VerbPath | VerbSimple ) ObjectList )? )* 
-# 
-# # [82]    PropertyListPath          ::=   PropertyListPathNotEmpty? 
+    def testPropertyListPath(self):
+        Test.makeTestFunc('PropertyListPath', self.testCases)()
+
 # 
 # # [81]    TriplesSameSubjectPath    ::=   VarOrTerm PropertyListPathNotEmpty | TriplesNodePath PropertyListPath 
 # 

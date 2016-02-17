@@ -1518,6 +1518,10 @@ if do_parseactions: ObjectList_p.setParseAction(parseInfoFunc('ObjectList'))
 PropertyListPathNotEmpty_p << ((VerbPath_p | VerbSimple_p) + ObjectListPath_p +  ZeroOrMore(SEMICOL_p + Optional(( VerbPath_p | VerbSimple_p) + ObjectList_p)))
 
 # [82]    PropertyListPath          ::=   PropertyListPathNotEmpty? 
+PropertyListPath_p = Optional(PropertyListPathNotEmpty_p)
+class PropertyListPath(SPARQLNonTerminal):
+    pass
+if do_parseactions: PropertyListPath_p.setParseAction(parseInfoFunc('PropertyListPath'))
 
 # [81]    TriplesSameSubjectPath    ::=   VarOrTerm PropertyListPathNotEmpty | TriplesNodePath PropertyListPath 
 
