@@ -239,7 +239,7 @@ if do_parseactions: ALL_VALUES_st_p.setParseAction(parseInfoFunc('ALL_VALUES_st'
 # Brackets and interpunction
 #
 
-LPAR_p, RPAR_p, LBRACK_p, RBRACK_p, SEMICOL_p, COMMA_p = map(Literal, '()[];,')
+LPAR_p, RPAR_p, LBRACK_p, RBRACK_p, SEMICOL_p, COMMA_p, PERIOD_p = map(Literal, '()[];,.')
 
 #
 # Operators
@@ -1460,7 +1460,13 @@ TriplesSameSubject_p = (VarOrTerm_p + PropertyListNotEmpty_p) | (TriplesNode_p +
 class TriplesSameSubject(SPARQLNonTerminal): pass
 if do_parseactions: TriplesSameSubject_p.setParseAction(parseInfoFunc('TriplesSameSubject'))
 
+ConstructTriples_p = Forward()
+TriplesSameSubject_p = (VarOrTerm_p + PropertyListNotEmpty_p) | (TriplesNode_p + PropertyList_p) 
+class ConstructTriples(SPARQLNonTerminal): pass
+if do_parseactions: ConstructTriples_p.setParseAction(parseInfoFunc('ConstructTriples'))
+
 # [74]    ConstructTriples          ::=   TriplesSameSubject ( '.' ConstructTriples? )? 
+ConstructTriples_p << (TriplesSameSubject_p + Optional(PERIOD_p + Optional(ConstructTriples_p))) 
 
 # [73]    ConstructTemplate         ::=   '{' ConstructTriples? '}' 
 

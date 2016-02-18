@@ -8,6 +8,8 @@ GroupGraphPattern_p << Literal('{}')
 # PropertyListPathNotEmpty_p << Literal('$VerbPath ?ObjectListPath') 
 # PropertyListNotEmpty_p << Literal('$Verb $ObjectList')
 # Path_p << Literal('<Path>')
+# ConstructTriples_p << Literal('?ConstructTriples')
+
 
 def printResults(l, rule):
     print('=' * 80)
