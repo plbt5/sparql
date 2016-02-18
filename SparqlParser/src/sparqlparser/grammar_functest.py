@@ -498,8 +498,12 @@ if __name__ == '__main__':
     printResults(l, 'TriplesSameSubject')
 
     # [74]    ConstructTriples          ::=   TriplesSameSubject ( '.' ConstructTriples? )? 
-    
+    l = ['_:test9.33 <test> $algebra, ($TriplesNode) ; a ?algebra, ($TriplesNode). [ $Verb $ObjectList ]']
+    printResults(l, 'ConstructTriples')
+        
     # [73]    ConstructTemplate         ::=   '{' ConstructTriples? '}' 
+    l = ['{_:test9.33 <test> $algebra, ($TriplesNode) ; a ?algebra, ($TriplesNode)}']
+    printResults(l, 'ConstructTemplate')
     
     # [72]    ExpressionList    ::=   NIL | '(' Expression ( ',' Expression )* ')' 
     

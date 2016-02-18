@@ -1006,7 +1006,11 @@ class Test(unittest.TestCase):
         self.testCases['ConstructTriples']['fail'] += [t + ' ' + c + '.'for t in self.testCases['TriplesSameSubject']['pass'][3::10] for c in self.testCases['ConstructTriples_base']['pass']]
 
 # [73]    ConstructTemplate         ::=   '{' ConstructTriples? '}' 
-
+        self.testCases['ConstructTemplate'] = {'pass': [], 'fail': []}
+        self.testCases['ConstructTemplate']['pass'] += ['{ ' + c + ' }' for c in self.testCases['ConstructTriples']['pass']]
+        self.testCases['ConstructTemplate']['pass'] += ['{}']
+        self.testCases['ConstructTriples_base']['fail'] += ['*NoConstructTriples*'] 
+        
 # [72]    ExpressionList    ::=   NIL | '(' Expression ( ',' Expression )* ')' 
 
 # [70]    FunctionCall      ::=   iri ArgList 
@@ -1470,6 +1474,9 @@ class Test(unittest.TestCase):
 
     def testConstructTriples(self):
         Test.makeTestFunc('ConstructTriples', self.testCases)()
+
+    def testConstructTemplate(self):
+        Test.makeTestFunc('ConstructTemplate', self.testCases)()
 
 # # [73]    ConstructTemplate         ::=   '{' ConstructTriples? '}' 
 # 
