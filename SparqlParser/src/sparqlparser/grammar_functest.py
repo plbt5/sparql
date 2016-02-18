@@ -6,7 +6,7 @@ GroupGraphPattern_p << Literal('{}')
 # TriplesNodePath_p << Literal('($TriplesNodePath)')
 # TriplesNode_p << Literal('($TriplesNode)')
 # PropertyListPathNotEmpty_p << Literal('$VerbPath ?ObjectListPath') 
-PropertyListNotEmpty_p << Literal('$Verb $ObjectList')
+# PropertyListNotEmpty_p << Literal('$Verb $ObjectList')
 # Path_p << Literal('<Path>')
 
 def printResults(l, rule):
@@ -480,9 +480,13 @@ if __name__ == '__main__':
     printResults(l, 'TriplesSameSubjectPath')
     
     # [78]    Verb      ::=   VarOrIri | 'a' 
-    
+    l = ['$algebra', '<test>', 'az:Xy', 'a']
+    printResults(l, 'Verb')
+        
     # [77]    PropertyListNotEmpty      ::=   Verb ObjectList ( ';' ( Verb ObjectList )? )* 
-    
+    l = ['$algebra $algebra, ($TriplesNode)', '<test> $algebra, ($TriplesNode) ; a ?algebra, ($TriplesNode)']
+    printResults(l, 'PropertyListNotEmpty')
+        
     # [76]    PropertyList      ::=   PropertyListNotEmpty? 
     
     # [75]    TriplesSameSubject        ::=   VarOrTerm PropertyListNotEmpty | TriplesNode PropertyList 

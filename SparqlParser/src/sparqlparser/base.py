@@ -1530,8 +1530,13 @@ class TriplesSameSubjectPath(SPARQLNonTerminal):
 if do_parseactions: TriplesSameSubjectPath_p.setParseAction(parseInfoFunc('TriplesSameSubjectPath'))
 
 # [78]    Verb      ::=   VarOrIri | 'a' 
+Verb_p = VarOrIri_p | TYPE_kw_p
+class Verb(SPARQLNonTerminal):
+    pass
+if do_parseactions: Verb_p.setParseAction(parseInfoFunc('Verb'))
 
 # [77]    PropertyListNotEmpty      ::=   Verb ObjectList ( ';' ( Verb ObjectList )? )* 
+PropertyListNotEmpty_p << Verb_p + ObjectList_p + ZeroOrMore( SEMICOL_p + Optional(Verb_p + ObjectList_p )) 
 
 # [76]    PropertyList      ::=   PropertyListNotEmpty? 
 

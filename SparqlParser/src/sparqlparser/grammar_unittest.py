@@ -7,7 +7,7 @@ GroupGraphPattern_p << Literal('{}')
 # TriplesNodePath_p << Literal('($TriplesNodePath)')
 # TriplesNode_p << Literal('($TriplesNode)')
 # PropertyListPathNotEmpty_p << Literal('$VerbPath ?ObjectListPath') 
-PropertyListNotEmpty_p << Literal('$Verb $ObjectList')
+# PropertyListNotEmpty_p << Literal('$Verb $ObjectList')
 # Path_p << Literal('<Path>')
 
 class Test(unittest.TestCase):
@@ -963,8 +963,17 @@ class Test(unittest.TestCase):
         self.testCases['TriplesSameSubjectPath']['fail'] += ['algebra']
 
 # [78]    Verb      ::=   VarOrIri | 'a' 
+        self.testCases['Verb'] = {'pass': [], 'fail': []}
+        self.testCases['Verb']['pass'] += [v for v in self.testCases['VarOrIri']['pass']]
+        self.testCases['Verb']['pass'] += ['a']
+        self.testCases['Verb']['fail'] += ['algebra']
 
 # [77]    PropertyListNotEmpty      ::=   Verb ObjectList ( ';' ( Verb ObjectList )? )* 
+        self.testCases['PropertyListNotEmpty'] = {'pass': [], 'fail': []}
+        self.testCases['PropertyListNotEmpty']['pass'] += [v + ' ' + o for v in self.testCases['Verb']['pass'][::100] for o in self.testCases['ObjectList']['pass'][::50]]
+        self.testCases['PropertyListNotEmpty']['pass'] += [v + ' ' + o  + ' ; ' for v in self.testCases['Verb']['pass'][1::100] for o in self.testCases['ObjectList']['pass'][1::50]]
+        self.testCases['PropertyListNotEmpty']['pass'] += [v + ' ' + o  + ' ; '  + v + ' ' + o + ' ;;' for v in self.testCases['Verb']['pass'][2::100] for o in self.testCases['ObjectList']['pass'][2::50]]
+        self.testCases['PropertyListNotEmpty']['fail'] += [v + ' ' + o + v for v in self.testCases['Verb']['pass'][3::500] for o in self.testCases['ObjectList']['pass'][3::50]]
 
 # [76]    PropertyList      ::=   PropertyListNotEmpty? 
 
@@ -1423,8 +1432,12 @@ class Test(unittest.TestCase):
     def testTriplesSameSubjectPath(self):
         Test.makeTestFunc('TriplesSameSubjectPath', self.testCases)()
 
+    def testVerb(self):
+        Test.makeTestFunc('Verb', self.testCases)()
 
-# # [78]    Verb      ::=   VarOrIri | 'a' 
+    def testPropertyListNotEmpty(self):
+        Test.makeTestFunc('PropertyListNotEmpty', self.testCases)()
+
 # 
 # # [77]    PropertyListNotEmpty      ::=   Verb ObjectList ( ';' ( Verb ObjectList )? )* 
 # 
