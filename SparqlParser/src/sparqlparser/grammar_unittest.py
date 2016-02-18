@@ -409,10 +409,9 @@ class Test(unittest.TestCase):
 # ExpressionList
 # "ExpressionList" is an auxiliary production in our grammar. It does not occur in the SPARQL EBNF syntax.
 # These testcases are just a few basic expressions. No further elaboration is foreseen.
-        self.testCases['ExpressionList'] = {'pass': [],
-                                        'fail': []}
-        self.testCases['ExpressionList']['pass'] += ['"*Expression*", "*Expression*"'] 
-        self.testCases['ExpressionList']['fail'] += ['*NoExpression*'] 
+        self.testCases['ExpressionList_base'] = {'pass': [], 'fail': []}
+        self.testCases['ExpressionList_base']['pass'] += ['"*Expression*", "*Expression*"'] 
+        self.testCases['ExpressionList_base']['fail'] += ['*NoExpression*'] 
                
 # [71]    ArgList   ::=   NIL | '(' 'DISTINCT'? Expression ( ',' Expression )* ')' 
         self.testCases['ArgList'] = {'pass': [], 'fail': []}
@@ -454,19 +453,19 @@ class Test(unittest.TestCase):
 # GroupGraphPattern
 # "GroupGraphPattern" at this point is a Forward declaration.
 # Testcases are valid.
-        self.testCases['GroupGraphPattern'] = {'pass': [], 'fail': []}
-        self.testCases['GroupGraphPattern']['pass'] += ['{}'] 
-        self.testCases['GroupGraphPattern']['fail'] += ['*NoGroupGraphPattern*'] 
+        self.testCases['GroupGraphPattern_base'] = {'pass': [], 'fail': []}
+        self.testCases['GroupGraphPattern_base']['pass'] += ['{}'] 
+        self.testCases['GroupGraphPattern_base']['fail'] += ['*NoGroupGraphPattern*'] 
 
 # [126]   NotExistsFunc     ::=   'NOT' 'EXISTS' GroupGraphPattern 
         self.testCases['NotExistsFunc'] = {'pass': [], 'fail': []}
-        for p in self.testCases['GroupGraphPattern']['pass']:
+        for p in self.testCases['GroupGraphPattern_base']['pass']:
             self.testCases['NotExistsFunc']['pass'] += ['NOT exists ' + p]
             self.testCases['NotExistsFunc']['fail'] += ['EXISTS ' + p]
 
 # [125]   ExistsFunc        ::=   'EXISTS' GroupGraphPattern 
         self.testCases['ExistsFunc'] = {'pass': [], 'fail': []}
-        for p in self.testCases['GroupGraphPattern']['pass']:
+        for p in self.testCases['GroupGraphPattern_base']['pass']:
             self.testCases['ExistsFunc']['pass'] += ['EXISTS ' + p]
             self.testCases['ExistsFunc']['fail'] += ['NOT EXISTS ' + p]
             
@@ -1338,8 +1337,8 @@ class Test(unittest.TestCase):
     def testAggregate(self):
         Test.makeTestFunc('Aggregate', self.testCases)()
                    
-    def testGroupGraphPattern(self):
-        Test.makeTestFunc('GroupGraphPattern', self.testCases)()
+#     def testGroupGraphPattern(self):
+#         Test.makeTestFunc('GroupGraphPattern', self.testCases)()
                    
     def testNotExistsFunc(self):
         Test.makeTestFunc('NotExistsFunc', self.testCases)()
