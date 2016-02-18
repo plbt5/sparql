@@ -399,9 +399,9 @@ class Test(unittest.TestCase):
 # Expression
 # "Expression" at this point is a Forward declaration.
 # Testcases are valid.
-        self.testCases['Expression'] = {'pass': [], 'fail': []}
-        self.testCases['Expression']['pass'] += ['"*Expression*"'] 
-        self.testCases['Expression']['fail'] += ['"*NoExpression*'] 
+        self.testCases['Expression_base'] = {'pass': [], 'fail': []}
+        self.testCases['Expression_base']['pass'] += ['"*Expression*"'] 
+        self.testCases['Expression_base']['fail'] += ['"*NoExpression*'] 
 
 # ExpressionList
 # "ExpressionList" is an auxiliary production in our grammar. It does not occur in the SPARQL EBNF syntax.
@@ -413,11 +413,11 @@ class Test(unittest.TestCase):
                
 # [71]    ArgList   ::=   NIL | '(' 'DISTINCT'? Expression ( ',' Expression )* ')' 
         self.testCases['ArgList'] = {'pass': [], 'fail': []}
-        for p1a in self.testCases['Expression']['pass']:
-            for p1b in self.testCases['Expression']['pass']:
+        for p1a in self.testCases['Expression_base']['pass']:
+            for p1b in self.testCases['Expression_base']['pass']:
                 self.testCases['ArgList']['pass'] += ['( )', '(Distinct ' + p1a + ')', '(DISTINCT ' + p1a +')', '(DISTINCT ' + p1a + ', ' + p1b + ')']
                 self.testCases['ArgList']['fail'] += ['[]', 'Not an arglist', '(DISTINCT)']
-        for p1 in self.testCases['Expression']['fail']:
+        for p1 in self.testCases['Expression_base']['fail']:
             self.testCases['ArgList']['fail'] += [p1]
         
 # [128]   iriOrFunction     ::=   iri ArgList? 
@@ -438,12 +438,12 @@ class Test(unittest.TestCase):
 #             | 'SAMPLE' '(' 'DISTINCT'? Expression ')'
         for op in ['COUNT', 'Sum', 'min', 'MAX', 'AVG', 'SAMPLE']:
             self.testCases['Aggregate']['pass'] += [op + '(*)', op + ' (* ) ', op + ' (DISTINCT *)']
-            for p in self.testCases['Expression']['pass']: 
+            for p in self.testCases['Expression_base']['pass']: 
                 self.testCases['Aggregate']['pass'] += [op + '(' + p + ' )', op + ' (DISTINCT ' + p + ')']
         self.testCases['Aggregate']['fail'] += [op + '()', op, op + ' (DISTINCT )'] 
         
 #             | 'GROUP_CONCAT' '(' 'DISTINCT'? Expression ( ';' 'SEPARATOR' '=' String )? ')'
-        for p in self.testCases['Expression']['pass']: 
+        for p in self.testCases['Expression_base']['pass']: 
             for s in self.testCases['String']['pass'][1::100]:
                 self.testCases['Aggregate']['pass'] += ['GROUP_CONCAT(' + p + ' )', 'GROUP_CONCAT (DISTINCT ' + p + ' ; SEPARATOR = ' + s + ')']
         self.testCases['Aggregate']['fail'] += ['GROUP_CONCAT()', 'GROUP_CONCAT', 'GROUP_CONCAT (DISTINCT )']          
@@ -469,38 +469,38 @@ class Test(unittest.TestCase):
             
 # [124]   StrReplaceExpression      ::=   'REPLACE' '(' Expression ',' Expression ',' Expression ( ',' Expression )? ')' 
         self.testCases['StrReplaceExpression'] = {'pass': [], 'fail': []}
-        for p1 in self.testCases['Expression']['pass']:
-            for p2 in self.testCases['Expression']['pass']:
+        for p1 in self.testCases['Expression_base']['pass']:
+            for p2 in self.testCases['Expression_base']['pass']:
                 self.testCases['StrReplaceExpression']['pass'] += ['REPLACE (' + p1 + ' ,' + p2 + ',' + p1 + ')', 'REPLACE( ' + p1 + ' ,' + p2 + ',' + p1 + ' , ' + p2 + ')']
-        for p1 in self.testCases['Expression']['pass']:
-            for p2 in self.testCases['Expression']['pass']:
+        for p1 in self.testCases['Expression_base']['pass']:
+            for p2 in self.testCases['Expression_base']['pass']:
                 self.testCases['StrReplaceExpression']['fail'] += ['REPLACE()', 'REPLACE(' + p1 + ')', 'REPLACE(' + p1 + ' , ' + p2 + ')']
-        for p1 in self.testCases['Expression']['fail']:
-            for p2 in self.testCases['Expression']['pass']:
+        for p1 in self.testCases['Expression_base']['fail']:
+            for p2 in self.testCases['Expression_base']['pass']:
                 self.testCases['StrReplaceExpression']['fail'] += ['REPLACE ' + p1 + ')', 'REPLACE ' + p1 + ' ,' + p2 + ')', 'REPLACE ' + p2 + ' ,' + p1 + ',' + p2 + ')']
                 
 # [123]   SubstringExpression       ::=   'SUBSTR' '(' Expression ',' Expression ( ',' Expression )? ')' 
         self.testCases['SubstringExpression'] = {'pass': [], 'fail': []}
-        for p1 in self.testCases['Expression']['pass']:
-            for p2 in self.testCases['Expression']['pass']:
+        for p1 in self.testCases['Expression_base']['pass']:
+            for p2 in self.testCases['Expression_base']['pass']:
                 self.testCases['SubstringExpression']['pass'] += ['SUBSTR (' + p1 + ' ,' + p2 + ')', 'SUBSTR( ' + p2 + ',' + p1 + ' , ' + p2 + ')']
-        for p1 in self.testCases['Expression']['pass']:
-            for p2 in self.testCases['Expression']['pass']:
+        for p1 in self.testCases['Expression_base']['pass']:
+            for p2 in self.testCases['Expression_base']['pass']:
                 self.testCases['SubstringExpression']['fail'] += ['SUBSTR()', 'SUBSTR(' + p1 + ')', 'SUBSTR(' + p2 + ')']
-        for p1 in self.testCases['Expression']['fail']:
-            for p2 in self.testCases['Expression']['pass']:
+        for p1 in self.testCases['Expression_base']['fail']:
+            for p2 in self.testCases['Expression_base']['pass']:
                 self.testCases['SubstringExpression']['fail'] += ['SUBSTR ' + p1 + ')', 'SUBSTR ' + p1 + ' ,' + p2 + ')']
                 
 # [122]   RegexExpression   ::=   'REGEX' '(' Expression ',' Expression ( ',' Expression )? ')' 
         self.testCases['RegexExpression'] = {'pass': [], 'fail': []}
-        for p1 in self.testCases['Expression']['pass']:
-            for p2 in self.testCases['Expression']['pass']:
+        for p1 in self.testCases['Expression_base']['pass']:
+            for p2 in self.testCases['Expression_base']['pass']:
                 self.testCases['RegexExpression']['pass'] += ['REGEX (' + p1 + ' ,' + p2 + ')', 'REGEX( ' + p2 + ',' + p1 + ' , ' + p2 + ')']
-        for p1 in self.testCases['Expression']['pass']:
-            for p2 in self.testCases['Expression']['pass']:
+        for p1 in self.testCases['Expression_base']['pass']:
+            for p2 in self.testCases['Expression_base']['pass']:
                 self.testCases['RegexExpression']['fail'] += ['REGEX()', 'REGEX(' + p1 + ')', 'REGEX(' + p2 + ')']
-        for p1 in self.testCases['Expression']['fail']:
-            for p2 in self.testCases['Expression']['pass']:
+        for p1 in self.testCases['Expression_base']['fail']:
+            for p2 in self.testCases['Expression_base']['pass']:
                 self.testCases['RegexExpression']['fail'] += ['REGEX ' + p1 + ')', 'REGEX ' + p1 + ' ,' + p2 + ')']
                 
 # [108]   Var       ::=   VAR1 | VAR2             
@@ -629,8 +629,8 @@ class Test(unittest.TestCase):
         self.testCases['BuiltInCall']['fail'] += ['COUNT DISTINCT (*)', 'sameTerm ("*Expression*", "*Expression*", "*Expression*")']
 
 # [120]   BrackettedExpression      ::=   '(' Expression ')' 
-        self.testCases['BracketedExpression'] = {'pass': ['(' + p + ')' for p in self.testCases['Expression']['pass']],
-                                                 'fail': ['(' + p + ')' for p in self.testCases['Expression']['fail']]}           
+        self.testCases['BracketedExpression'] = {'pass': ['(' + p + ')' for p in self.testCases['Expression_base']['pass']],
+                                                 'fail': ['(' + p + ')' for p in self.testCases['Expression_base']['fail']]}           
         
 # [119]   PrimaryExpression         ::=   BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var 
         self.testCases['PrimaryExpression'] = {'pass': [], 'fail': []}
@@ -731,7 +731,9 @@ class Test(unittest.TestCase):
         self.testCases['ConditionalOrExpression'][ 'fail'] += ['algebra']
         
 # [110]   Expression        ::=   ConditionalOrExpression 
-# Defined above due to Forward declaration
+        self.testCases['Expression'] = {'pass': [], 'fail': []}
+        self.testCases['Expression']['pass'] = self.testCases['ConditionalOrExpression']['pass']
+        self.testCases['Expression']['fail'] = self.testCases['ConditionalOrExpression'][ 'fail']
 
 # [109]   GraphTerm         ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | BlankNode | NIL 
         self.testCases['GraphTerm'] = {'pass': [], 'fail': []}
@@ -757,27 +759,27 @@ class Test(unittest.TestCase):
 # TriplesNodePath
 # "TriplesNodePath" at this point is a Forward declaration.
 # Testcases are valid.
-        self.testCases['TriplesNodePath'] = {'pass': [], 'fail': []}
-        self.testCases['TriplesNodePath']['pass'] += ['($TriplesNodePath)'] 
-        self.testCases['TriplesNodePath']['fail'] += ['*NoTriplesNodePath*'] 
+        self.testCases['TriplesNodePath_base'] = {'pass': [], 'fail': []}
+        self.testCases['TriplesNodePath_base']['pass'] += ['($TriplesNodePath)'] 
+        self.testCases['TriplesNodePath_base']['fail'] += ['*NoTriplesNodePath*'] 
         
 # [105]   GraphNodePath     ::=   VarOrTerm | TriplesNodePath 
         self.testCases['GraphNodePath'] = {'pass': [], 'fail': []}
         self.testCases['GraphNodePath']['pass'] += self.testCases['VarOrTerm']['pass']
-        self.testCases['GraphNodePath']['pass'] += self.testCases['TriplesNodePath']['pass']      
+        self.testCases['GraphNodePath']['pass'] += self.testCases['TriplesNodePath_base']['pass']      
         self.testCases['GraphNodePath']['fail'] += ['algebra']
 
 # TriplesNode
 # "TriplesNode" at this point is a Forward declaration.
 # Testcases are valid.
-        self.testCases['TriplesNode'] = {'pass': [], 'fail': []}
-        self.testCases['TriplesNode']['pass'] += ['($TriplesNode)'] 
-        self.testCases['TriplesNode']['fail'] += ['*NoTriplesNode*'] 
+        self.testCases['TriplesNode_base'] = {'pass': [], 'fail': []}
+        self.testCases['TriplesNode_base']['pass'] += ['($TriplesNode)'] 
+        self.testCases['TriplesNode_base']['fail'] += ['*NoTriplesNode*'] 
         
 # [104]   GraphNode         ::=   VarOrTerm | TriplesNode 
         self.testCases['GraphNode'] = {'pass': [], 'fail': []}
         self.testCases['GraphNode']['pass'] += self.testCases['VarOrTerm']['pass']
-        self.testCases['GraphNode']['pass'] += self.testCases['TriplesNode']['pass']      
+        self.testCases['GraphNode']['pass'] += self.testCases['TriplesNode_base']['pass']      
         self.testCases['GraphNode']['fail'] += ['algebra']
         
 # [103]   CollectionPath    ::=   '(' GraphNodePath+ ')' 
@@ -799,13 +801,13 @@ class Test(unittest.TestCase):
 # PropertyListPathNotEmpty
 # "PropertyListPathNotEmpty" at this point is a Forward declaration.
 # Testcases are valid.
-        self.testCases['PropertyListPathNotEmpty'] = {'pass': [], 'fail': []}
-        self.testCases['PropertyListPathNotEmpty']['pass'] += ['$VerbPath ?ObjectListPath'] 
-        self.testCases['PropertyListPathNotEmpty']['fail'] += ['*NoPropertyListPathNotEmpty*'] 
+        self.testCases['PropertyListPathNotEmpty_base'] = {'pass': [], 'fail': []}
+        self.testCases['PropertyListPathNotEmpty_base']['pass'] += ['$VerbPath ?ObjectListPath'] 
+        self.testCases['PropertyListPathNotEmpty_base']['fail'] += ['*NoPropertyListPathNotEmpty*'] 
         
 # [101]   BlankNodePropertyListPath         ::=   '[' PropertyListPathNotEmpty ']' 
         self.testCases['BlankNodePropertyListPath'] = {'pass': [], 'fail': []}
-        for p in self.testCases['PropertyListPathNotEmpty']['pass']:
+        for p in self.testCases['PropertyListPathNotEmpty_base']['pass']:
             self.testCases['BlankNodePropertyListPath']['pass'] += ['[ ' + p + ' ]'] 
         self.testCases['BlankNodePropertyListPath']['fail'] += ['[*NoPropertyListPathNotEmpty*]', '[PropertyListPathNotEmpty]'] 
 
@@ -818,13 +820,13 @@ class Test(unittest.TestCase):
 # PropertyListNotEmpty
 # "PropertyListNotEmpty" at this point is a Forward declaration.
 # Testcases are valid.
-        self.testCases['PropertyListNotEmpty'] = {'pass': [], 'fail': []}
-        self.testCases['PropertyListNotEmpty']['pass'] += ['$Verb $ObjectList'] 
-        self.testCases['PropertyListNotEmpty']['fail'] += ['*NoPropertyListNotEmpty*'] 
+        self.testCases['PropertyListNotEmpty_base'] = {'pass': [], 'fail': []}
+        self.testCases['PropertyListNotEmpty_base']['pass'] += ['$Verb $ObjectList'] 
+        self.testCases['PropertyListNotEmpty_base']['fail'] += ['*NoPropertyListNotEmpty*'] 
         
 # [99]    BlankNodePropertyList     ::=   '[' PropertyListNotEmpty ']' 
         self.testCases['BlankNodePropertyList'] = {'pass': [], 'fail': []}
-        for p in self.testCases['PropertyListNotEmpty']['pass']:
+        for p in self.testCases['PropertyListNotEmpty_base']['pass']:
             self.testCases['BlankNodePropertyList']['pass'] += ['[ ' + p + ' ]'] 
         self.testCases['BlankNodePropertyList']['fail'] += ['[*NoPropertyListPathNotEmpty*]', '[PropertyListPathNotEmpty]'] 
         
@@ -861,16 +863,16 @@ class Test(unittest.TestCase):
 # Path
 # "Path" at this point is a Forward declaration.
 # Testcases are valid.
-        self.testCases['Path'] = {'pass': [], 'fail': []}
-        self.testCases['Path']['pass'] += ['<Path>'] 
-        self.testCases['Path']['fail'] += ['*NoPath*'] 
+        self.testCases['Path_base'] = {'pass': [], 'fail': []}
+        self.testCases['Path_base']['pass'] += ['<Path>'] 
+        self.testCases['Path_base']['fail'] += ['*NoPath*'] 
 
 # [94]    PathPrimary       ::=   iri | 'a' | '!' PathNegatedPropertySet | '(' Path ')' 
         self.testCases['PathPrimary'] = {'pass': [], 'fail': []}
         self.testCases['PathPrimary']['pass'] += self.testCases['iri']['pass']
         self.testCases['PathPrimary']['pass'] += ['a']
         self.testCases['PathPrimary']['pass'] += ['!' + p for p in self.testCases['PathNegatedPropertySet']['pass']]
-        self.testCases['PathPrimary']['pass'] += ['(' + p + ')' for p in self.testCases['Path']['pass']]
+        self.testCases['PathPrimary']['pass'] += ['(' + p + ')' for p in self.testCases['Path_base']['pass']]
         self.testCases['PathPrimary']['fail'] += ['[]']
         
 # [93]    PathMod   ::=   '?' | '*' | '+' 
