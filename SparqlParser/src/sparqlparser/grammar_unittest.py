@@ -1040,7 +1040,10 @@ class Test(unittest.TestCase):
         self.testCases['Constraint']['fail'] += ['*NoConstraint*']
         
 # [68]    Filter    ::=   'FILTER' Constraint 
-
+        self.testCases['Filter'] = {'pass': [], 'fail': []}
+        self.testCases['Filter']['pass'] += ['FILTER ' + c for c in self.testCases['Constraint']['pass']]
+        self.testCases['Filter']['fail'] += ['*NoFilter*']
+        
 # [67]    GroupOrUnionGraphPattern          ::=   GroupGraphPattern ( 'UNION' GroupGraphPattern )* 
 
 # [66]    MinusGraphPattern         ::=   'MINUS' GroupGraphPattern 
@@ -1508,6 +1511,9 @@ class Test(unittest.TestCase):
 
     def testConstraint(self):
         Test.makeTestFunc('Constraint', self.testCases)()
+
+    def testFilter(self):
+        Test.makeTestFunc('Filter', self.testCases)()
 
 # # [68]    Filter    ::=   'FILTER' Constraint 
 # 

@@ -736,6 +736,12 @@ class NOT_IN_kw(SPARQLKeyword):
         return 'NOT IN'
 if do_parseactions: NOT_IN_kw_p.setParseAction(parseInfoFunc('NOT_IN_kw'))
 
+FILTER_kw_p = CaselessKeyword('FILTER')
+class FILTER_kw(SPARQLKeyword):
+    def render(self):
+        return 'FILTER'
+if do_parseactions: FILTER_kw_p.setParseAction(parseInfoFunc('FILTER_kw'))
+
 # 
 # Parsers and classes for terminals
 #
@@ -1490,7 +1496,10 @@ Constraint_p = BracketedExpression_p | BuiltInCall_p | FunctionCall_p
 class Constraint(SPARQLNonTerminal): pass
 if do_parseactions: Constraint_p.setParseAction(parseInfoFunc('Constraint'))
 
-# [68]    Filter    ::=   'FILTER' Constraint 
+# [68]    Filter    ::=   'FILTER' Constraint
+Filter_p = FILTER_kw_p + Constraint_p 
+class Filter(SPARQLNonTerminal): pass
+if do_parseactions: Filter_p.setParseAction(parseInfoFunc('Filter'))
 
 # [67]    GroupOrUnionGraphPattern          ::=   GroupGraphPattern ( 'UNION' GroupGraphPattern )* 
 

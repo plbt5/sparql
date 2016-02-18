@@ -516,7 +516,9 @@ if __name__ == '__main__':
     printResults(l, 'Constraint')
         
     # [68]    Filter    ::=   'FILTER' Constraint 
-    
+    l = ['FILTER <test:227> (DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )', 'FILTER STRUUID()', 'FILTER ROUND ( "*Expression*")', 'FILTER isBLANK ("*Expression*")', 'FILTER COUNT ( * )', 'FILTER ("*Expression*")']
+    printResults(l, 'Filter')
+            
     # [67]    GroupOrUnionGraphPattern          ::=   GroupGraphPattern ( 'UNION' GroupGraphPattern )* 
     
     # [66]    MinusGraphPattern         ::=   'MINUS' GroupGraphPattern 
