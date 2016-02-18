@@ -1,5 +1,5 @@
 import unittest
-from sparqlparser.base import *
+from sparqlparser.grammar import *
 
 # Next lines are temporary during development, to be deleted as implementions added to .base
 # Expression_p << Literal('"*Expression*"')
@@ -982,7 +982,11 @@ class Test(unittest.TestCase):
         self.testCases['PropertyList']['fail'] += [v + ' ' + o + v for v in self.testCases['Verb']['pass'][3::500] for o in self.testCases['ObjectList']['pass'][3::50]]
         
 # [75]    TriplesSameSubject        ::=   VarOrTerm PropertyListNotEmpty | TriplesNode PropertyList 
-
+        self.testCases['TriplesSameSubject'] = {'pass': [], 'fail': []}
+        self.testCases['TriplesSameSubject']['pass'] += [v + ' ' + p for v in self.testCases['VarOrTerm']['pass'][::10] for p in self.testCases['PropertyListNotEmpty']['pass'][::20]]
+        self.testCases['TriplesSameSubject']['pass'] += [t + ' ' + p for t in self.testCases['TriplesNode']['pass'][::20] for p in self.testCases['PropertyList']['pass'][::20]]
+        self.testCases['TriplesSameSubject']['fail'] += ['algebra']
+        
 # [74]    ConstructTriples          ::=   TriplesSameSubject ( '.' ConstructTriples? )? 
 
 # [73]    ConstructTemplate         ::=   '{' ConstructTriples? '}' 
@@ -1445,10 +1449,10 @@ class Test(unittest.TestCase):
     def testPropertyList(self):
         Test.makeTestFunc('PropertyList', self.testCases)()
 
+    def testTriplesSameSubject(self):
+        Test.makeTestFunc('TriplesSameSubject', self.testCases)()
 
-# 
-# # [75]    TriplesSameSubject        ::=   VarOrTerm PropertyListNotEmpty | TriplesNode PropertyList 
-# 
+
 # # [74]    ConstructTriples          ::=   TriplesSameSubject ( '.' ConstructTriples? )? 
 # 
 # # [73]    ConstructTemplate         ::=   '{' ConstructTriples? '}' 

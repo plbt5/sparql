@@ -1,4 +1,4 @@
-from sparqlparser.base import *
+from sparqlparser.grammar import *
 
 # Next lines are temporary during development, to be deleted as implementions added to .base
 # Expression_p << Literal('"*Expression*"')
@@ -492,7 +492,9 @@ if __name__ == '__main__':
     printResults(l, 'PropertyList')
     
     # [75]    TriplesSameSubject        ::=   VarOrTerm PropertyListNotEmpty | TriplesNode PropertyList 
-    
+    l = ['?var $algebra $algebra, ($TriplesNode)', '_:test9.33 <test> $algebra, ($TriplesNode) ; a ?algebra, ($TriplesNode)', '[ $Verb $ObjectList ]']
+    printResults(l, 'TriplesSameSubject')
+
     # [74]    ConstructTriples          ::=   TriplesSameSubject ( '.' ConstructTriples? )? 
     
     # [73]    ConstructTemplate         ::=   '{' ConstructTriples? '}' 
