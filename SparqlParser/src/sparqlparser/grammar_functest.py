@@ -9,6 +9,7 @@ GroupGraphPattern_p << Literal('{}')
 # PropertyListNotEmpty_p << Literal('$Verb $ObjectList')
 # Path_p << Literal('<Path>')
 # ConstructTriples_p << Literal('?ConstructTriples')
+# ExpressionList_p << '()'
 
 
 def printResults(l, rule):
@@ -210,9 +211,9 @@ if __name__ == '__main__':
     l = ['"work"', '"work" @en-bf', "'work' ^^ <work>", "'work'^^:"]
     printResults(l, 'RDFLiteral')
             
-    # ExpressionList
-    l = ['*Expression*, *Expression*']
-#     printResults(l, 'ExpressionList')
+#     # ExpressionList
+#     l = ['*Expression*, *Expression*']
+# #     printResults(l, 'ExpressionList')
            
     # [71]    ArgList   ::=   NIL | '(' 'DISTINCT'? Expression ( ',' Expression )* ')' 
     l = ['()', '( "*Expression*") ', '("*Expression*", "*Expression*")', '(DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )']
@@ -342,23 +343,23 @@ if __name__ == '__main__':
     printResults(l, 'NumericExpression')
         
     # [114]   RelationalExpression      ::=   NumericExpression ( '=' NumericExpression | '!=' NumericExpression | '<' NumericExpression | '>' NumericExpression | '<=' NumericExpression | '>=' NumericExpression | 'IN' ExpressionList | 'NOT' 'IN' ExpressionList )? 
-    l = ['33*<test>() = 33 * 75', '33 IN "*Expression*"', '44 * 75 NOT IN "*Expression*", "*Expression*"']
+    l = ['33*<test>() = 33 * 75', '33 IN ()', '44 * 75 NOT IN ()']
     printResults(l, 'RelationalExpression')
         
     # [113]   ValueLogical      ::=   RelationalExpression 
-    l = ['33*<test>() = 33 * 75', '33 IN "*Expression*"', '44 * 75 NOT IN "*Expression*", "*Expression*"']
+    l = ['33*<test>() = 33 * 75', '33 IN ()', '44 * 75 NOT IN ()']
     printResults(l, 'ValueLogical')
     
     # [112]   ConditionalAndExpression          ::=   ValueLogical ( '&&' ValueLogical )* 
-    l = ['33*<test>() = 33 * 44 && 33 IN "*Expression*"', '44 * 75 NOT IN "*Expression*", "*Expression*" && 33 < 44']
+    l = ['33*<test>() = 33 * 44 && 33 IN ()', '44 * 75 NOT IN ()']
     printResults(l, 'ConditionalAndExpression')
 
     # [111]   ConditionalOrExpression   ::=   ConditionalAndExpression ( '||' ConditionalAndExpression )* 
-    l = ['("*Expression*")', '33*<test>() = 33 * 44 && 33 IN "*Expression*"  || 44 * 75 NOT IN (44 * (55-33)), 77 && 33 && ("*Expression*")']
+    l = ['("*Expression*")', '33*<test>() = 33 * 44 && 33 IN ()']
     printResults(l, 'ConditionalOrExpression')
         
     # [110]   Expression        ::=   ConditionalOrExpression 
-    l = ['("*Expression*")', '33*<test>() = 33 * 44 && 33 IN "*Expression*"  || 44 * 75 NOT IN (44 * (55-33)), 77 && 33 && ("*Expression*")']
+    l = ['("*Expression*")', '33*<test>() = 33 * 44 && 33 IN ()  || 44 * 75 NOT IN ()']
     printResults(l, 'Expression')
         
     # [109]   GraphTerm         ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | BlankNode | NIL 
@@ -506,7 +507,9 @@ if __name__ == '__main__':
     printResults(l, 'ConstructTemplate')
     
     # [72]    ExpressionList    ::=   NIL | '(' Expression ( ',' Expression )* ')' 
-    
+    l = ['()', '(("*Expression*"), 33*<test>() = 33 * 44 && 33 IN ()  || 44 * 75 NOT IN ())']
+    printResults(l, 'ExpressionList')
+        
     # [70]    FunctionCall      ::=   iri ArgList 
     
     # [69]    Constraint        ::=   BrackettedExpression | BuiltInCall | FunctionCall 

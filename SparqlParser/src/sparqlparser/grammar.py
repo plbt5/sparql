@@ -1016,15 +1016,15 @@ class Expression(SPARQLNonTerminal): pass
 if do_parseactions: Expression_p.setParseAction(parseInfoFunc('Expression'))
 
 # pattern and class to parse and render delimited Expression lists
-ExpressionList_p = delimitedList(Expression_p)
-class ExpressionList(SPARQLNonTerminal):
+Expression_list_p = delimitedList(Expression_p)
+class Expression_list(SPARQLNonTerminal):
     def render(self):
         return ', '.join([v[1] if isinstance(v[1], str) else v[1].render() for v in self.getItems()])
-if do_parseactions: ExpressionList_p.setParseAction(parseInfoFunc('ExpressionList'))
+if do_parseactions: Expression_list_p.setParseAction(parseInfoFunc('Expression_list'))
     
  
 # [71]    ArgList   ::=   NIL | '(' 'DISTINCT'? Expression ( ',' Expression )* ')' 
-ArgList_p = Group(NIL_p('nil')) | (LPAR_p + Optional(DISTINCT_kw_p('distinct')) + ExpressionList_p('expression_list') + RPAR_p)
+ArgList_p = Group(NIL_p('nil')) | (LPAR_p + Optional(DISTINCT_kw_p('distinct')) + Expression_list_p('expression_list') + RPAR_p)
 class ArgList(SPARQLNonTerminal): pass
 if do_parseactions: ArgList_p.setParseAction(parseInfoFunc('ArgList'))
 
@@ -1084,6 +1084,11 @@ if do_parseactions: RegexExpression_p.setParseAction(parseInfoFunc('RegexExpress
 Var_p = VAR1_p | VAR2_p
 class Var(SPARQLNonTerminal): pass
 if do_parseactions: Var_p.setParseAction(parseInfoFunc('Var'))
+
+ExpressionList_p = Forward()
+class ExpressionList(SPARQLNonTerminal): pass
+if do_parseactions: ExpressionList_p.setParseAction(parseInfoFunc('ExpressionList'))
+
 
 # [121]   BuiltInCall       ::=     Aggregate 
 #             | 'STR' '(' Expression ')' 
@@ -1342,14 +1347,14 @@ class PathOneInPropertySet(SPARQLNonTerminal): pass
 if do_parseactions: PathOneInPropertySet_p.setParseAction(parseInfoFunc('PathOneInPropertySet'))
 
 # pattern and class to parse and render delimited PathOneInPropertySet lists
-PathOneInPropertySetList_p = delimitedList(PathOneInPropertySet_p, delim='|')
-class PathOneInPropertySetList(SPARQLNonTerminal):
+PathOneInPropertySet_list_p = delimitedList(PathOneInPropertySet_p, delim='|')
+class PathOneInPropertySet_list(SPARQLNonTerminal):
     def render(self):
         return ' | '.join([v[1] if isinstance(v[1], str) else v[1].render() for v in self.getItems()])
-if do_parseactions: PathOneInPropertySetList_p.setParseAction(parseInfoFunc('PathOneInPropertySetList'))
+if do_parseactions: PathOneInPropertySet_list_p.setParseAction(parseInfoFunc('PathOneInPropertySet_list'))
 
 # [95]    PathNegatedPropertySet    ::=   PathOneInPropertySet | '(' ( PathOneInPropertySet ( '|' PathOneInPropertySet )* )? ')' 
-PathNegatedPropertySet_p = PathOneInPropertySet_p | (LPAR_p + Optional(PathOneInPropertySetList_p) + RPAR_p)
+PathNegatedPropertySet_p = PathOneInPropertySet_p | (LPAR_p + Optional(PathOneInPropertySet_list_p) + RPAR_p)
 class PathNegatedPropertySet(SPARQLNonTerminal): pass
 if do_parseactions: PathNegatedPropertySet_p.setParseAction(parseInfoFunc('PathNegatedPropertySet'))
 
@@ -1461,7 +1466,6 @@ class TriplesSameSubject(SPARQLNonTerminal): pass
 if do_parseactions: TriplesSameSubject_p.setParseAction(parseInfoFunc('TriplesSameSubject'))
 
 ConstructTriples_p = Forward()
-TriplesSameSubject_p = (VarOrTerm_p + PropertyListNotEmpty_p) | (TriplesNode_p + PropertyList_p) 
 class ConstructTriples(SPARQLNonTerminal): pass
 if do_parseactions: ConstructTriples_p.setParseAction(parseInfoFunc('ConstructTriples'))
 
@@ -1470,11 +1474,11 @@ ConstructTriples_p << (TriplesSameSubject_p + Optional(PERIOD_p + Optional(Const
 
 # [73]    ConstructTemplate         ::=   '{' ConstructTriples? '}'
 ConstructTemplate_p =   LCURL_p + Optional(ConstructTriples_p) + RCURL_p 
-TriplesSameSubject_p = (VarOrTerm_p + PropertyListNotEmpty_p) | (TriplesNode_p + PropertyList_p) 
 class ConstructTemplate(SPARQLNonTerminal): pass
 if do_parseactions: ConstructTemplate_p.setParseAction(parseInfoFunc('ConstructTemplate'))
 
 # [72]    ExpressionList    ::=   NIL | '(' Expression ( ',' Expression )* ')' 
+ExpressionList_p << (NIL_p | (LPAR_p + Expression_list_p + RPAR_p))
 
 # [70]    FunctionCall      ::=   iri ArgList 
 
