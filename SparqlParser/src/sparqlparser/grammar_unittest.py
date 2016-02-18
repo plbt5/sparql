@@ -1028,6 +1028,9 @@ class Test(unittest.TestCase):
         self.testCases['ExpressionList']['fail'] += ['*NoConstructTriples*'] 
 
 # [70]    FunctionCall      ::=   iri ArgList 
+        self.testCases['FunctionCall'] = {'pass': [], 'fail': []}
+        self.testCases['FunctionCall']['pass'] += [e1 + ' ' + e2 for e1 in self.testCases['iri']['pass'][::5] for e2 in self.testCases['ArgList']['pass'][1::5]]
+        self.testCases['FunctionCall']['fail'] += ['*NoFunctionCall*'] 
 
 # [69]    Constraint        ::=   BrackettedExpression | BuiltInCall | FunctionCall 
 
@@ -1495,10 +1498,10 @@ class Test(unittest.TestCase):
     def testExpressionList(self):
         Test.makeTestFunc('ExpressionList', self.testCases)()
 
+    def testFunctionCall(self):
+        Test.makeTestFunc('FunctionCall', self.testCases)()
 
-# # [72]    ExpressionList    ::=   NIL | '(' Expression ( ',' Expression )* ')' 
-# 
-# # [70]    FunctionCall      ::=   iri ArgList 
+
 # 
 # # [69]    Constraint        ::=   BrackettedExpression | BuiltInCall | FunctionCall 
 # 

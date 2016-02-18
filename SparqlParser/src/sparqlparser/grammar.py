@@ -1481,6 +1481,9 @@ if do_parseactions: ConstructTemplate_p.setParseAction(parseInfoFunc('ConstructT
 ExpressionList_p << (NIL_p | (LPAR_p + Expression_list_p + RPAR_p))
 
 # [70]    FunctionCall      ::=   iri ArgList 
+FunctionCall_p = iri_p + ArgList_p
+class FunctionCall(SPARQLNonTerminal): pass
+if do_parseactions: FunctionCall_p.setParseAction(parseInfoFunc('FunctionCall'))
 
 # [69]    Constraint        ::=   BrackettedExpression | BuiltInCall | FunctionCall 
 

@@ -508,7 +508,9 @@ if __name__ == '__main__':
     printResults(l, 'ExpressionList')
         
     # [70]    FunctionCall      ::=   iri ArgList 
-    
+    l = ['<test:227> (DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )']
+    printResults(l, 'FunctionCall')
+            
     # [69]    Constraint        ::=   BrackettedExpression | BuiltInCall | FunctionCall 
     
     # [68]    Filter    ::=   'FILTER' Constraint 
