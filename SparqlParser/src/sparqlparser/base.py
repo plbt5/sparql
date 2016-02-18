@@ -1536,9 +1536,13 @@ class Verb(SPARQLNonTerminal):
 if do_parseactions: Verb_p.setParseAction(parseInfoFunc('Verb'))
 
 # [77]    PropertyListNotEmpty      ::=   Verb ObjectList ( ';' ( Verb ObjectList )? )* 
-PropertyListNotEmpty_p << Verb_p + ObjectList_p + ZeroOrMore( SEMICOL_p + Optional(Verb_p + ObjectList_p )) 
+PropertyListNotEmpty_p << Verb_p + ObjectList_p + ZeroOrMore(SEMICOL_p + Optional(Verb_p + ObjectList_p)) 
 
-# [76]    PropertyList      ::=   PropertyListNotEmpty? 
+# [76]    PropertyList      ::=   PropertyListNotEmpty?
+PropertyList_p = Optional(PropertyListNotEmpty_p) 
+class PropertyList(SPARQLNonTerminal):
+    pass
+if do_parseactions: PropertyList_p.setParseAction(parseInfoFunc('PropertyList'))
 
 # [75]    TriplesSameSubject        ::=   VarOrTerm PropertyListNotEmpty | TriplesNode PropertyList 
 

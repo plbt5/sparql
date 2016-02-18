@@ -488,6 +488,8 @@ if __name__ == '__main__':
     printResults(l, 'PropertyListNotEmpty')
         
     # [76]    PropertyList      ::=   PropertyListNotEmpty? 
+    l = ['$algebra $algebra, ($TriplesNode)', '<test> $algebra, ($TriplesNode) ; a ?algebra, ($TriplesNode)', '']
+    printResults(l, 'PropertyList')
     
     # [75]    TriplesSameSubject        ::=   VarOrTerm PropertyListNotEmpty | TriplesNode PropertyList 
     

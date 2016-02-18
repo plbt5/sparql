@@ -976,7 +976,11 @@ class Test(unittest.TestCase):
         self.testCases['PropertyListNotEmpty']['fail'] += [v + ' ' + o + v for v in self.testCases['Verb']['pass'][3::500] for o in self.testCases['ObjectList']['pass'][3::50]]
 
 # [76]    PropertyList      ::=   PropertyListNotEmpty? 
-
+        self.testCases['PropertyList'] = {'pass': [], 'fail': []}
+        self.testCases['PropertyList']['pass'] += self.testCases['PropertyListNotEmpty']['pass']
+        self.testCases['PropertyList']['pass'] += ['']
+        self.testCases['PropertyList']['fail'] += [v + ' ' + o + v for v in self.testCases['Verb']['pass'][3::500] for o in self.testCases['ObjectList']['pass'][3::50]]
+        
 # [75]    TriplesSameSubject        ::=   VarOrTerm PropertyListNotEmpty | TriplesNode PropertyList 
 
 # [74]    ConstructTriples          ::=   TriplesSameSubject ( '.' ConstructTriples? )? 
@@ -1438,10 +1442,10 @@ class Test(unittest.TestCase):
     def testPropertyListNotEmpty(self):
         Test.makeTestFunc('PropertyListNotEmpty', self.testCases)()
 
-# 
-# # [77]    PropertyListNotEmpty      ::=   Verb ObjectList ( ';' ( Verb ObjectList )? )* 
-# 
-# # [76]    PropertyList      ::=   PropertyListNotEmpty? 
+    def testPropertyList(self):
+        Test.makeTestFunc('PropertyList', self.testCases)()
+
+
 # 
 # # [75]    TriplesSameSubject        ::=   VarOrTerm PropertyListNotEmpty | TriplesNode PropertyList 
 # 
