@@ -1035,7 +1035,7 @@ class Test(unittest.TestCase):
         self.testCases['Constraint'] = {'pass': [], 'fail': []}
         self.testCases['Constraint']['pass'] += self.testCases['BracketedExpression']['pass']
         self.testCases['Constraint']['pass'] += self.testCases['BuiltInCall']['pass']
-        self.testCases['Constraint']['pass'] += self.testCases['BuiltInCall']['pass']
+        self.testCases['Constraint']['pass'] += self.testCases['FunctionCall']['pass']
         self.testCases['Constraint']['fail'] += ['*NoConstraint*']
         
 # [68]    Filter    ::=   'FILTER' Constraint 
@@ -1055,7 +1055,13 @@ class Test(unittest.TestCase):
         self.testCases['MinusGraphPattern']['fail'] += ['*NoMinusGraphPattern*']
         
 # [65]    DataBlockValue    ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | 'UNDEF' 
-
+        self.testCases['DataBlockValue'] = {'pass': [], 'fail': []}
+        self.testCases['DataBlockValue']['pass'] += self.testCases['iri']['pass'][::50]
+        self.testCases['DataBlockValue']['pass'] += self.testCases['RDFLiteral']['pass'][::100]
+        self.testCases['DataBlockValue']['pass'] += self.testCases['BooleanLiteral']['pass']
+        self.testCases['DataBlockValue']['pass'] += ['UNDEF']
+        self.testCases['DataBlockValue']['fail'] += ['*NoDataBlockValue*']
+                                                 
 # [64]    InlineDataFull    ::=   ( NIL | '(' Var* ')' ) '{' ( '(' DataBlockValue* ')' | NIL )* '}' 
 
 # [63]    InlineDataOneVar          ::=   Var '{' DataBlockValue* '}' 
@@ -1521,8 +1527,9 @@ class Test(unittest.TestCase):
     def testMinusGraphPattern(self):
         Test.makeTestFunc('MinusGraphPattern', self.testCases)()
 
-# # [65]    DataBlockValue    ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | 'UNDEF' 
-# 
+    def testDataBlockValue(self):
+        Test.makeTestFunc('DataBlockValue', self.testCases)()
+
 # # [64]    InlineDataFull    ::=   ( NIL | '(' Var* ')' ) '{' ( '(' DataBlockValue* ')' | NIL )* '}' 
 # 
 # # [63]    InlineDataOneVar          ::=   Var '{' DataBlockValue* '}' 

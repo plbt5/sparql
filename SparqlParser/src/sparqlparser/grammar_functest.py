@@ -528,7 +528,9 @@ if __name__ == '__main__':
     printResults(l, 'MinusGraphPattern')
             
     # [65]    DataBlockValue    ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | 'UNDEF' 
-    
+    l = ['<work:22?>', '"test" ^^ <test>', '333.55', 'true', 'UNDEF']
+    printResults(l, 'DataBlockValue')
+                
     # [64]    InlineDataFull    ::=   ( NIL | '(' Var* ')' ) '{' ( '(' DataBlockValue* ')' | NIL )* '}' 
     
     # [63]    InlineDataOneVar          ::=   Var '{' DataBlockValue* '}' 

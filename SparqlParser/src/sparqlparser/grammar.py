@@ -754,6 +754,12 @@ class MINUS_kw(SPARQLKeyword):
         return 'MINUS'
 if do_parseactions: MINUS_kw_p.setParseAction(parseInfoFunc('MINUS_kw'))
 
+UNDEF_kw_p = CaselessKeyword('UNDEF')
+class UNDEF_kw(SPARQLKeyword):
+    def render(self):
+        return 'UNDEF'
+if do_parseactions: UNDEF_kw_p.setParseAction(parseInfoFunc('UNDEF_kw'))
+
 # 
 # Parsers and classes for terminals
 #
@@ -1524,6 +1530,9 @@ class MinusGraphPattern(SPARQLNonTerminal): pass
 if do_parseactions: MinusGraphPattern_p.setParseAction(parseInfoFunc('MinusGraphPattern'))
 
 # [65]    DataBlockValue    ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | 'UNDEF' 
+DataBlockValue_p = iri_p | RDFLiteral_p | NumericLiteral_p | BooleanLiteral_p | UNDEF_kw_p
+class DataBlockValue(SPARQLNonTerminal): pass
+if do_parseactions: DataBlockValue_p.setParseAction(parseInfoFunc('DataBlockValue'))
 
 # [64]    InlineDataFull    ::=   ( NIL | '(' Var* ')' ) '{' ( '(' DataBlockValue* ')' | NIL )* '}' 
 
