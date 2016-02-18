@@ -1524,6 +1524,10 @@ class PropertyListPath(SPARQLNonTerminal):
 if do_parseactions: PropertyListPath_p.setParseAction(parseInfoFunc('PropertyListPath'))
 
 # [81]    TriplesSameSubjectPath    ::=   VarOrTerm PropertyListPathNotEmpty | TriplesNodePath PropertyListPath 
+TriplesSameSubjectPath_p = (VarOrTerm_p + PropertyListPathNotEmpty_p) | (TriplesNodePath_p + PropertyListPath_p)
+class TriplesSameSubjectPath(SPARQLNonTerminal):
+    pass
+if do_parseactions: TriplesSameSubjectPath_p.setParseAction(parseInfoFunc('TriplesSameSubjectPath'))
 
 # [78]    Verb      ::=   VarOrIri | 'a' 
 

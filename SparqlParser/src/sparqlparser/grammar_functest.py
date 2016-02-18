@@ -476,7 +476,9 @@ if __name__ == '__main__':
     printResults(l, 'PropertyListPath')
         
     # [81]    TriplesSameSubjectPath    ::=   VarOrTerm PropertyListPathNotEmpty | TriplesNodePath PropertyListPath 
-
+    l = ['"work" @en-bf <test> ?path ; <test2> $algebra, ($TriplesNode) ;;', '(($TriplesNodePath) $algebra )', '(($TriplesNodePath) $algebra ) <test> ? ?path']
+    printResults(l, 'TriplesSameSubjectPath')
+    
     # [78]    Verb      ::=   VarOrIri | 'a' 
     
     # [77]    PropertyListNotEmpty      ::=   Verb ObjectList ( ';' ( Verb ObjectList )? )* 
