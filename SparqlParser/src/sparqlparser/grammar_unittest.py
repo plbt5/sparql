@@ -1033,7 +1033,12 @@ class Test(unittest.TestCase):
         self.testCases['FunctionCall']['fail'] += ['*NoFunctionCall*'] 
 
 # [69]    Constraint        ::=   BrackettedExpression | BuiltInCall | FunctionCall 
-
+        self.testCases['Constraint'] = {'pass': [], 'fail': []}
+        self.testCases['Constraint']['pass'] += self.testCases['BracketedExpression']['pass']
+        self.testCases['Constraint']['pass'] += self.testCases['BuiltInCall']['pass']
+        self.testCases['Constraint']['pass'] += self.testCases['BuiltInCall']['pass']
+        self.testCases['Constraint']['fail'] += ['*NoConstraint*']
+        
 # [68]    Filter    ::=   'FILTER' Constraint 
 
 # [67]    GroupOrUnionGraphPattern          ::=   GroupGraphPattern ( 'UNION' GroupGraphPattern )* 
@@ -1501,10 +1506,9 @@ class Test(unittest.TestCase):
     def testFunctionCall(self):
         Test.makeTestFunc('FunctionCall', self.testCases)()
 
+    def testConstraint(self):
+        Test.makeTestFunc('Constraint', self.testCases)()
 
-# 
-# # [69]    Constraint        ::=   BrackettedExpression | BuiltInCall | FunctionCall 
-# 
 # # [68]    Filter    ::=   'FILTER' Constraint 
 # 
 # # [67]    GroupOrUnionGraphPattern          ::=   GroupGraphPattern ( 'UNION' GroupGraphPattern )* 

@@ -1486,6 +1486,9 @@ class FunctionCall(SPARQLNonTerminal): pass
 if do_parseactions: FunctionCall_p.setParseAction(parseInfoFunc('FunctionCall'))
 
 # [69]    Constraint        ::=   BrackettedExpression | BuiltInCall | FunctionCall 
+Constraint_p = BracketedExpression_p | BuiltInCall_p | FunctionCall_p
+class Constraint(SPARQLNonTerminal): pass
+if do_parseactions: Constraint_p.setParseAction(parseInfoFunc('Constraint'))
 
 # [68]    Filter    ::=   'FILTER' Constraint 
 

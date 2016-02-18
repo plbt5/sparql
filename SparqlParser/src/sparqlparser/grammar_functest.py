@@ -512,7 +512,9 @@ if __name__ == '__main__':
     printResults(l, 'FunctionCall')
             
     # [69]    Constraint        ::=   BrackettedExpression | BuiltInCall | FunctionCall 
-    
+    l = ['<test:227> (DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )', 'STRUUID()', 'ROUND ( "*Expression*")', 'isBLANK ("*Expression*")', 'COUNT ( * )', '("*Expression*")']
+    printResults(l, 'Constraint')
+        
     # [68]    Filter    ::=   'FILTER' Constraint 
     
     # [67]    GroupOrUnionGraphPattern          ::=   GroupGraphPattern ( 'UNION' GroupGraphPattern )* 
