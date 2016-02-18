@@ -742,6 +742,12 @@ class FILTER_kw(SPARQLKeyword):
         return 'FILTER'
 if do_parseactions: FILTER_kw_p.setParseAction(parseInfoFunc('FILTER_kw'))
 
+UNION_kw_p = CaselessKeyword('UNION')
+class UNION_kw(SPARQLKeyword):
+    def render(self):
+        return 'UNION'
+if do_parseactions: UNION_kw_p.setParseAction(parseInfoFunc('UNION_kw'))
+
 # 
 # Parsers and classes for terminals
 #
@@ -1502,6 +1508,9 @@ class Filter(SPARQLNonTerminal): pass
 if do_parseactions: Filter_p.setParseAction(parseInfoFunc('Filter'))
 
 # [67]    GroupOrUnionGraphPattern          ::=   GroupGraphPattern ( 'UNION' GroupGraphPattern )* 
+GroupOrUnionGraphPattern_p = GroupGraphPattern_p + ZeroOrMore(UNION_kw_p + GroupGraphPattern_p) 
+class GroupOrUnionGraphPattern(SPARQLNonTerminal): pass
+if do_parseactions: GroupOrUnionGraphPattern_p.setParseAction(parseInfoFunc('GroupOrUnionGraphPattern'))
 
 # [66]    MinusGraphPattern         ::=   'MINUS' GroupGraphPattern 
 

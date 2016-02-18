@@ -1044,7 +1044,11 @@ class Test(unittest.TestCase):
         self.testCases['Filter']['fail'] += ['*NoFilter*']
         
 # [67]    GroupOrUnionGraphPattern          ::=   GroupGraphPattern ( 'UNION' GroupGraphPattern )* 
-
+        self.testCases['GroupOrUnionGraphPattern'] = {'pass': [], 'fail': []}
+        self.testCases['GroupOrUnionGraphPattern']['pass'] += [c for c in self.testCases['GroupGraphPattern_base']['pass']]
+        self.testCases['GroupOrUnionGraphPattern']['pass'] += [c1 + ' UNION ' + c2 for c1 in self.testCases['GroupGraphPattern_base']['pass'] for c2 in self.testCases['GroupGraphPattern_base']['pass']]
+        self.testCases['GroupOrUnionGraphPattern']['fail'] += ['*NoGroupOrUnionGraphPattern*']
+        
 # [66]    MinusGraphPattern         ::=   'MINUS' GroupGraphPattern 
 
 # [65]    DataBlockValue    ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | 'UNDEF' 
@@ -1514,10 +1518,10 @@ class Test(unittest.TestCase):
     def testFilter(self):
         Test.makeTestFunc('Filter', self.testCases)()
 
-# # [68]    Filter    ::=   'FILTER' Constraint 
-# 
-# # [67]    GroupOrUnionGraphPattern          ::=   GroupGraphPattern ( 'UNION' GroupGraphPattern )* 
-# 
+    def testGroupOrUnionGraphPattern(self):
+        Test.makeTestFunc('GroupOrUnionGraphPattern', self.testCases)()
+
+
 # # [66]    MinusGraphPattern         ::=   'MINUS' GroupGraphPattern 
 # 
 # # [65]    DataBlockValue    ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | 'UNDEF' 

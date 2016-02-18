@@ -520,7 +520,9 @@ if __name__ == '__main__':
     printResults(l, 'Filter')
             
     # [67]    GroupOrUnionGraphPattern          ::=   GroupGraphPattern ( 'UNION' GroupGraphPattern )* 
-    
+    l = ['{}', '{} UNION {}', '{} UNION {} UNION {}']
+    printResults(l, 'GroupOrUnionGraphPattern')
+        
     # [66]    MinusGraphPattern         ::=   'MINUS' GroupGraphPattern 
     
     # [65]    DataBlockValue    ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | 'UNDEF' 
