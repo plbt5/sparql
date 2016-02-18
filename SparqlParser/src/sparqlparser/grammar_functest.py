@@ -25,6 +25,7 @@ def printResults(l, rule):
         rendering = r[0].render()
         print('\nParse : {}'.format(s))
         print('Render:', rendering)
+        assert ''.join(r[0].render().upper().split()) == ''.join(s.upper().split()), 'Parsed expression: "{}" conflicts with original: "{}"'.format(r[0].render(), s)
         if s != rendering:
             print()
             print('+' * 80)
@@ -210,10 +211,6 @@ if __name__ == '__main__':
     # [129]   RDFLiteral        ::=   String ( LANGTAG | ( '^^' iri ) )? 
     l = ['"work"', '"work" @en-bf', "'work' ^^ <work>", "'work'^^:"]
     printResults(l, 'RDFLiteral')
-            
-#     # ExpressionList
-#     l = ['*Expression*, *Expression*']
-# #     printResults(l, 'ExpressionList')
            
     # [71]    ArgList   ::=   NIL | '(' 'DISTINCT'? Expression ( ',' Expression )* ')' 
     l = ['()', '( "*Expression*") ', '("*Expression*", "*Expression*")', '(DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )']

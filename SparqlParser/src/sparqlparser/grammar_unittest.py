@@ -37,7 +37,8 @@ class Test(unittest.TestCase):
                     if debug >= 3:
                         print(' ( = ' + ' '.join([str(ord(c)) for c in str(e)[2:-2]]), end=' )')
                 assert e[0].isValid()
-            for f in testCases[rule]['fail']:
+                assert ''.join(e[0].render().upper().split()) == ''.join(p.upper().split()), 'Parsed expression: "{}" conflicts with original: "{}"'.format(e[0].render(), p)
+            for f in testCases[rule]['fail']: 
                 if debug >= 1:
                     print('\nfail:', f, end='')
                 try:
