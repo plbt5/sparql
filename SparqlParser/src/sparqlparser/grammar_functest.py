@@ -524,7 +524,9 @@ if __name__ == '__main__':
     printResults(l, 'GroupOrUnionGraphPattern')
         
     # [66]    MinusGraphPattern         ::=   'MINUS' GroupGraphPattern 
-    
+    l = ['MINUS {}']
+    printResults(l, 'MinusGraphPattern')
+            
     # [65]    DataBlockValue    ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | 'UNDEF' 
     
     # [64]    InlineDataFull    ::=   ( NIL | '(' Var* ')' ) '{' ( '(' DataBlockValue* ')' | NIL )* '}' 

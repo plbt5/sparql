@@ -748,6 +748,12 @@ class UNION_kw(SPARQLKeyword):
         return 'UNION'
 if do_parseactions: UNION_kw_p.setParseAction(parseInfoFunc('UNION_kw'))
 
+MINUS_kw_p = CaselessKeyword('MINUS')
+class MINUS_kw(SPARQLKeyword):
+    def render(self):
+        return 'MINUS'
+if do_parseactions: MINUS_kw_p.setParseAction(parseInfoFunc('MINUS_kw'))
+
 # 
 # Parsers and classes for terminals
 #
@@ -1512,7 +1518,10 @@ GroupOrUnionGraphPattern_p = GroupGraphPattern_p + ZeroOrMore(UNION_kw_p + Group
 class GroupOrUnionGraphPattern(SPARQLNonTerminal): pass
 if do_parseactions: GroupOrUnionGraphPattern_p.setParseAction(parseInfoFunc('GroupOrUnionGraphPattern'))
 
-# [66]    MinusGraphPattern         ::=   'MINUS' GroupGraphPattern 
+# [66]    MinusGraphPattern         ::=   'MINUS' GroupGraphPattern
+MinusGraphPattern_p =   MINUS_kw_p + GroupGraphPattern_p 
+class MinusGraphPattern(SPARQLNonTerminal): pass
+if do_parseactions: MinusGraphPattern_p.setParseAction(parseInfoFunc('MinusGraphPattern'))
 
 # [65]    DataBlockValue    ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | 'UNDEF' 
 

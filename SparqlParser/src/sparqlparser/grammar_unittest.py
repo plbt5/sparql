@@ -1050,7 +1050,10 @@ class Test(unittest.TestCase):
         self.testCases['GroupOrUnionGraphPattern']['fail'] += ['*NoGroupOrUnionGraphPattern*']
         
 # [66]    MinusGraphPattern         ::=   'MINUS' GroupGraphPattern 
-
+        self.testCases['MinusGraphPattern'] = {'pass': [], 'fail': []}
+        self.testCases['MinusGraphPattern']['pass'] += ['MINUS ' + c for c in self.testCases['GroupGraphPattern_base']['pass']]
+        self.testCases['MinusGraphPattern']['fail'] += ['*NoMinusGraphPattern*']
+        
 # [65]    DataBlockValue    ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | 'UNDEF' 
 
 # [64]    InlineDataFull    ::=   ( NIL | '(' Var* ')' ) '{' ( '(' DataBlockValue* ')' | NIL )* '}' 
@@ -1226,10 +1229,7 @@ class Test(unittest.TestCase):
                            
     def testVARNAME(self):
         Test.makeTestFunc('VARNAME', self.testCases)()
-                  
-# WS is not used
-# In the SPARWQL EBNF this production is used for defining NIL and ANON, but in this pyparsing implementation those are implemented independently     
-                  
+
     def testANON(self):
         Test.makeTestFunc('ANON', self.testCases)()    
                               
@@ -1340,9 +1340,6 @@ class Test(unittest.TestCase):
                    
     def testAggregate(self):
         Test.makeTestFunc('Aggregate', self.testCases)()
-                   
-#     def testGroupGraphPattern(self):
-#         Test.makeTestFunc('GroupGraphPattern', self.testCases)()
                    
     def testNotExistsFunc(self):
         Test.makeTestFunc('NotExistsFunc', self.testCases)()
@@ -1521,9 +1518,9 @@ class Test(unittest.TestCase):
     def testGroupOrUnionGraphPattern(self):
         Test.makeTestFunc('GroupOrUnionGraphPattern', self.testCases)()
 
+    def testMinusGraphPattern(self):
+        Test.makeTestFunc('MinusGraphPattern', self.testCases)()
 
-# # [66]    MinusGraphPattern         ::=   'MINUS' GroupGraphPattern 
-# 
 # # [65]    DataBlockValue    ::=   iri | RDFLiteral | NumericLiteral | BooleanLiteral | 'UNDEF' 
 # 
 # # [64]    InlineDataFull    ::=   ( NIL | '(' Var* ')' ) '{' ( '(' DataBlockValue* ')' | NIL )* '}' 
