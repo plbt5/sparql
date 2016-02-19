@@ -1535,6 +1535,9 @@ class DataBlockValue(SPARQLNonTerminal): pass
 if do_parseactions: DataBlockValue_p.setParseAction(parseInfoFunc('DataBlockValue'))
 
 # [64]    InlineDataFull    ::=   ( NIL | '(' Var* ')' ) '{' ( '(' DataBlockValue* ')' | NIL )* '}' 
+InlineDataFull_p = ( NIL_p | (LPAR_p + ZeroOrMore(Var_p) + RPAR_p)) + LCURL_p +  ZeroOrMore((LPAR_p + ZeroOrMore(DataBlockValue_p) + RPAR_p) | NIL_p) + RCURL_p 
+class InlineDataFull(SPARQLNonTerminal): pass
+if do_parseactions: InlineDataFull_p.setParseAction(parseInfoFunc('InlineDataFull'))
 
 # [63]    InlineDataOneVar          ::=   Var '{' DataBlockValue* '}' 
 

@@ -1,6 +1,6 @@
 from sparqlparser.grammar import *
 
-# Next lines are temporary during development, to be deleted as implementions added to .base
+# Next lines are temporary during development, to be deleted as implementions added to .grammar
 # Expression_p << Literal('"*Expression*"')
 GroupGraphPattern_p << Literal('{}')
 # TriplesNodePath_p << Literal('($TriplesNodePath)')
@@ -532,7 +532,9 @@ if __name__ == '__main__':
     printResults(l, 'DataBlockValue')
                 
     # [64]    InlineDataFull    ::=   ( NIL | '(' Var* ')' ) '{' ( '(' DataBlockValue* ')' | NIL )* '}' 
-    
+    l = ['( $4℀ $4℀ )  { ( true true ) }']
+    printResults(l, 'InlineDataFull')
+        
     # [63]    InlineDataOneVar          ::=   Var '{' DataBlockValue* '}' 
     
     # [62]    DataBlock         ::=   InlineDataOneVar | InlineDataFull 
