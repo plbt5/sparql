@@ -1540,8 +1540,12 @@ class InlineDataFull(SPARQLNonTerminal): pass
 if do_parseactions: InlineDataFull_p.setParseAction(parseInfoFunc('InlineDataFull'))
 
 # [63]    InlineDataOneVar          ::=   Var '{' DataBlockValue* '}' 
+InlineDataOneVar_p = Var_p + LCURL_p + ZeroOrMore(DataBlockValue_p) + RCURL_p 
+class InlineDataOneVar(SPARQLNonTerminal): pass
+if do_parseactions: InlineDataOneVar_p.setParseAction(parseInfoFunc('InlineDataOneVar'))
 
 # [62]    DataBlock         ::=   InlineDataOneVar | InlineDataFull 
+DataBlock_p = InlineDataOneVar_p | InlineDataFull_p
 
 # [61]    InlineData        ::=   'VALUES' DataBlock 
 

@@ -536,9 +536,13 @@ if __name__ == '__main__':
     printResults(l, 'InlineDataFull')
         
     # [63]    InlineDataOneVar          ::=   Var '{' DataBlockValue* '}' 
-    
+    l = ['$S { <testIri> <testIri> }']
+    printResults(l, 'InlineDataOneVar')
+            
     # [62]    DataBlock         ::=   InlineDataOneVar | InlineDataFull 
-    
+    l = ['( $4℀ $4℀ )  { ( true true ) }', '$S { <testIri> <testIri> }']
+    printResults(l, 'DataBlock')
+        
     # [61]    InlineData        ::=   'VALUES' DataBlock 
     
     # [60]    Bind      ::=   'BIND' '(' Expression 'AS' Var ')' 

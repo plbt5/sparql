@@ -1065,14 +1065,23 @@ class Test(unittest.TestCase):
 # [64]    InlineDataFull    ::=   ( NIL | '(' Var* ')' ) '{' ( '(' DataBlockValue* ')' | NIL )* '}' 
         self.testCases['InlineDataFull'] = {'pass': [], 'fail': []}
         self.testCases['InlineDataFull']['pass'] += ['( ) { ( ) }']
-        self.testCases['InlineDataFull']['pass'] += [' ( ' + v + ' ) ' + ' { ( ) } ' for v in self.testCases['Var']['pass'][::50] for d in self.testCases['DataBlockValue']['pass'][::5]]
+        self.testCases['InlineDataFull']['pass'] += [' ( ' + v + ' ) ' + ' { ( ) } ' for v in self.testCases['Var']['pass'][::50]]
         self.testCases['InlineDataFull']['pass'] += [' ( ) ' + ' { ( ' + d + ' ) } ' for v in self.testCases['Var']['pass'][::50] for d in self.testCases['DataBlockValue']['pass'][::5]]
         self.testCases['InlineDataFull']['pass'] += [' ( ' + v + ' ' + v + ' ) ' + ' { ( ' + d + ' ' + d + ' ) } ' for v in self.testCases['Var']['pass'][::50] for d in self.testCases['DataBlockValue']['pass'][::5]]
         self.testCases['InlineDataFull']['fail'] += ['*NoInlineDataFull*']
         
 # [63]    InlineDataOneVar          ::=   Var '{' DataBlockValue* '}' 
-
+        self.testCases['InlineDataOneVar'] = {'pass': [], 'fail': []}
+        self.testCases['InlineDataOneVar']['pass'] += [v  + ' { }' for v in self.testCases['Var']['pass'][::50]]
+        self.testCases['InlineDataOneVar']['pass'] += [v  + ' { ' + d + ' }' for v in self.testCases['Var']['pass'][::50] for d in self.testCases['DataBlockValue']['pass'][::5]]
+        self.testCases['InlineDataOneVar']['pass'] += [v  + ' { ' + d + ' ' + d + ' }' for v in self.testCases['Var']['pass'][::50] for d in self.testCases['DataBlockValue']['pass'][::5]]
+        self.testCases['InlineDataOneVar']['fail'] += ['*NoInlineDataOneVar*']
+        
 # [62]    DataBlock         ::=   InlineDataOneVar | InlineDataFull 
+        self.testCases['DataBlock'] = {'pass': [], 'fail': []}
+        self.testCases['DataBlock']['pass'] += self.testCases['InlineDataOneVar']['pass']
+        self.testCases['DataBlock']['pass'] += self.testCases['InlineDataFull']['pass']
+        self.testCases['DataBlock']['fail'] += ['*NoDataBlock*']
 
 # [61]    InlineData        ::=   'VALUES' DataBlock 
 
@@ -1535,12 +1544,15 @@ class Test(unittest.TestCase):
 # 
 #     def testDataBlockValue(self):
 #         Test.makeTestFunc('DataBlockValue', self.testCases)()
-
+# 
     def testInlineDataFull(self):
         Test.makeTestFunc('InlineDataFull', self.testCases)()
-
+ 
     def testInlineDataOneVar(self):
         Test.makeTestFunc('InlineDataOneVar', self.testCases)()
+
+    def testDataBlock(self):
+        Test.makeTestFunc('DataBlock', self.testCases)()
 
 
 # # [62]    DataBlock         ::=   InlineDataOneVar | InlineDataFull 
