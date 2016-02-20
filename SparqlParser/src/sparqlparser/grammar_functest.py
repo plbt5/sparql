@@ -561,6 +561,8 @@ if __name__ == '__main__':
     printResults(l, 'GraphGraphPattern')
         
     # [57]    OptionalGraphPattern      ::=   'OPTIONAL' GroupGraphPattern 
+    l = ['OPTIONAL {}']
+    printResults(l, 'OptionalGraphPattern')
     
     # [56]    GraphPatternNotTriples    ::=   GroupOrUnionGraphPattern | OptionalGraphPattern | MinusGraphPattern | GraphGraphPattern | ServiceGraphPattern | Filter | Bind | InlineData 
     

@@ -796,6 +796,12 @@ class GRAPH_kw(SPARQLKeyword):
         return 'GRAPH'
 if do_parseactions: GRAPH_kw_p.setParseAction(parseInfoFunc('GRAPH_kw'))
 
+OPTIONAL_kw_p = CaselessKeyword('OPTIONAL')
+class OPTIONAL_kw(SPARQLKeyword):
+    def render(self):
+        return 'OPTIONAL'
+if do_parseactions: OPTIONAL_kw_p.setParseAction(parseInfoFunc('OPTIONAL_kw'))
+
 # 
 # Parsers and classes for terminals
 #
@@ -1607,6 +1613,9 @@ class GraphGraphPattern(SPARQLNonTerminal): pass
 if do_parseactions: GraphGraphPattern_p.setParseAction(parseInfoFunc('GraphGraphPattern'))
 
 # [57]    OptionalGraphPattern      ::=   'OPTIONAL' GroupGraphPattern 
+OptionalGraphPattern_p =   OPTIONAL_kw_p + GroupGraphPattern_p 
+class OptionalGraphPattern(SPARQLNonTerminal): pass
+if do_parseactions: OptionalGraphPattern_p.setParseAction(parseInfoFunc('OptionalGraphPattern'))
 
 # [56]    GraphPatternNotTriples    ::=   GroupOrUnionGraphPattern | OptionalGraphPattern | MinusGraphPattern | GraphGraphPattern | ServiceGraphPattern | Filter | Bind | InlineData 
 

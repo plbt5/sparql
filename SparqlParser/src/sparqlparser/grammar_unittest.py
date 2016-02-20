@@ -1105,7 +1105,10 @@ class Test(unittest.TestCase):
         self.testCases['GraphGraphPattern']['fail'] += ['*NoGraphGraphPattern*']
         
 # [57]    OptionalGraphPattern      ::=   'OPTIONAL' GroupGraphPattern 
-
+        self.testCases['OptionalGraphPattern'] = {'pass': [], 'fail': []}
+        self.testCases['OptionalGraphPattern']['pass'] += ['OPTIONAL ' + g for g in self.testCases['GroupGraphPattern_base']['pass']]
+        self.testCases['OptionalGraphPattern']['fail'] += ['*NoOptionalGraphPattern*']
+        
 # [56]    GraphPatternNotTriples    ::=   GroupOrUnionGraphPattern | OptionalGraphPattern | MinusGraphPattern | GraphGraphPattern | ServiceGraphPattern | Filter | Bind | InlineData 
 
 # [55]    TriplesBlock      ::=   TriplesSameSubjectPath ( '.' TriplesBlock? )? 
@@ -1579,9 +1582,9 @@ class Test(unittest.TestCase):
     def testGraphGraphPattern(self):
         Test.makeTestFunc('GraphGraphPattern', self.testCases)()
 
-# # [58]    GraphGraphPattern         ::=   'GRAPH' VarOrIri GroupGraphPattern 
-# 
-# # [57]    OptionalGraphPattern      ::=   'OPTIONAL' GroupGraphPattern 
+    def testOptionalGraphPattern(self):
+        Test.makeTestFunc('OptionalGraphPattern', self.testCases)()
+
 # 
 # # [56]    GraphPatternNotTriples    ::=   GroupOrUnionGraphPattern | OptionalGraphPattern | MinusGraphPattern | GraphGraphPattern | ServiceGraphPattern | Filter | Bind | InlineData 
 # 
