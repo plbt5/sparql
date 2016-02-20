@@ -760,6 +760,36 @@ class UNDEF_kw(SPARQLKeyword):
         return 'UNDEF'
 if do_parseactions: UNDEF_kw_p.setParseAction(parseInfoFunc('UNDEF_kw'))
 
+VALUES_kw_p = CaselessKeyword('VALUES')
+class VALUES_kw(SPARQLKeyword):
+    def render(self):
+        return 'VALUES'
+if do_parseactions: VALUES_kw_p.setParseAction(parseInfoFunc('VALUES_kw'))
+
+BIND_kw_p = CaselessKeyword('BIND')
+class BIND_kw(SPARQLKeyword):
+    def render(self):
+        return 'BIND'
+if do_parseactions: BIND_kw_p.setParseAction(parseInfoFunc('BIND_kw'))
+
+AS_kw_p = CaselessKeyword('AS')
+class AS_kw(SPARQLKeyword):
+    def render(self):
+        return 'AS'
+if do_parseactions: AS_kw_p.setParseAction(parseInfoFunc('AS_kw'))
+
+SERVICE_kw_p = CaselessKeyword('SERVICE')
+class SERVICE_kw(SPARQLKeyword):
+    def render(self):
+        return 'SERVICE'
+if do_parseactions: SERVICE_kw_p.setParseAction(parseInfoFunc('SERVICE_kw'))
+
+SILENT_kw_p = CaselessKeyword('SILENT')
+class SILENT_kw(SPARQLKeyword):
+    def render(self):
+        return 'SILENT'
+if do_parseactions: SILENT_kw_p.setParseAction(parseInfoFunc('SILENT_kw'))
+
 # 
 # Parsers and classes for terminals
 #
@@ -1546,12 +1576,24 @@ if do_parseactions: InlineDataOneVar_p.setParseAction(parseInfoFunc('InlineDataO
 
 # [62]    DataBlock         ::=   InlineDataOneVar | InlineDataFull 
 DataBlock_p = InlineDataOneVar_p | InlineDataFull_p
+# DataBlock_p = InlineDataOneVar_p + Empty()
+class DataBlock(SPARQLNonTerminal): pass
+if do_parseactions: DataBlock_p.setParseAction(parseInfoFunc('DataBlock'))
 
 # [61]    InlineData        ::=   'VALUES' DataBlock 
+InlineData_p = VALUES_kw_p + DataBlock_p 
+class InlineData(SPARQLNonTerminal): pass
+if do_parseactions: InlineData_p.setParseAction(parseInfoFunc('InlineData'))
 
 # [60]    Bind      ::=   'BIND' '(' Expression 'AS' Var ')' 
+Bind_p =   BIND_kw_p + LPAR_p + Expression_p + AS_kw_p + Var_p + RPAR_p 
+class Bind(SPARQLNonTerminal): pass
+if do_parseactions: Bind_p.setParseAction(parseInfoFunc('Bind'))
 
 # [59]    ServiceGraphPattern       ::=   'SERVICE' 'SILENT'? VarOrIri GroupGraphPattern 
+ServiceGraphPattern_p =   SERVICE_kw_p + Optional(SILENT_kw_p) + VarOrIri_p + GroupGraphPattern_p 
+class ServiceGraphPattern(SPARQLNonTerminal): pass
+if do_parseactions: ServiceGraphPattern_p.setParseAction(parseInfoFunc('ServiceGraphPattern'))
 
 # [58]    GraphGraphPattern         ::=   'GRAPH' VarOrIri GroupGraphPattern 
 

@@ -2,14 +2,11 @@ from pyparsing import *
 from sparqlparser.grammar import *
 
 
-s = '?S Âꝷ﫜: ?S . '#?ConstructTriples'
-s = '?ConstructTriples a $var'
-r1 = TriplesSameSubject(s)
+s = 'BIND ( 123 AS ?S )'
 
+r1 = Bind(s)
+  
 r1.dump()
-
+r1.test(render=True)
 print()
 
-# r2 = ConstructTriples(s)
-# 
-# r2.dump()

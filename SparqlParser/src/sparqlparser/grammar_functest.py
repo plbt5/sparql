@@ -544,9 +544,14 @@ if __name__ == '__main__':
     printResults(l, 'DataBlock')
         
     # [61]    InlineData        ::=   'VALUES' DataBlock 
-    
-    # [60]    Bind      ::=   'BIND' '(' Expression 'AS' Var ')' 
-    
+#     l = ["VALUES  ( $4℀ $4℀ )  { ( 'te\n' 'te\n' ) }"]
+    l = ["VALUES  ( $4℀ $4℀ )  { ( 'te\\n' 'te\\n' ) }"]
+    printResults(l, 'InlineData')
+            
+#     # [60]    Bind      ::=   'BIND' '(' Expression 'AS' Var ')' 
+    l = ['BIND ( ("*Expression*") AS $var)']
+    printResults(l, 'Bind')
+            
     # [59]    ServiceGraphPattern       ::=   'SERVICE' 'SILENT'? VarOrIri GroupGraphPattern 
     
     # [58]    GraphGraphPattern         ::=   'GRAPH' VarOrIri GroupGraphPattern 
