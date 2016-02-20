@@ -557,7 +557,9 @@ if __name__ == '__main__':
     printResults(l, 'ServiceGraphPattern')
                 
     # [58]    GraphGraphPattern         ::=   'GRAPH' VarOrIri GroupGraphPattern 
-    
+    l = ['GRAPH <test> {}', 'GRAPH ?var {}']
+    printResults(l, 'GraphGraphPattern')
+        
     # [57]    OptionalGraphPattern      ::=   'OPTIONAL' GroupGraphPattern 
     
     # [56]    GraphPatternNotTriples    ::=   GroupOrUnionGraphPattern | OptionalGraphPattern | MinusGraphPattern | GraphGraphPattern | ServiceGraphPattern | Filter | Bind | InlineData 

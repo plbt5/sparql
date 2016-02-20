@@ -790,6 +790,12 @@ class SILENT_kw(SPARQLKeyword):
         return 'SILENT'
 if do_parseactions: SILENT_kw_p.setParseAction(parseInfoFunc('SILENT_kw'))
 
+GRAPH_kw_p = CaselessKeyword('GRAPH')
+class GRAPH_kw(SPARQLKeyword):
+    def render(self):
+        return 'GRAPH'
+if do_parseactions: GRAPH_kw_p.setParseAction(parseInfoFunc('GRAPH_kw'))
+
 # 
 # Parsers and classes for terminals
 #
@@ -1596,6 +1602,9 @@ class ServiceGraphPattern(SPARQLNonTerminal): pass
 if do_parseactions: ServiceGraphPattern_p.setParseAction(parseInfoFunc('ServiceGraphPattern'))
 
 # [58]    GraphGraphPattern         ::=   'GRAPH' VarOrIri GroupGraphPattern 
+GraphGraphPattern_p =   GRAPH_kw_p + VarOrIri_p + GroupGraphPattern_p 
+class GraphGraphPattern(SPARQLNonTerminal): pass
+if do_parseactions: GraphGraphPattern_p.setParseAction(parseInfoFunc('GraphGraphPattern'))
 
 # [57]    OptionalGraphPattern      ::=   'OPTIONAL' GroupGraphPattern 
 
