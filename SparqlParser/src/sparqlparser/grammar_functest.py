@@ -553,7 +553,9 @@ if __name__ == '__main__':
     printResults(l, 'Bind')
             
     # [59]    ServiceGraphPattern       ::=   'SERVICE' 'SILENT'? VarOrIri GroupGraphPattern 
-    
+    l = ['SERVICE <test> {}', 'SERVICE SILENT ?var {}']
+    printResults(l, 'ServiceGraphPattern')
+                
     # [58]    GraphGraphPattern         ::=   'GRAPH' VarOrIri GroupGraphPattern 
     
     # [57]    OptionalGraphPattern      ::=   'OPTIONAL' GroupGraphPattern 
