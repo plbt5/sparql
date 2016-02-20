@@ -565,7 +565,9 @@ if __name__ == '__main__':
     printResults(l, 'OptionalGraphPattern')
     
     # [56]    GraphPatternNotTriples    ::=   GroupOrUnionGraphPattern | OptionalGraphPattern | MinusGraphPattern | GraphGraphPattern | ServiceGraphPattern | Filter | Bind | InlineData 
-    
+    l = ['{} UNION {} UNION {}', 'OPTIONAL {}', 'MINUS {}', 'GRAPH <test> {}', 'SERVICE SILENT ?var {}', 'FILTER <test:227> (DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )','BIND ( ("*Expression*") AS $var)', "VALUES  ( $4℀ $4℀ )  { ( 'te\\n' 'te\\n' ) }"]
+    printResults(l, 'GraphPatternNotTriples')
+        
     # [55]    TriplesBlock      ::=   TriplesSameSubjectPath ( '.' TriplesBlock? )? 
     
     # [54]    GroupGraphPatternSub      ::=   TriplesBlock? ( GraphPatternNotTriples '.'? TriplesBlock? )* 

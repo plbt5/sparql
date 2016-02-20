@@ -1618,6 +1618,9 @@ class OptionalGraphPattern(SPARQLNonTerminal): pass
 if do_parseactions: OptionalGraphPattern_p.setParseAction(parseInfoFunc('OptionalGraphPattern'))
 
 # [56]    GraphPatternNotTriples    ::=   GroupOrUnionGraphPattern | OptionalGraphPattern | MinusGraphPattern | GraphGraphPattern | ServiceGraphPattern | Filter | Bind | InlineData 
+GraphPatternNotTriples_p = GroupOrUnionGraphPattern_p | OptionalGraphPattern_p | MinusGraphPattern_p | GraphGraphPattern_p | ServiceGraphPattern_p | Filter_p | Bind_p | InlineData_p 
+class GraphPatternNotTriples(SPARQLNonTerminal): pass
+if do_parseactions: GraphPatternNotTriples_p.setParseAction(parseInfoFunc('GraphPatternNotTriples'))
 
 # [55]    TriplesBlock      ::=   TriplesSameSubjectPath ( '.' TriplesBlock? )? 
 
