@@ -1697,6 +1697,9 @@ class GraphRefAll(SPARQLNonTerminal): pass
 if do_parseactions: GraphRefAll_p.setParseAction(parseInfoFunc('GraphRefAll'))
 
 # [45]    GraphOrDefault    ::=   'DEFAULT' | 'GRAPH'? iri 
+GraphOrDefault_p =   DEFAULT_kw_p | (Optional(GRAPH_kw_p) + iri_p) 
+class GraphOrDefault(SPARQLNonTerminal): pass
+if do_parseactions: GraphOrDefault_p.setParseAction(parseInfoFunc('GraphOrDefault'))
 
 # [44]    UsingClause       ::=   'USING' ( iri | 'NAMED' iri ) 
 

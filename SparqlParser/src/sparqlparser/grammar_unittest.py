@@ -1210,7 +1210,12 @@ class Test(unittest.TestCase):
         self.testCases['GraphRefAll']['fail'] += ['*NoGrafRefAll*']
         
 # [45]    GraphOrDefault    ::=   'DEFAULT' | 'GRAPH'? iri 
-
+        self.testCases['GraphOrDefault'] = {'pass': [], 'fail': []}
+        self.testCases['GraphOrDefault']['pass'] += ['DEFAULT']
+        self.testCases['GraphOrDefault']['pass'] += self.testCases['iri']['pass']
+        self.testCases['GraphOrDefault']['pass'] += ['GRAPH ' + i for i in self.testCases['iri']['pass']]
+        self.testCases['GraphOrDefault']['fail'] += ['*NoGraphOrDefault*']
+        
 # [44]    UsingClause       ::=   'USING' ( iri | 'NAMED' iri ) 
 
 # [43]    InsertClause      ::=   'INSERT' QuadPattern 
@@ -1696,12 +1701,9 @@ class Test(unittest.TestCase):
     def testGraphRefAll(self):
         Test.makeTestFunc('GraphRefAll', self.testCases)()
 
-# # [47]    GraphRefAll       ::=   GraphRef | 'DEFAULT' | 'NAMED' | 'ALL' 
-# 
-# # [46]    GraphRef          ::=   'GRAPH' iri 
-# 
-# # [45]    GraphOrDefault    ::=   'DEFAULT' | 'GRAPH'? iri 
-# 
+    def testGraphOrDefault(self):
+        Test.makeTestFunc('GraphOrDefault', self.testCases)()
+
 # # [44]    UsingClause       ::=   'USING' ( iri | 'NAMED' iri ) 
 # 
 # # [43]    InsertClause      ::=   'INSERT' QuadPattern 

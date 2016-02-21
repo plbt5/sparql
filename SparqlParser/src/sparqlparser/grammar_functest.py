@@ -320,7 +320,7 @@ if __name__ == '__main__':
     
     # [119]   PrimaryExpression         ::=   BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var 
     l = ['("*Expression*")', 'AVG ("*Expression*")', '<work:22?>()', '"work"^^<test>', '113.44', 'true', '$algebra']
-    printResults(l, 'PrimaryExpression', dump=True)
+    printResults(l, 'PrimaryExpression')
     
     # [118]   UnaryExpression   ::=     '!' PrimaryExpression 
     #             | '+' PrimaryExpression 
@@ -612,6 +612,8 @@ if __name__ == '__main__':
     printResults(l, 'GraphRefAll')
     
     # [45]    GraphOrDefault    ::=   'DEFAULT' | 'GRAPH'? iri 
+    l = ['DEFAULT', '<test:22?>', 'GRAPH <test:22?>']
+    printResults(l, 'GraphOrDefault')
     
     # [44]    UsingClause       ::=   'USING' ( iri | 'NAMED' iri ) 
     
