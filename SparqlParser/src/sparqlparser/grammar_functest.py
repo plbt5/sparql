@@ -12,16 +12,17 @@ GroupGraphPattern_p << Literal('{}')
 # ExpressionList_p << '()'
 
 
-def printResults(l, rule):
+def printResults(l, rule, dump=False):
     print('=' * 80)
     print(rule)
     print('=' * 80)
     for s in l:
         rule_p = eval(rule + '_p')
         r = rule_p.parseString(s, parseAll=True)
-        print()
-        r[0].dump()
-        print()
+        if dump:
+            print()
+            r[0].dump()
+            print()
         rendering = r[0].render()
         print('\nParse : {}'.format(s))
         print('Render:', rendering)
@@ -565,10 +566,13 @@ if __name__ == '__main__':
     printResults(l, 'OptionalGraphPattern')
     
     # [56]    GraphPatternNotTriples    ::=   GroupOrUnionGraphPattern | OptionalGraphPattern | MinusGraphPattern | GraphGraphPattern | ServiceGraphPattern | Filter | Bind | InlineData 
-    l = ['{} UNION {} UNION {}', 'OPTIONAL {}', 'MINUS {}', 'GRAPH <test> {}', 'SERVICE SILENT ?var {}', 'FILTER <test:227> (DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )','BIND ( ("*Expression*") AS $var)', "VALUES  ( $4℀ $4℀ )  { ( 'te\\n' 'te\\n' ) }"]
+    l = ['{} UNION {} UNION {}', 'OPTIONAL {}', 'MINUS {}', 'GRAPH <test> {}', 'SERVICE SILENT ?var {}',
+         'FILTER <test:227> (DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )','BIND ( ("*Expression*") AS $var)', "VALUES  ( $4℀ $4℀ )  { ( 'te\\n' 'te\\n' ) }"]
     printResults(l, 'GraphPatternNotTriples')
         
     # [55]    TriplesBlock      ::=   TriplesSameSubjectPath ( '.' TriplesBlock? )? 
+    l = ['?S $﫜9 ?﫜9℀ ; <testIri> | ͼ.℀:+ / ÂÂ: ?S . "TriplesBlock" @en-bf <test> ?path ; <test2> $algebra, ($TriplesBlock)']
+    printResults(l, 'TriplesBlock', dump=True)
     
     # [54]    GroupGraphPatternSub      ::=   TriplesBlock? ( GraphPatternNotTriples '.'? TriplesBlock? )* 
     

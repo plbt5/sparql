@@ -1622,7 +1622,12 @@ GraphPatternNotTriples_p = GroupOrUnionGraphPattern_p | OptionalGraphPattern_p |
 class GraphPatternNotTriples(SPARQLNonTerminal): pass
 if do_parseactions: GraphPatternNotTriples_p.setParseAction(parseInfoFunc('GraphPatternNotTriples'))
 
+TriplesBlock_p = Forward()
+class TriplesBlock(SPARQLNonTerminal): pass
+if do_parseactions: TriplesBlock_p.setParseAction(parseInfoFunc('TriplesBlock'))
+
 # [55]    TriplesBlock      ::=   TriplesSameSubjectPath ( '.' TriplesBlock? )? 
+TriplesBlock_p << TriplesSameSubjectPath_p + Optional(PERIOD_p + Optional(TriplesBlock_p)) 
 
 # [54]    GroupGraphPatternSub      ::=   TriplesBlock? ( GraphPatternNotTriples '.'? TriplesBlock? )* 
 
