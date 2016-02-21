@@ -624,9 +624,13 @@ if __name__ == '__main__':
     printResults(l, 'InsertClause')
             
     # [42]    DeleteClause      ::=   'DELETE' QuadPattern 
-    
+    l = ['DELETE { ?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) GRAPH $var { ?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) } GRAPH $var { } }']
+    printResults(l, 'DeleteClause')
+                 
     # [41]    Modify    ::=   ( 'WITH' iri )? ( DeleteClause InsertClause? | InsertClause ) UsingClause* 'WHERE' GroupGraphPattern 
-    
+    l = ['WITH <test:22?> DELETE { } INSERT { } USING NAMED aA:Z.a USING <abc:def> WHERE { SELECT * {} }']
+    printResults(l, 'Modify')
+                    
     # [40]    DeleteWhere       ::=   'DELETE WHERE' QuadPattern 
     
     # [39]    DeleteData        ::=   'DELETE DATA' QuadData 

@@ -838,6 +838,18 @@ class DELETE_kw(SPARQLKeyword):
         return 'DELETE'
 if do_parseactions: DELETE_kw_p.setParseAction(parseInfoFunc('DELETE_kw'))
 
+WITH_kw_p = CaselessKeyword('WITH')
+class WITH_kw(SPARQLKeyword):
+    def render(self):
+        return 'WITH'
+if do_parseactions: WITH_kw_p.setParseAction(parseInfoFunc('WITH_kw'))
+
+WHERE_kw_p = CaselessKeyword('WHERE')
+class WHERE_kw(SPARQLKeyword):
+    def render(self):
+        return 'WHERE'
+if do_parseactions: WHERE_kw_p.setParseAction(parseInfoFunc('WHERE_kw'))
+
 # 
 # Parsers and classes for terminals
 #
@@ -1734,8 +1746,10 @@ DeleteClause_p =   DELETE_kw_p + QuadPattern_p
 class DeleteClause(SPARQLNonTerminal): pass
 if do_parseactions: DeleteClause_p.setParseAction(parseInfoFunc('DeleteClause'))
 
-
 # [41]    Modify    ::=   ( 'WITH' iri )? ( DeleteClause InsertClause? | InsertClause ) UsingClause* 'WHERE' GroupGraphPattern 
+Modify_p =   Optional(WITH_kw_p + iri_p) + ( (DeleteClause_p + Optional(InsertClause_p) ) | InsertClause_p ) + ZeroOrMore(UsingClause_p) + WHERE_kw_p + GroupGraphPattern_p 
+class Modify(SPARQLNonTerminal): pass
+if do_parseactions: Modify_p.setParseAction(parseInfoFunc('Modify'))
 
 # [40]    DeleteWhere       ::=   'DELETE WHERE' QuadPattern 
 
