@@ -584,7 +584,9 @@ if __name__ == '__main__':
     printResults(l, 'GroupGraphPattern')
     
     # [52]    TriplesTemplate   ::=   TriplesSameSubject ( '.' TriplesTemplate? )? 
-    
+    l = ['?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode)']
+    printResults(l, 'TriplesTemplate')
+        
     # [51]    QuadsNotTriples   ::=   'GRAPH' VarOrIri '{' TriplesTemplate? '}' 
     
     # [50]    Quads     ::=   TriplesTemplate? ( QuadsNotTriples '.'? TriplesTemplate? )* 

@@ -1639,9 +1639,14 @@ class SubSelect(SPARQLNonTerminal): pass
 if do_parseactions: SubSelect_p.setParseAction(parseInfoFunc('SubSelect'))
 
 # [53]    GroupGraphPattern         ::=   '{' ( SubSelect | GroupGraphPatternSub ) '}' 
-GroupGraphPattern_p << LCURL_p + (SubSelect_p | GroupGraphPatternSub_p) + RCURL_p 
+GroupGraphPattern_p << Group(LCURL_p + (SubSelect_p | GroupGraphPatternSub_p)('pattern') + RCURL_p) 
+
+TriplesTemplate_p = Forward()
+class TriplesTemplate(SPARQLNonTerminal): pass
+if do_parseactions: TriplesTemplate_p.setParseAction(parseInfoFunc('TriplesTemplate'))
 
 # [52]    TriplesTemplate   ::=   TriplesSameSubject ( '.' TriplesTemplate? )? 
+TriplesTemplate_p << TriplesSameSubject_p + Optional(PERIOD_p + Optional(TriplesTemplate_p))
 
 # [51]    QuadsNotTriples   ::=   'GRAPH' VarOrIri '{' TriplesTemplate? '}' 
 

@@ -12,6 +12,7 @@ from sparqlparser.grammar import *
 # ConstructTriples_p << Literal('?ConstructTriples')
 # ExpressionList_p << Literal('()')
 SubSelect_p << Literal('SELECT * {}')
+# TriplesTemplate_p << Literal('?var $algebra $algebra, ($TriplesNode)')
 
 class Test(unittest.TestCase):
     @classmethod
@@ -1159,7 +1160,19 @@ class Test(unittest.TestCase):
         self.testCases['GroupGraphPattern']['pass'] += ['{ ' + g + ' }' for g in self.testCases['GroupGraphPatternSub']['pass'][::10]]
         self.testCases['GroupGraphPattern']['fail'] += ['*NoGroupGraphPattern*']
 
+# TriplesTemplate
+# "TriplesTemplate" at this point is a Forward declaration.
+# Testcases are valid.        
+        self.testCases['TriplesTemplate_base'] = {'pass': [], 'fail': []}
+        self.testCases['TriplesTemplate_base']['pass'] += ['?var $algebra $algebra, ($TriplesNode)'] 
+        self.testCases['TriplesTemplate_base']['fail'] += ['"*NoTriplesBlock*'] 
+
 # [52]    TriplesTemplate   ::=   TriplesSameSubject ( '.' TriplesTemplate? )? 
+        self.testCases['TriplesTemplate'] = {'pass': [], 'fail': []}
+        self.testCases['TriplesTemplate']['pass'] += self.testCases['TriplesSameSubject']['pass']
+        self.testCases['TriplesTemplate']['pass'] += [t1 + ' . ' + t2 for t1 in self.testCases['TriplesSameSubject']['pass'][::10] for t2 in self.testCases['TriplesTemplate_base']['pass']]
+        self.testCases['TriplesTemplate']['fail'] += ['*NoTriplesTemplate*']
+
 
 # [51]    QuadsNotTriples   ::=   'GRAPH' VarOrIri '{' TriplesTemplate? '}' 
 
@@ -1635,12 +1648,13 @@ class Test(unittest.TestCase):
 # 
 #     def testGroupGraphPatternSub(self):
 #         Test.makeTestFunc('GroupGraphPatternSub', self.testCases)()
-
-    def testGroupGraphPattern(self):
-        Test.makeTestFunc('GroupGraphPattern', self.testCases)()
-
-# # [52]    TriplesTemplate   ::=   TriplesSameSubject ( '.' TriplesTemplate? )? 
 # 
+#     def testGroupGraphPattern(self):
+#         Test.makeTestFunc('GroupGraphPattern', self.testCases)()
+
+    def testTriplesTemplate(self):
+        Test.makeTestFunc('TriplesTemplate', self.testCases)()
+
 # # [51]    QuadsNotTriples   ::=   'GRAPH' VarOrIri '{' TriplesTemplate? '}' 
 # 
 # # [50]    Quads     ::=   TriplesTemplate? ( QuadsNotTriples '.'? TriplesTemplate? )* 
