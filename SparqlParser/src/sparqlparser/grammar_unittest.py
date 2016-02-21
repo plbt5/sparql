@@ -1173,9 +1173,12 @@ class Test(unittest.TestCase):
         self.testCases['TriplesTemplate']['pass'] += [t1 + ' . ' + t2 for t1 in self.testCases['TriplesSameSubject']['pass'][::10] for t2 in self.testCases['TriplesTemplate_base']['pass']]
         self.testCases['TriplesTemplate']['fail'] += ['*NoTriplesTemplate*']
 
-
 # [51]    QuadsNotTriples   ::=   'GRAPH' VarOrIri '{' TriplesTemplate? '}' 
-
+        self.testCases['QuadsNotTriples'] = {'pass': [], 'fail': []}
+        self.testCases['QuadsNotTriples']['pass'] += ['GRAPH '+ v + ' { }' for v in self.testCases['VarOrIri']['pass'][::25]]
+        self.testCases['QuadsNotTriples']['pass'] += ['GRAPH '+ v + ' { ' + t + ' }' for v in self.testCases['VarOrIri']['pass'][::25] for t in self.testCases['TriplesTemplate']['pass'][::10]]
+        self.testCases['QuadsNotTriples']['fail'] += ['*NoQuadsNotTriples*']
+        
 # [50]    Quads     ::=   TriplesTemplate? ( QuadsNotTriples '.'? TriplesTemplate? )* 
 
 # [49]    QuadData          ::=   '{' Quads '}' 
@@ -1651,9 +1654,12 @@ class Test(unittest.TestCase):
 # 
 #     def testGroupGraphPattern(self):
 #         Test.makeTestFunc('GroupGraphPattern', self.testCases)()
-
+# 
     def testTriplesTemplate(self):
         Test.makeTestFunc('TriplesTemplate', self.testCases)()
+
+    def testQuadsNotTriples(self):
+        Test.makeTestFunc('QuadsNotTriples', self.testCases)()
 
 # # [51]    QuadsNotTriples   ::=   'GRAPH' VarOrIri '{' TriplesTemplate? '}' 
 # 

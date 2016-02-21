@@ -1275,7 +1275,7 @@ class BracketedExpression(SPARQLNonTerminal): pass
 if do_parseactions: BracketedExpression_p.setParseAction(parseInfoFunc('BracketedExpression'))
 
 # [119]   PrimaryExpression         ::=   BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var 
-PrimaryExpression_p = BracketedExpression_p | BuiltInCall_p | iriOrFunction_p | RDFLiteral_p | NumericLiteral_p | BooleanLiteral_p | Var_p
+PrimaryExpression_p = Group(BracketedExpression_p | BuiltInCall_p | iriOrFunction_p('iriOrFunction') | RDFLiteral_p | NumericLiteral_p | BooleanLiteral_p | Var_p)
 class PrimaryExpression(SPARQLNonTerminal): pass
 if do_parseactions: PrimaryExpression_p.setParseAction(parseInfoFunc('PrimaryExpression'))
 
@@ -1649,6 +1649,9 @@ if do_parseactions: TriplesTemplate_p.setParseAction(parseInfoFunc('TriplesTempl
 TriplesTemplate_p << TriplesSameSubject_p + Optional(PERIOD_p + Optional(TriplesTemplate_p))
 
 # [51]    QuadsNotTriples   ::=   'GRAPH' VarOrIri '{' TriplesTemplate? '}' 
+QuadsNotTriples_p = GRAPH_kw_p + VarOrIri_p + LCURL_p + Optional(TriplesTemplate_p) + RCURL_p 
+class QuadsNotTriples(SPARQLNonTerminal): pass
+if do_parseactions: QuadsNotTriples_p.setParseAction(parseInfoFunc('QuadsNotTriples'))
 
 # [50]    Quads     ::=   TriplesTemplate? ( QuadsNotTriples '.'? TriplesTemplate? )* 
 

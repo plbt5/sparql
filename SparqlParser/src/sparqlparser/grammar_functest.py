@@ -320,7 +320,7 @@ if __name__ == '__main__':
     
     # [119]   PrimaryExpression         ::=   BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var 
     l = ['("*Expression*")', 'AVG ("*Expression*")', '<work:22?>()', '"work"^^<test>', '113.44', 'true', '$algebra']
-    printResults(l, 'PrimaryExpression')
+    printResults(l, 'PrimaryExpression', dump=True)
     
     # [118]   UnaryExpression   ::=     '!' PrimaryExpression 
     #             | '+' PrimaryExpression 
@@ -588,6 +588,8 @@ if __name__ == '__main__':
     printResults(l, 'TriplesTemplate')
         
     # [51]    QuadsNotTriples   ::=   'GRAPH' VarOrIri '{' TriplesTemplate? '}' 
+    l = ['GRAPH $var { ?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) }']
+    printResults(l, 'QuadsNotTriples')
     
     # [50]    Quads     ::=   TriplesTemplate? ( QuadsNotTriples '.'? TriplesTemplate? )* 
     
