@@ -1189,9 +1189,15 @@ class Test(unittest.TestCase):
         self.testCases['Quads']['fail'] += ['*NoQuads*']
 
 # [49]    QuadData          ::=   '{' Quads '}' 
+        self.testCases['QuadData'] = {'pass': [], 'fail': []}
+        self.testCases['QuadData']['pass'] += ['{ ' + q + ' }' for q in self.testCases['Quads']['pass']]
+        self.testCases['QuadData']['fail'] += ['*NoQuadData*']
 
 # [48]    QuadPattern       ::=   '{' Quads '}' 
-
+        self.testCases['QuadPattern'] = {'pass': [], 'fail': []}
+        self.testCases['QuadPattern']['pass'] += ['{ ' + q + ' }' for q in self.testCases['Quads']['pass']]
+        self.testCases['QuadPattern']['fail'] += ['*NoQuadPattern*']
+        
 # [47]    GraphRefAll       ::=   GraphRef | 'DEFAULT' | 'NAMED' | 'ALL' 
 
 # [46]    GraphRef          ::=   'GRAPH' iri 
@@ -1662,20 +1668,21 @@ class Test(unittest.TestCase):
 #     def testGroupGraphPattern(self):
 #         Test.makeTestFunc('GroupGraphPattern', self.testCases)()
 # 
-    def testTriplesTemplate(self):
-        Test.makeTestFunc('TriplesTemplate', self.testCases)()
-
-    def testQuadsNotTriples(self):
-        Test.makeTestFunc('QuadsNotTriples', self.testCases)()
-
-    def testQuads(self):
-        Test.makeTestFunc('Quads', self.testCases)()
-
+#     def testTriplesTemplate(self):
+#         Test.makeTestFunc('TriplesTemplate', self.testCases)()
 # 
-# # [49]    QuadData          ::=   '{' Quads '}' 
+#     def testQuadsNotTriples(self):
+#         Test.makeTestFunc('QuadsNotTriples', self.testCases)()
 # 
-# # [48]    QuadPattern       ::=   '{' Quads '}' 
+#     def testQuads(self):
+#         Test.makeTestFunc('Quads', self.testCases)()
 # 
+#     def testQuatData(self):
+#         Test.makeTestFunc('QuadData', self.testCases)()
+# 
+#     def testQuadPattern(self):
+#         Test.makeTestFunc('QuadPattern', self.testCases)()
+
 # # [47]    GraphRefAll       ::=   GraphRef | 'DEFAULT' | 'NAMED' | 'ALL' 
 # 
 # # [46]    GraphRef          ::=   'GRAPH' iri 

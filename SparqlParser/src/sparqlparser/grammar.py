@@ -1659,8 +1659,14 @@ class Quads(SPARQLNonTerminal): pass
 if do_parseactions: Quads_p.setParseAction(parseInfoFunc('Quads'))
 
 # [49]    QuadData          ::=   '{' Quads '}' 
+QuadData_p = LCURL_p + Quads_p + RCURL_p 
+class QuadData(SPARQLNonTerminal): pass
+if do_parseactions: QuadData_p.setParseAction(parseInfoFunc('QuadData'))
 
 # [48]    QuadPattern       ::=   '{' Quads '}' 
+QuadPattern_p = LCURL_p + Quads_p + RCURL_p 
+class QuadPattern(SPARQLNonTerminal): pass
+if do_parseactions: QuadPattern_p.setParseAction(parseInfoFunc('QuadPattern'))
 
 # [47]    GraphRefAll       ::=   GraphRef | 'DEFAULT' | 'NAMED' | 'ALL' 
 

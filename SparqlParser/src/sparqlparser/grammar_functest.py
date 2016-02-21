@@ -596,9 +596,13 @@ if __name__ == '__main__':
     printResults(l, 'Quads')
     
     # [49]    QuadData          ::=   '{' Quads '}' 
-    
+    l = ['{ ?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) GRAPH $var { ?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) } GRAPH $var { } }']
+    printResults(l, 'QuadData')
+        
     # [48]    QuadPattern       ::=   '{' Quads '}' 
-    
+    l = ['{ ?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) GRAPH $var { ?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) } GRAPH $var { } }']
+    printResults(l, 'QuadPattern')
+        
     # [47]    GraphRefAll       ::=   GraphRef | 'DEFAULT' | 'NAMED' | 'ALL' 
     
     # [46]    GraphRef          ::=   'GRAPH' iri 
