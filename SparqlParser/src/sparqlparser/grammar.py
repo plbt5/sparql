@@ -820,6 +820,12 @@ class ALL_kw(SPARQLKeyword):
         return 'ALL'
 if do_parseactions: ALL_kw_p.setParseAction(parseInfoFunc('ALL_kw'))
 
+USING_kw_p = CaselessKeyword('USING')
+class USING_kw(SPARQLKeyword):
+    def render(self):
+        return 'USING'
+if do_parseactions: USING_kw_p.setParseAction(parseInfoFunc('USING_kw'))
+
 # 
 # Parsers and classes for terminals
 #
@@ -1702,6 +1708,9 @@ class GraphOrDefault(SPARQLNonTerminal): pass
 if do_parseactions: GraphOrDefault_p.setParseAction(parseInfoFunc('GraphOrDefault'))
 
 # [44]    UsingClause       ::=   'USING' ( iri | 'NAMED' iri ) 
+UsingClause_p =   USING_kw_p + (iri_p | (NAMED_kw_p + iri_p)) 
+class UsingClause(SPARQLNonTerminal): pass
+if do_parseactions: UsingClause_p.setParseAction(parseInfoFunc('UsingClause'))
 
 # [43]    InsertClause      ::=   'INSERT' QuadPattern 
 

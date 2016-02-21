@@ -1217,7 +1217,10 @@ class Test(unittest.TestCase):
         self.testCases['GraphOrDefault']['fail'] += ['*NoGraphOrDefault*']
         
 # [44]    UsingClause       ::=   'USING' ( iri | 'NAMED' iri ) 
-
+        self.testCases['UsingClause'] = {'pass': [], 'fail': []}
+        self.testCases['UsingClause']['pass'] += ['USING NAMED ' + i for i in self.testCases['iri']['pass']]
+        self.testCases['UsingClause']['fail'] += ['*NoUsingClause*']
+        
 # [43]    InsertClause      ::=   'INSERT' QuadPattern 
 
 # [42]    DeleteClause      ::=   'DELETE' QuadPattern 
@@ -1704,8 +1707,9 @@ class Test(unittest.TestCase):
     def testGraphOrDefault(self):
         Test.makeTestFunc('GraphOrDefault', self.testCases)()
 
-# # [44]    UsingClause       ::=   'USING' ( iri | 'NAMED' iri ) 
-# 
+    def testUsingClause(self):
+        Test.makeTestFunc('UsingClause', self.testCases)()
+
 # # [43]    InsertClause      ::=   'INSERT' QuadPattern 
 # 
 # # [42]    DeleteClause      ::=   'DELETE' QuadPattern 
