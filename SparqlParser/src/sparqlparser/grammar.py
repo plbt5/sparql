@@ -826,6 +826,12 @@ class USING_kw(SPARQLKeyword):
         return 'USING'
 if do_parseactions: USING_kw_p.setParseAction(parseInfoFunc('USING_kw'))
 
+INSERT_kw_p = CaselessKeyword('INSERT')
+class INSERT_kw(SPARQLKeyword):
+    def render(self):
+        return 'INSERT'
+if do_parseactions: INSERT_kw_p.setParseAction(parseInfoFunc('INSERT_kw'))
+
 # 
 # Parsers and classes for terminals
 #
@@ -1713,6 +1719,9 @@ class UsingClause(SPARQLNonTerminal): pass
 if do_parseactions: UsingClause_p.setParseAction(parseInfoFunc('UsingClause'))
 
 # [43]    InsertClause      ::=   'INSERT' QuadPattern 
+InsertClause_p =   INSERT_kw_p + QuadPattern_p 
+class InsertClause(SPARQLNonTerminal): pass
+if do_parseactions: InsertClause_p.setParseAction(parseInfoFunc('InsertClause'))
 
 # [42]    DeleteClause      ::=   'DELETE' QuadPattern 
 

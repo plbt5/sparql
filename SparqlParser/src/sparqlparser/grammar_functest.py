@@ -616,9 +616,13 @@ if __name__ == '__main__':
     printResults(l, 'GraphOrDefault')
     
     # [44]    UsingClause       ::=   'USING' ( iri | 'NAMED' iri ) 
-    
+    l = ['USING <test:22?>', 'USING NAMED <test:22?>']
+    printResults(l, 'UsingClause')
+        
     # [43]    InsertClause      ::=   'INSERT' QuadPattern 
-    
+    l = ['INSERT { ?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) GRAPH $var { ?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) } GRAPH $var { } }']
+    printResults(l, 'InsertClause')
+            
     # [42]    DeleteClause      ::=   'DELETE' QuadPattern 
     
     # [41]    Modify    ::=   ( 'WITH' iri )? ( DeleteClause InsertClause? | InsertClause ) UsingClause* 'WHERE' GroupGraphPattern 

@@ -1222,7 +1222,10 @@ class Test(unittest.TestCase):
         self.testCases['UsingClause']['fail'] += ['*NoUsingClause*']
         
 # [43]    InsertClause      ::=   'INSERT' QuadPattern 
-
+        self.testCases['InsertClause'] = {'pass': [], 'fail': []}
+        self.testCases['InsertClause']['pass'] += ['INSERT ' + q for q in self.testCases['QuadPattern']['pass']]
+        self.testCases['InsertClause']['fail'] += ['*NoInsertClause*']
+        
 # [42]    DeleteClause      ::=   'DELETE' QuadPattern 
 
 # [41]    Modify    ::=   ( 'WITH' iri )? ( DeleteClause InsertClause? | InsertClause ) UsingClause* 'WHERE' GroupGraphPattern 
@@ -1709,6 +1712,9 @@ class Test(unittest.TestCase):
 
     def testUsingClause(self):
         Test.makeTestFunc('UsingClause', self.testCases)()
+
+    def testInsertClause(self):
+        Test.makeTestFunc('InsertClause', self.testCases)()
 
 # # [43]    InsertClause      ::=   'INSERT' QuadPattern 
 # 
