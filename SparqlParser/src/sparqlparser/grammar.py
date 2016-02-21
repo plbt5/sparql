@@ -802,6 +802,24 @@ class OPTIONAL_kw(SPARQLKeyword):
         return 'OPTIONAL'
 if do_parseactions: OPTIONAL_kw_p.setParseAction(parseInfoFunc('OPTIONAL_kw'))
 
+DEFAULT_kw_p = CaselessKeyword('DEFAULT')
+class DEFAULT_kw(SPARQLKeyword):
+    def render(self):
+        return 'DEFAULT'
+if do_parseactions: DEFAULT_kw_p.setParseAction(parseInfoFunc('DEFAULT_kw'))
+
+NAMED_kw_p = CaselessKeyword('NAMED')
+class NAMED_kw(SPARQLKeyword):
+    def render(self):
+        return 'NAMED'
+if do_parseactions: NAMED_kw_p.setParseAction(parseInfoFunc('NAMED_kw'))
+
+ALL_kw_p = CaselessKeyword('ALL')
+class ALL_kw(SPARQLKeyword):
+    def render(self):
+        return 'ALL'
+if do_parseactions: ALL_kw_p.setParseAction(parseInfoFunc('ALL_kw'))
+
 # 
 # Parsers and classes for terminals
 #
@@ -1668,9 +1686,15 @@ QuadPattern_p = LCURL_p + Quads_p + RCURL_p
 class QuadPattern(SPARQLNonTerminal): pass
 if do_parseactions: QuadPattern_p.setParseAction(parseInfoFunc('QuadPattern'))
 
-# [47]    GraphRefAll       ::=   GraphRef | 'DEFAULT' | 'NAMED' | 'ALL' 
-
 # [46]    GraphRef          ::=   'GRAPH' iri 
+GraphRef_p = GRAPH_kw_p + iri_p 
+class GraphRef(SPARQLNonTerminal): pass
+if do_parseactions: GraphRef_p.setParseAction(parseInfoFunc('GraphRef'))
+
+# [47]    GraphRefAll       ::=   GraphRef | 'DEFAULT' | 'NAMED' | 'ALL' 
+GraphRefAll_p = GraphRef_p | DEFAULT_kw_p | NAMED_kw_p | ALL_kw_p 
+class GraphRefAll(SPARQLNonTerminal): pass
+if do_parseactions: GraphRefAll_p.setParseAction(parseInfoFunc('GraphRefAll'))
 
 # [45]    GraphOrDefault    ::=   'DEFAULT' | 'GRAPH'? iri 
 

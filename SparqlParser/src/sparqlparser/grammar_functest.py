@@ -603,9 +603,13 @@ if __name__ == '__main__':
     l = ['{ ?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) GRAPH $var { ?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) } GRAPH $var { } }']
     printResults(l, 'QuadPattern')
         
-    # [47]    GraphRefAll       ::=   GraphRef | 'DEFAULT' | 'NAMED' | 'ALL' 
-    
     # [46]    GraphRef          ::=   'GRAPH' iri 
+    l = ['GRAPH <test:2?>']
+    printResults(l, 'GraphRef')
+    
+    # [47]    GraphRefAll       ::=   GraphRef | 'DEFAULT' | 'NAMED' | 'ALL' 
+    l = ['GRAPH <test:2?>', 'DEFAULT', 'NAMED', 'ALL']
+    printResults(l, 'GraphRefAll')
     
     # [45]    GraphOrDefault    ::=   'DEFAULT' | 'GRAPH'? iri 
     
