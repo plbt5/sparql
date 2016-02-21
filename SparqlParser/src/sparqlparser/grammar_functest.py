@@ -2,7 +2,7 @@ from sparqlparser.grammar import *
 
 # Next lines are temporary during development, to be deleted as implementions added to .grammar
 # Expression_p << Literal('"*Expression*"')
-GroupGraphPattern_p << Literal('{}')
+# GroupGraphPattern_p << Literal('{}')
 # TriplesNodePath_p << Literal('($TriplesNodePath)')
 # TriplesNode_p << Literal('($TriplesNode)')
 # PropertyListPathNotEmpty_p << Literal('$VerbPath ?ObjectListPath') 
@@ -10,6 +10,7 @@ GroupGraphPattern_p << Literal('{}')
 # Path_p << Literal('<Path>')
 # ConstructTriples_p << Literal('?ConstructTriples')
 # ExpressionList_p << '()'
+SubSelect_p << Literal('SELECT * {}')
 
 
 def printResults(l, rule, dump=False):
@@ -579,6 +580,8 @@ if __name__ == '__main__':
     printResults(l, 'GroupGraphPatternSub')
     
     # [53]    GroupGraphPattern         ::=   '{' ( SubSelect | GroupGraphPatternSub ) '}' 
+    l = ['{ SELECT * {} }', '{ (($TriplesNodePath) $algebra ) . SERVICE SILENT ?var {} . (($TriplesNodePath) $algebra ) }']
+    printResults(l, 'GroupGraphPattern')
     
     # [52]    TriplesTemplate   ::=   TriplesSameSubject ( '.' TriplesTemplate? )? 
     
