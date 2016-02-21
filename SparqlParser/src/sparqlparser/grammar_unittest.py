@@ -1175,11 +1175,18 @@ class Test(unittest.TestCase):
 
 # [51]    QuadsNotTriples   ::=   'GRAPH' VarOrIri '{' TriplesTemplate? '}' 
         self.testCases['QuadsNotTriples'] = {'pass': [], 'fail': []}
-        self.testCases['QuadsNotTriples']['pass'] += ['GRAPH '+ v + ' { }' for v in self.testCases['VarOrIri']['pass'][::25]]
-        self.testCases['QuadsNotTriples']['pass'] += ['GRAPH '+ v + ' { ' + t + ' }' for v in self.testCases['VarOrIri']['pass'][::25] for t in self.testCases['TriplesTemplate']['pass'][::10]]
+        self.testCases['QuadsNotTriples']['pass'] += ['GRAPH '+ v + ' { }' for v in self.testCases['VarOrIri']['pass'][::50]]
+        self.testCases['QuadsNotTriples']['pass'] += ['GRAPH '+ v + ' { ' + t + ' }' for v in self.testCases['VarOrIri']['pass'][::25] for t in self.testCases['TriplesTemplate']['pass'][::20]]
         self.testCases['QuadsNotTriples']['fail'] += ['*NoQuadsNotTriples*']
         
 # [50]    Quads     ::=   TriplesTemplate? ( QuadsNotTriples '.'? TriplesTemplate? )* 
+        self.testCases['Quads'] = {'pass': [], 'fail': []}
+        self.testCases['Quads']['pass'] += ['']
+        self.testCases['Quads']['pass'] += [t for t in self.testCases['TriplesTemplate']['pass'][::10]]
+        self.testCases['Quads']['pass'] += [t + ' ' + q for t in self.testCases['TriplesTemplate']['pass'][::100] for q in self.testCases['QuadsNotTriples']['pass'][::10]]
+        self.testCases['Quads']['pass'] += [t + ' ' + q + ' .' for t in self.testCases['TriplesTemplate']['pass'][::100] for q in self.testCases['QuadsNotTriples']['pass'][::10]]
+        self.testCases['Quads']['pass'] += [t + ' ' + q + ' . ' + t for t in self.testCases['TriplesTemplate']['pass'][::100] for q in self.testCases['QuadsNotTriples']['pass'][::10]]
+        self.testCases['Quads']['fail'] += ['*NoQuads*']
 
 # [49]    QuadData          ::=   '{' Quads '}' 
 
@@ -1661,9 +1668,9 @@ class Test(unittest.TestCase):
     def testQuadsNotTriples(self):
         Test.makeTestFunc('QuadsNotTriples', self.testCases)()
 
-# # [51]    QuadsNotTriples   ::=   'GRAPH' VarOrIri '{' TriplesTemplate? '}' 
-# 
-# # [50]    Quads     ::=   TriplesTemplate? ( QuadsNotTriples '.'? TriplesTemplate? )* 
+    def testQuads(self):
+        Test.makeTestFunc('Quads', self.testCases)()
+
 # 
 # # [49]    QuadData          ::=   '{' Quads '}' 
 # 

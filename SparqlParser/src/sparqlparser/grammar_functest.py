@@ -592,6 +592,8 @@ if __name__ == '__main__':
     printResults(l, 'QuadsNotTriples')
     
     # [50]    Quads     ::=   TriplesTemplate? ( QuadsNotTriples '.'? TriplesTemplate? )* 
+    l = ['?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) GRAPH $var { ?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) } GRAPH $var { }']
+    printResults(l, 'Quads')
     
     # [49]    QuadData          ::=   '{' Quads '}' 
     

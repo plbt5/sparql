@@ -1654,6 +1654,9 @@ class QuadsNotTriples(SPARQLNonTerminal): pass
 if do_parseactions: QuadsNotTriples_p.setParseAction(parseInfoFunc('QuadsNotTriples'))
 
 # [50]    Quads     ::=   TriplesTemplate? ( QuadsNotTriples '.'? TriplesTemplate? )* 
+Quads_p = Optional(TriplesTemplate_p) + ZeroOrMore(QuadsNotTriples_p + Optional(PERIOD_p) + Optional(TriplesTemplate_p)) 
+class Quads(SPARQLNonTerminal): pass
+if do_parseactions: Quads_p.setParseAction(parseInfoFunc('Quads'))
 
 # [49]    QuadData          ::=   '{' Quads '}' 
 
