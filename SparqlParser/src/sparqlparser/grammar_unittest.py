@@ -1227,7 +1227,10 @@ class Test(unittest.TestCase):
         self.testCases['InsertClause']['fail'] += ['*NoInsertClause*']
         
 # [42]    DeleteClause      ::=   'DELETE' QuadPattern 
-
+        self.testCases['DeleteClause'] = {'pass': [], 'fail': []}
+        self.testCases['DeleteClause']['pass'] += ['DELETE ' + q for q in self.testCases['QuadPattern']['pass']]
+        self.testCases['DeleteClause']['fail'] += ['*NoDeleteClause*']
+        
 # [41]    Modify    ::=   ( 'WITH' iri )? ( DeleteClause InsertClause? | InsertClause ) UsingClause* 'WHERE' GroupGraphPattern 
 
 # [40]    DeleteWhere       ::=   'DELETE WHERE' QuadPattern 
@@ -1716,10 +1719,10 @@ class Test(unittest.TestCase):
     def testInsertClause(self):
         Test.makeTestFunc('InsertClause', self.testCases)()
 
-# # [43]    InsertClause      ::=   'INSERT' QuadPattern 
-# 
-# # [42]    DeleteClause      ::=   'DELETE' QuadPattern 
-# 
+    def testDeleteClause(self):
+        Test.makeTestFunc('DeleteClause', self.testCases)()
+
+
 # # [41]    Modify    ::=   ( 'WITH' iri )? ( DeleteClause InsertClause? | InsertClause ) UsingClause* 'WHERE' GroupGraphPattern 
 # 
 # # [40]    DeleteWhere       ::=   'DELETE WHERE' QuadPattern 

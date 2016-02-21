@@ -832,6 +832,12 @@ class INSERT_kw(SPARQLKeyword):
         return 'INSERT'
 if do_parseactions: INSERT_kw_p.setParseAction(parseInfoFunc('INSERT_kw'))
 
+DELETE_kw_p = CaselessKeyword('DELETE')
+class DELETE_kw(SPARQLKeyword):
+    def render(self):
+        return 'DELETE'
+if do_parseactions: DELETE_kw_p.setParseAction(parseInfoFunc('DELETE_kw'))
+
 # 
 # Parsers and classes for terminals
 #
@@ -1724,6 +1730,10 @@ class InsertClause(SPARQLNonTerminal): pass
 if do_parseactions: InsertClause_p.setParseAction(parseInfoFunc('InsertClause'))
 
 # [42]    DeleteClause      ::=   'DELETE' QuadPattern 
+DeleteClause_p =   DELETE_kw_p + QuadPattern_p 
+class DeleteClause(SPARQLNonTerminal): pass
+if do_parseactions: DeleteClause_p.setParseAction(parseInfoFunc('DeleteClause'))
+
 
 # [41]    Modify    ::=   ( 'WITH' iri )? ( DeleteClause InsertClause? | InsertClause ) UsingClause* 'WHERE' GroupGraphPattern 
 
