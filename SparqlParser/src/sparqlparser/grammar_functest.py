@@ -571,10 +571,12 @@ if __name__ == '__main__':
     printResults(l, 'GraphPatternNotTriples')
         
     # [55]    TriplesBlock      ::=   TriplesSameSubjectPath ( '.' TriplesBlock? )? 
-    l = ['?S $﫜9 ?﫜9℀ ; <testIri> | ͼ.℀:+ / ÂÂ: ?S . "TriplesBlock" @en-bf <test> ?path ; <test2> $algebra, ($TriplesBlock)']
-    printResults(l, 'TriplesBlock', dump=True)
+    l = ['(($TriplesNodePath) $algebra ) . "TriplesBlock" @en-bf <test> ?path ; <test2> $algebra, ($TriplesBlock)']
+    printResults(l, 'TriplesBlock')
     
     # [54]    GroupGraphPatternSub      ::=   TriplesBlock? ( GraphPatternNotTriples '.'? TriplesBlock? )* 
+    l = ['(($TriplesNodePath) $algebra ) . SERVICE SILENT ?var {} . (($TriplesNodePath) $algebra )']
+    printResults(l, 'GroupGraphPatternSub')
     
     # [53]    GroupGraphPattern         ::=   '{' ( SubSelect | GroupGraphPatternSub ) '}' 
     

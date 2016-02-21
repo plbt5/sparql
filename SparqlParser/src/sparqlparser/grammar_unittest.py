@@ -1136,7 +1136,15 @@ class Test(unittest.TestCase):
         self.testCases['TriplesBlock']['fail'] += ['*TriplesBlock*']
 
 # [54]    GroupGraphPatternSub      ::=   TriplesBlock? ( GraphPatternNotTriples '.'? TriplesBlock? )* 
-
+        self.testCases['GroupGraphPatternSub'] = {'pass': [], 'fail': []}
+        self.testCases['GroupGraphPatternSub']['pass'] += self.testCases['TriplesBlock']['pass']
+        self.testCases['GroupGraphPatternSub']['pass'] += ['']
+        self.testCases['GroupGraphPatternSub']['pass'] += [t + ' ' + g for t in self.testCases['TriplesBlock']['pass'][::10] for g in self.testCases['GraphPatternNotTriples']['pass'][::90]]
+        self.testCases['GroupGraphPatternSub']['pass'] += [t + ' ' + g + ' . ' for t in self.testCases['TriplesBlock']['pass'][1::10] for g in self.testCases['GraphPatternNotTriples']['pass'][1::90]]
+        self.testCases['GroupGraphPatternSub']['pass'] += [t + ' ' + g + ' . ' + t for t in self.testCases['TriplesBlock']['pass'][2::10] for g in self.testCases['GraphPatternNotTriples']['pass'][2::90]]
+        self.testCases['GroupGraphPatternSub']['pass'] += [t + ' ' + g + ' . ' + t + ' ' + g for t in self.testCases['TriplesBlock']['pass'][3::10] for g in self.testCases['GraphPatternNotTriples']['pass'][3::90]]
+        self.testCases['GroupGraphPatternSub']['fail'] += ['"*NoGroupGraphPatternSub*'] 
+        
 # [53]    GroupGraphPattern         ::=   '{' ( SubSelect | GroupGraphPatternSub ) '}' 
 
 # [52]    TriplesTemplate   ::=   TriplesSameSubject ( '.' TriplesTemplate? )? 
@@ -1609,13 +1617,13 @@ class Test(unittest.TestCase):
 # 
 #     def testGraphPatternNotTriples(self):
 #         Test.makeTestFunc('GraphPatternNotTriples', self.testCases)()
-# 
-    def testTriplesBlock(self):
-        Test.makeTestFunc('TriplesBlock', self.testCases, debug=1)()
+#  
+#     def testTriplesBlock(self):
+#         Test.makeTestFunc('TriplesBlock', self.testCases)()
 
-# 
-# # [54]    GroupGraphPatternSub      ::=   TriplesBlock? ( GraphPatternNotTriples '.'? TriplesBlock? )* 
-# 
+    def testGroupGraphPatternSub(self):
+        Test.makeTestFunc('GroupGraphPatternSub', self.testCases)()
+
 # # [53]    GroupGraphPattern         ::=   '{' ( SubSelect | GroupGraphPatternSub ) '}' 
 # 
 # # [52]    TriplesTemplate   ::=   TriplesSameSubject ( '.' TriplesTemplate? )? 

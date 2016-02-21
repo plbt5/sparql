@@ -1630,6 +1630,9 @@ if do_parseactions: TriplesBlock_p.setParseAction(parseInfoFunc('TriplesBlock'))
 TriplesBlock_p << TriplesSameSubjectPath_p + Optional(PERIOD_p + Optional(TriplesBlock_p)) 
 
 # [54]    GroupGraphPatternSub      ::=   TriplesBlock? ( GraphPatternNotTriples '.'? TriplesBlock? )* 
+GroupGraphPatternSub_p = Optional(TriplesBlock_p) + ZeroOrMore(GraphPatternNotTriples_p + Optional(PERIOD_p) + Optional(TriplesBlock_p)) 
+class GroupGraphPatternSub(SPARQLNonTerminal): pass
+if do_parseactions: GroupGraphPatternSub_p.setParseAction(parseInfoFunc('GroupGraphPatternSub'))
 
 # [53]    GroupGraphPattern         ::=   '{' ( SubSelect | GroupGraphPatternSub ) '}' 
 
