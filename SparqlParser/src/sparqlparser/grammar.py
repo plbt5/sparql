@@ -1000,6 +1000,18 @@ class REDUCED_kw(SPARQLKeyword):
         return 'REDUCED'
 if do_parseactions: REDUCED_kw_p.setParseAction(parseInfoFunc('REDUCED_kw'))
 
+PREFIX_kw_p = CaselessKeyword('PREFIX')
+class PREFIX_kw(SPARQLKeyword):
+    def render(self):
+        return 'PREFIX'
+if do_parseactions: PREFIX_kw_p.setParseAction(parseInfoFunc('PREFIX_kw'))
+
+BASE_kw_p = CaselessKeyword('BASE')
+class BASE_kw(SPARQLKeyword):
+    def render(self):
+        return 'BASE'
+if do_parseactions: BASE_kw_p.setParseAction(parseInfoFunc('BASE_kw'))
+
 
 # 'FROM' ( DefaultGraphClause | NamedGraphClause ) 
 
@@ -2081,19 +2093,34 @@ if do_parseactions: SelectClause_p.setParseAction(parseInfoFunc('SelectClause'))
 SubSelect_p << SelectClause_p + WhereClause_p + SolutionModifier_p + ValuesClause_p 
 
 # [7]     SelectQuery       ::=   SelectClause DatasetClause* WhereClause SolutionModifier 
+SelectQuery_p = SelectClause_p + ZeroOrMore(DatasetClause_p) + WhereClause_p + SolutionModifier_p 
+class SelectQuery(SPARQLNonTerminal): pass
+if do_parseactions: SelectQuery_p.setParseAction(parseInfoFunc('SelectQuery'))
 
 # [6]     PrefixDecl        ::=   'PREFIX' PNAME_NS IRIREF 
+PrefixDecl_p = PREFIX_kw_p + PNAME_NS_p + IRIREF_p 
+class PrefixDecl(SPARQLNonTerminal): pass
+if do_parseactions: PrefixDecl_p.setParseAction(parseInfoFunc('PrefixDecl'))
 
 # [5]     BaseDecl          ::=   'BASE' IRIREF 
+BaseDecl_p = BASE_kw_p + IRIREF_p 
+class BaseDecl(SPARQLNonTerminal): pass
+if do_parseactions: BaseDecl_p.setParseAction(parseInfoFunc('BaseDecl'))
 
 # [4]     Prologue          ::=   ( BaseDecl | PrefixDecl )* 
+Prologue_p << ZeroOrMore(BaseDecl_p | PrefixDecl_p) 
 
 # [3]     UpdateUnit        ::=   Update 
+UpdateUnit_p = Update_p 
+class UpdateUnit(SPARQLNonTerminal): pass
+if do_parseactions: UpdateUnit_p.setParseAction(parseInfoFunc('UpdateUnit'))
 
-# [2]     Query     ::=   Prologue 
-
-#             ( SelectQuery | ConstructQuery | DescribeQuery | AskQuery ) 
-
-#             ValuesClause 
+# [2]     Query     ::=   Prologue ( SelectQuery | ConstructQuery | DescribeQuery | AskQuery ) ValuesClause 
+Query_p = Prologue_p + ( SelectQuery_p | ConstructQuery_p | DescribeQuery_p | AskQuery_p ) + ValuesClause_p 
+class Query(SPARQLNonTerminal): pass
+if do_parseactions: Query_p.setParseAction(parseInfoFunc('Query'))
 
 # [1]     QueryUnit         ::=   Query 
+QueryUnit_p = Query_p
+class QueryUnit(SPARQLNonTerminal): pass
+if do_parseactions: QueryUnit_p.setParseAction(parseInfoFunc('QueryUnit'))

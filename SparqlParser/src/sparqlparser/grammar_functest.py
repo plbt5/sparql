@@ -12,7 +12,7 @@ from sparqlparser.grammar import *
 # ExpressionList_p << Literal('()')
 # SubSelect_p << Literal('SELECT * {}')
 # TriplesTemplate_p << Literal('?var $algebra $algebra, ($TriplesNode)')
-Prologue_p << 'BASE <prologue:22> PREFIX prologue: <prologue:33>'
+# Prologue_p << 'BASE <prologue:22> PREFIX prologue: <prologue:33>'
 
 
 def printResults(l, rule, dump=False):
@@ -765,19 +765,35 @@ if __name__ == '__main__':
     printResults(l, 'SubSelect')
     
     # [7]     SelectQuery       ::=   SelectClause DatasetClause* WhereClause SolutionModifier 
-    
+    l = ['SELECT REDUCED $var1 ?var2 (("*Expression*") AS $var3) { SELECT * {} } GROUP BY ROUND ( "*Expression*")']
+    printResults(l, 'SelectQuery')
+        
     # [6]     PrefixDecl        ::=   'PREFIX' PNAME_NS IRIREF 
-    
+    l = ['PREFIX Z.8: <work:22?>']
+    printResults(l, 'PrefixDecl')
+            
     # [5]     BaseDecl          ::=   'BASE' IRIREF 
+    l = ['BASE <work:22?>']
+    printResults(l, 'BaseDecl')
     
     # [4]     Prologue          ::=   ( BaseDecl | PrefixDecl )* 
+    l = ['BASE <work:22?> PREFIX Z.8: <work:22?>']
+    printResults(l, 'Prologue')
     
     # [3]     UpdateUnit        ::=   Update 
-    
-    # [2]     Query     ::=   Prologue 
-    
-    #             ( SelectQuery | ConstructQuery | DescribeQuery | AskQuery ) 
-    
-    #             ValuesClause 
+    l = ['BASE <prologue:22> PREFIX prologue: <prologue:33> LOAD <testIri> ; BASE <prologue:22> PREFIX prologue: <prologue:33>']
+    printResults(l, 'UpdateUnit')
+        
+    # [2]     Query     ::=   Prologue ( SelectQuery | ConstructQuery | DescribeQuery | AskQuery ) ValuesClause 
+    l = ['BASE <work:22?> SELECT REDUCED $var1 ?var2 (("*Expression*") AS $var3) { SELECT * {} } GROUP BY ROUND ( "*Expression*") VALUES $S { <testIri> <testIri> }',
+         'CONSTRUCT { _:test9.33 <test> $algebra, ($TriplesNode) ; a ?algebra, ($TriplesNode) } WHERE { SELECT * {} } GROUP BY ROUND ( "*Expression*")',
+         'DESCRIBE * FROM NAMED <work:22?> WHERE { SELECT * {} } GROUP BY ROUND ( "*Expression*")',
+         'ASK { SELECT * {} } GROUP BY ROUND ( "*Expression*") HAVING <test:227> (DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )']
+    printResults(l, 'Query')
     
     # [1]     QueryUnit         ::=   Query 
+    l = ['BASE <work:22?> SELECT REDUCED $var1 ?var2 (("*Expression*") AS $var3) { SELECT * {} } GROUP BY ROUND ( "*Expression*") VALUES $S { <testIri> <testIri> }',
+         'CONSTRUCT { _:test9.33 <test> $algebra, ($TriplesNode) ; a ?algebra, ($TriplesNode) } WHERE { SELECT * {} } GROUP BY ROUND ( "*Expression*")',
+         'DESCRIBE * FROM NAMED <work:22?> WHERE { SELECT * {} } GROUP BY ROUND ( "*Expression*")',
+         'ASK { SELECT * {} } GROUP BY ROUND ( "*Expression*") HAVING <test:227> (DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )']
+    printResults(l, 'QueryUnit')
