@@ -1875,6 +1875,9 @@ class Load(SPARQLNonTerminal): pass
 if do_parseactions: Load_p.setParseAction(parseInfoFunc('Load'))
 
 # [30]    Update1   ::=   Load | Clear | Drop | Add | Move | Copy | Create | InsertData | DeleteData | DeleteWhere | Modify 
+Update1_p = Load_p | Clear_p | Drop_p | Add_p | Move_p | Copy_p | Create_p | InsertData_p | DeleteData_p | DeleteWhere_p | Modify_p 
+class Update1(SPARQLNonTerminal): pass
+if do_parseactions: Update1_p.setParseAction(parseInfoFunc('Update1'))
 
 # [29]    Update    ::=   Prologue ( Update1 ( ';' Update )? )? 
 

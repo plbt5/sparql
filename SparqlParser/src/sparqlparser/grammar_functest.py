@@ -672,6 +672,8 @@ if __name__ == '__main__':
     printResults(l, 'Load')
     
     # [30]    Update1   ::=   Load | Clear | Drop | Add | Move | Copy | Create | InsertData | DeleteData | DeleteWhere | Modify 
+    l = ['LOAD <test:22?>', 'INSERT DATA  { }', 'WITH <test:22?> DELETE { } INSERT { } USING NAMED aA:Z.a USING <abc:def> WHERE { SELECT * {} }']
+    printResults(l, 'Update1')
     
     # [29]    Update    ::=   Prologue ( Update1 ( ';' Update )? )? 
     
