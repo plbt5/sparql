@@ -732,15 +732,26 @@ if __name__ == '__main__':
     printResults(l, 'SourceSelector')
         
     # [15]    NamedGraphClause          ::=   'NAMED' SourceSelector 
-    
+    l = ['NAMED <work:22?>']
+    printResults(l, 'NamedGraphClause')
+            
     # [14]    DefaultGraphClause        ::=   SourceSelector 
-    
+    l = ['<work:22?>','aA:Z.a', 'Z.8:AA', 'aA:', 'Z.8:', ':']
+    printResults(l, 'DefaultGraphClause')
+        
     # [13]    DatasetClause     ::=   'FROM' ( DefaultGraphClause | NamedGraphClause ) 
+    l = ['FROM <work:22?>', 'FROM NAMED <work:22?>']
+    printResults(l, 'DatasetClause')
     
     # [12]    AskQuery          ::=   'ASK' DatasetClause* WhereClause SolutionModifier 
-    
+    l = ['ASK { SELECT * {} } GROUP BY ROUND ( "*Expression*") HAVING <test:227> (DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )',
+         'ASK FROM <work:22?> { SELECT * {} } GROUP BY ROUND ( "*Expression*") HAVING <test:227> (DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )']
+    printResults(l, 'AskQuery')    
+
     # [11]    DescribeQuery     ::=   'DESCRIBE' ( VarOrIri+ | '*' ) DatasetClause* WhereClause? SolutionModifier 
-    
+    l = ['DESCRIBE * FROM NAMED <work:22?> WHERE { SELECT * {} } GROUP BY ROUND ( "*Expression*")']
+    printResults(l, 'DescribeQuery')
+                
     # [10]    ConstructQuery    ::=   'CONSTRUCT' ( ConstructTemplate DatasetClause* WhereClause SolutionModifier | DatasetClause* 'WHERE' '{' TriplesTemplate? '}' SolutionModifier ) 
     
     # [9]     SelectClause      ::=   'SELECT' ( 'DISTINCT' | 'REDUCED' )? ( ( Var | ( '(' Expression 'AS' Var ')' ) )+ | '*' ) 

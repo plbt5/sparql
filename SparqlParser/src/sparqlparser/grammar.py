@@ -964,6 +964,38 @@ class GROUP_BY_kw(SPARQLKeyword):
         return 'GROUP BY'
 if do_parseactions: GROUP_BY_kw_p.setParseAction(parseInfoFunc('GROUP_BY_kw'))
 
+FROM_kw_p = CaselessKeyword('FROM')
+class FROM_kw(SPARQLKeyword):
+    def render(self):
+        return 'FROM'
+if do_parseactions: FROM_kw_p.setParseAction(parseInfoFunc('FROM_kw'))
+
+ASK_kw_p = CaselessKeyword('ASK')
+class ASK_kw(SPARQLKeyword):
+    def render(self):
+        return 'ASK'
+if do_parseactions: ASK_kw_p.setParseAction(parseInfoFunc('ASK_kw'))
+
+DESCRIBE_kw_p = CaselessKeyword('DESCRIBE')
+class DESCRIBE_kw(SPARQLKeyword):
+    def render(self):
+        return 'DESCRIBE'
+if do_parseactions: DESCRIBE_kw_p.setParseAction(parseInfoFunc('DESCRIBE_kw'))
+
+CONSTRUCT_kw_p = CaselessKeyword('CONSTRUCT')
+class CONSTRUCT_kw(SPARQLKeyword):
+    def render(self):
+        return 'CONSTRUCT'
+if do_parseactions: CONSTRUCT_kw_p.setParseAction(parseInfoFunc('CONSTRUCT_kw'))
+
+
+# 'FROM' ( DefaultGraphClause | NamedGraphClause ) 
+
+# [12]    AskQuery          ::=   'ASK' DatasetClause* WhereClause SolutionModifier 
+
+# [11]    DescribeQuery     ::=   'DESCRIBE' ( VarOrIri+ | '*' ) DatasetClause* WhereClause? SolutionModifier 
+
+# [10]    ConstructQuery    ::=   'CONSTRUCT'
 
 # 
 # Parsers and classes for terminals
@@ -1998,14 +2030,29 @@ class SourceSelector(SPARQLNonTerminal): pass
 if do_parseactions: SourceSelector_p.setParseAction(parseInfoFunc('SourceSelector'))
 
 # [15]    NamedGraphClause          ::=   'NAMED' SourceSelector 
+NamedGraphClause_p = NAMED_kw_p + SourceSelector_p 
+class NamedGraphClause(SPARQLNonTerminal): pass
+if do_parseactions: NamedGraphClause_p.setParseAction(parseInfoFunc('NamedGraphClause'))
 
 # [14]    DefaultGraphClause        ::=   SourceSelector 
+DefaultGraphClause_p = SourceSelector_p
+class DefaultGraphClause(SPARQLNonTerminal): pass
+if do_parseactions: DefaultGraphClause_p.setParseAction(parseInfoFunc('DefaultGraphClause'))
 
 # [13]    DatasetClause     ::=   'FROM' ( DefaultGraphClause | NamedGraphClause ) 
+DatasetClause_p = FROM_kw_p + (DefaultGraphClause_p | NamedGraphClause_p) 
+class DatasetClause(SPARQLNonTerminal): pass
+if do_parseactions: DatasetClause_p.setParseAction(parseInfoFunc('DatasetClause'))
 
 # [12]    AskQuery          ::=   'ASK' DatasetClause* WhereClause SolutionModifier 
+AskQuery_p =   ASK_kw_p + ZeroOrMore(DatasetClause_p) + WhereClause_p + SolutionModifier_p 
+class AskQuery(SPARQLNonTerminal): pass
+if do_parseactions: AskQuery_p.setParseAction(parseInfoFunc('AskQuery'))
 
 # [11]    DescribeQuery     ::=   'DESCRIBE' ( VarOrIri+ | '*' ) DatasetClause* WhereClause? SolutionModifier 
+DescribeQuery_p = DESCRIBE_kw_p + (OneOrMore(VarOrIri_p) | ALL_VALUES_st_p) + ZeroOrMore(DatasetClause_p) + Optional(WhereClause_p) + SolutionModifier_p 
+class DescribeQuery(SPARQLNonTerminal): pass
+if do_parseactions: DescribeQuery_p.setParseAction(parseInfoFunc('DescribeQuery'))
 
 # [10]    ConstructQuery    ::=   'CONSTRUCT' ( ConstructTemplate DatasetClause* WhereClause SolutionModifier | DatasetClause* 'WHERE' '{' TriplesTemplate? '}' SolutionModifier ) 
 
