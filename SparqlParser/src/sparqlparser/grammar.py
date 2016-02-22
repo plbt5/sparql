@@ -868,6 +868,61 @@ class INSERT_DATA_kw(SPARQLKeyword):
         return 'INSERT DATA'
 if do_parseactions: INSERT_DATA_kw_p.setParseAction(parseInfoFunc('INSERT_DATA_kw'))
 
+COPY_kw_p = CaselessKeyword('COPY')
+class COPY_kw(SPARQLKeyword):
+    def render(self):
+        return 'COPY'
+if do_parseactions: COPY_kw_p.setParseAction(parseInfoFunc('COPY_kw'))
+
+MOVE_kw_p = CaselessKeyword('MOVE')
+class MOVE_kw(SPARQLKeyword):
+    def render(self):
+        return 'MOVE'
+if do_parseactions: MOVE_kw_p.setParseAction(parseInfoFunc('MOVE_kw'))
+
+ADD_kw_p = CaselessKeyword('ADD')
+class ADD_kw(SPARQLKeyword):
+    def render(self):
+        return 'ADD'
+if do_parseactions: ADD_kw_p.setParseAction(parseInfoFunc('ADD_kw'))
+
+CREATE_kw_p = CaselessKeyword('CREATE')
+class CREATE_kw(SPARQLKeyword):
+    def render(self):
+        return 'CREATE'
+if do_parseactions: CREATE_kw_p.setParseAction(parseInfoFunc('CREATE_kw'))
+
+DROP_kw_p = CaselessKeyword('DROP')
+class DROP_kw(SPARQLKeyword):
+    def render(self):
+        return 'DROP'
+if do_parseactions: DROP_kw_p.setParseAction(parseInfoFunc('DROP_kw'))
+
+CLEAR_kw_p = CaselessKeyword('CLEAR')
+class CLEAR_kw(SPARQLKeyword):
+    def render(self):
+        return 'CLEAR'
+if do_parseactions: CLEAR_kw_p.setParseAction(parseInfoFunc('CLEAR_kw'))
+
+LOAD_kw_p = CaselessKeyword('LOAD')
+class LOAD_kw(SPARQLKeyword):
+    def render(self):
+        return 'LOAD'
+if do_parseactions: LOAD_kw_p.setParseAction(parseInfoFunc('LOAD_kw'))
+
+TO_kw_p = CaselessKeyword('TO')
+class TO_kw(SPARQLKeyword):
+    def render(self):
+        return 'TO'
+if do_parseactions: TO_kw_p.setParseAction(parseInfoFunc('TO_kw'))
+
+INTO_kw_p = CaselessKeyword('INTO')
+class INTO_kw(SPARQLKeyword):
+    def render(self):
+        return 'INTO'
+if do_parseactions: INTO_kw_p.setParseAction(parseInfoFunc('INTO_kw'))
+
+
 # 
 # Parsers and classes for terminals
 #
@@ -1782,21 +1837,42 @@ if do_parseactions: DeleteData_p.setParseAction(parseInfoFunc('DeleteData'))
 # [38]    InsertData        ::=   'INSERT DATA' QuadData 
 InsertData_p = INSERT_DATA_kw_p + QuadData_p 
 class InsertData(SPARQLNonTerminal): pass
-if do_parseactions: InsertData_p.setParseAction(parseInfoFunc('Modify'))
+if do_parseactions: InsertData_p.setParseAction(parseInfoFunc('InsertData'))
 
 # [37]    Copy      ::=   'COPY' 'SILENT'? GraphOrDefault 'TO' GraphOrDefault 
+Copy_p = COPY_kw_p + Optional(SILENT_kw_p) + GraphOrDefault_p + TO_kw_p + GraphOrDefault_p 
+class Copy(SPARQLNonTerminal): pass
+if do_parseactions: Copy_p.setParseAction(parseInfoFunc('Copy'))
 
 # [36]    Move      ::=   'MOVE' 'SILENT'? GraphOrDefault 'TO' GraphOrDefault 
+Move_p = MOVE_kw_p + Optional(SILENT_kw_p) + GraphOrDefault_p + TO_kw_p + GraphOrDefault_p 
+class Move(SPARQLNonTerminal): pass
+if do_parseactions: Move_p.setParseAction(parseInfoFunc('Move'))
 
 # [35]    Add       ::=   'ADD' 'SILENT'? GraphOrDefault 'TO' GraphOrDefault 
+Add_p = ADD_kw_p + Optional(SILENT_kw_p) + GraphOrDefault_p + TO_kw_p + GraphOrDefault_p 
+class Add(SPARQLNonTerminal): pass
+if do_parseactions: Add_p.setParseAction(parseInfoFunc('Add'))
 
 # [34]    Create    ::=   'CREATE' 'SILENT'? GraphRef 
+Create_p = CREATE_kw_p + Optional(SILENT_kw_p) + GraphRef_p
+class Create(SPARQLNonTerminal): pass
+if do_parseactions: Create_p.setParseAction(parseInfoFunc('Create'))
 
 # [33]    Drop      ::=   'DROP' 'SILENT'? GraphRefAll 
+Drop_p = DROP_kw_p + Optional(SILENT_kw_p) + GraphRefAll_p
+class Drop(SPARQLNonTerminal): pass
+if do_parseactions: Drop_p.setParseAction(parseInfoFunc('Drop'))
 
 # [32]    Clear     ::=   'CLEAR' 'SILENT'? GraphRefAll 
+Clear_p = CLEAR_kw_p + Optional(SILENT_kw_p) + GraphRefAll_p 
+class Clear(SPARQLNonTerminal): pass
+if do_parseactions: Clear_p.setParseAction(parseInfoFunc('Clear'))
 
 # [31]    Load      ::=   'LOAD' 'SILENT'? iri ( 'INTO' GraphRef )? 
+Load_p = LOAD_kw_p + Optional(SILENT_kw_p) + iri_p  + Optional(INTO_kw_p + GraphRef_p)
+class Load(SPARQLNonTerminal): pass
+if do_parseactions: Load_p.setParseAction(parseInfoFunc('Load'))
 
 # [30]    Update1   ::=   Load | Clear | Drop | Add | Move | Copy | Create | InsertData | DeleteData | DeleteWhere | Modify 
 

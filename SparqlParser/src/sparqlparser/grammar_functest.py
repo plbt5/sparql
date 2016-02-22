@@ -644,18 +644,32 @@ if __name__ == '__main__':
     printResults(l, 'InsertData')
     
     # [37]    Copy      ::=   'COPY' 'SILENT'? GraphOrDefault 'TO' GraphOrDefault 
-    
+    l = ['COPY SILENT GRAPH <test:22?> TO DEFAULT']
+    printResults(l, 'Copy')
+        
     # [36]    Move      ::=   'MOVE' 'SILENT'? GraphOrDefault 'TO' GraphOrDefault 
+    l = ['MOVE GRAPH <test:22?> TO <test:22?>']
+    printResults(l, 'Move')
     
     # [35]    Add       ::=   'ADD' 'SILENT'? GraphOrDefault 'TO' GraphOrDefault 
+    l = ['ADD <test:22?> TO GRAPH <test:22?>']
+    printResults(l, 'Add')
     
     # [34]    Create    ::=   'CREATE' 'SILENT'? GraphRef 
+    l = ['CREATE GRAPH <test:2?>']
+    printResults(l, 'Create')
     
     # [33]    Drop      ::=   'DROP' 'SILENT'? GraphRefAll 
+    l = ['DROP SILENT GRAPH <test:2?>']
+    printResults(l, 'Drop')
     
     # [32]    Clear     ::=   'CLEAR' 'SILENT'? GraphRefAll 
+    l = ['CLEAR SILENT NAMED']
+    printResults(l, 'Clear')
     
     # [31]    Load      ::=   'LOAD' 'SILENT'? iri ( 'INTO' GraphRef )? 
+    l = ['LOAD <test:22?>', 'LOAD <test:22?> INTO GRAPH <test:29?>']
+    printResults(l, 'Load')
     
     # [30]    Update1   ::=   Load | Clear | Drop | Add | Move | Copy | Create | InsertData | DeleteData | DeleteWhere | Modify 
     
