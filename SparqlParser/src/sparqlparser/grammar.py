@@ -1983,10 +1983,19 @@ class GroupClause(SPARQLNonTerminal): pass
 if do_parseactions: GroupClause_p.setParseAction(parseInfoFunc('GroupClause'))
 
 # [18]    SolutionModifier          ::=   GroupClause? HavingClause? OrderClause? LimitOffsetClauses? 
+SolutionModifier_p =   Optional(GroupClause_p) + Optional(HavingClause_p) + Optional(OrderClause_p) + Optional(LimitOffsetClauses_p) 
+class SolutionModifier(SPARQLNonTerminal): pass
+if do_parseactions: SolutionModifier_p.setParseAction(parseInfoFunc('SolutionModifier'))
 
 # [17]    WhereClause       ::=   'WHERE'? GroupGraphPattern 
+WhereClause_p =   Optional(WHERE_kw_p) + GroupGraphPattern_p 
+class WhereClause(SPARQLNonTerminal): pass
+if do_parseactions: WhereClause_p.setParseAction(parseInfoFunc('WhereClause'))
 
 # [16]    SourceSelector    ::=   iri 
+SourceSelector_p = iri_p
+class SourceSelector(SPARQLNonTerminal): pass
+if do_parseactions: SourceSelector_p.setParseAction(parseInfoFunc('SourceSelector'))
 
 # [15]    NamedGraphClause          ::=   'NAMED' SourceSelector 
 

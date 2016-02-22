@@ -1415,11 +1415,25 @@ class Test(unittest.TestCase):
         self.testCases['GroupClause']['fail'] += ['*NoGroupClause*']
         
 # [18]    SolutionModifier          ::=   GroupClause? HavingClause? OrderClause? LimitOffsetClauses? 
-
+        self.testCases['SolutionModifier'] = {'pass': [], 'fail': []}        
+        self.testCases['SolutionModifier']['pass'] += [g for g in self.testCases['GroupClause']['pass']]
+        self.testCases['SolutionModifier']['pass'] += [h for h in self.testCases['HavingClause']['pass']]
+        self.testCases['SolutionModifier']['pass'] += [o for o in self.testCases['OrderClause']['pass']]
+        self.testCases['SolutionModifier']['pass'] += [l for l in self.testCases['LimitOffsetClauses']['pass']]
+        self.testCases['SolutionModifier']['pass'] += [o + ' ' + l for o in self.testCases['OrderClause']['pass'] for l in self.testCases['LimitOffsetClauses']['pass']]
+        self.testCases['SolutionModifier']['fail'] += ['*NoSolutionModifier*']
+        
 # [17]    WhereClause       ::=   'WHERE'? GroupGraphPattern 
-
+        self.testCases['WhereClause'] = {'pass': [], 'fail': []}        
+        self.testCases['WhereClause']['pass'] += self.testCases['GroupGraphPattern']['pass']
+        self.testCases['WhereClause']['pass'] += ['WHERE ' + g for g in self.testCases['GroupGraphPattern']['pass']]
+        self.testCases['WhereClause']['fail'] += ['*NoWhereClause*']
+        
 # [16]    SourceSelector    ::=   iri 
-
+        self.testCases['SourceSelector'] = {'pass': [], 'fail': []}        
+        self.testCases['SourceSelector']['pass'] += self.testCases['iri']['pass']
+        self.testCases['SourceSelector']['fail'] += ['*NoWhereClause*']
+        
 # [15]    NamedGraphClause          ::=   'NAMED' SourceSelector 
 
 # [14]    DefaultGraphClause        ::=   SourceSelector 
@@ -1905,20 +1919,20 @@ class Test(unittest.TestCase):
 #     def testLimitClause(self):
 #         Test.makeTestFunc('LimitClause', self.testCases, debug=0)()
 #  
-#     def testLimitOffsetClauses(self):
-#         Test.makeTestFunc('LimitOffsetClauses', self.testCases, debug=0)()
+    def testLimitOffsetClauses(self):
+        Test.makeTestFunc('LimitOffsetClauses', self.testCases, debug=0)()
 #  
 #     def testOrderCondition(self):
 #         Test.makeTestFunc('OrderCondition', self.testCases, debug=0)()
 #  
-#     def testOrderClause(self):
-#         Test.makeTestFunc('OrderClause', self.testCases, debug=0)()
+    def testOrderClause(self):
+        Test.makeTestFunc('OrderClause', self.testCases, debug=0)()
 #          
 #     def testHavingCondition(self):
 #         Test.makeTestFunc('HavingCondition', self.testCases, debug=0)()
 # 
-#     def testHavingClause(self):
-#         Test.makeTestFunc('HavingClause', self.testCases, debug=0)()
+    def testHavingClause(self):
+        Test.makeTestFunc('HavingClause', self.testCases, debug=0)()
 # 
 #     def testGroupCondition(self):
 #         Test.makeTestFunc('GroupCondition', self.testCases, debug=0)()
@@ -1926,15 +1940,16 @@ class Test(unittest.TestCase):
     def testGroupClause(self):
         Test.makeTestFunc('GroupClause', self.testCases, debug=0)()
 
-# # [20]    GroupCondition    ::=   BuiltInCall | FunctionCall | '(' Expression ( 'AS' Var )? ')' | Var 
-# 
-# # [19]    GroupClause       ::=   'GROUP' 'BY' GroupCondition+ 
-# 
-# # [18]    SolutionModifier          ::=   GroupClause? HavingClause? OrderClause? LimitOffsetClauses? 
-# 
-# # [17]    WhereClause       ::=   'WHERE'? GroupGraphPattern 
-# 
-# # [16]    SourceSelector    ::=   iri 
+    def testSolutionModifier(self):
+        Test.makeTestFunc('SolutionModifier', self.testCases, debug=0)()
+
+    def testWhereClause(self):
+        Test.makeTestFunc('WhereClause', self.testCases, debug=0)()
+
+    def testSourceSelector(self):
+        Test.makeTestFunc('SourceSelector', self.testCases, debug=0)()
+
+
 # 
 # # [15]    NamedGraphClause          ::=   'NAMED' SourceSelector 
 # 

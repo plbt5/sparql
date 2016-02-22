@@ -720,11 +720,17 @@ if __name__ == '__main__':
     printResults(l, 'GroupClause')
     
     # [18]    SolutionModifier          ::=   GroupClause? HavingClause? OrderClause? LimitOffsetClauses? 
+    l = ['GROUP BY ROUND ( "*Expression*") HAVING <test:227> (DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )']
+    printResults(l, 'SolutionModifier')
     
     # [17]    WhereClause       ::=   'WHERE'? GroupGraphPattern 
-    
+    l = ['{ SELECT * {} }', 'WHERE { SELECT * {} }']
+    printResults(l, 'WhereClause')    
+
     # [16]    SourceSelector    ::=   iri 
-    
+    l = ['<work:22?>','aA:Z.a', 'Z.8:AA', 'aA:', 'Z.8:', ':']
+    printResults(l, 'SourceSelector')
+        
     # [15]    NamedGraphClause          ::=   'NAMED' SourceSelector 
     
     # [14]    DefaultGraphClause        ::=   SourceSelector 
