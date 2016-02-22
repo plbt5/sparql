@@ -2055,6 +2055,10 @@ class DescribeQuery(SPARQLNonTerminal): pass
 if do_parseactions: DescribeQuery_p.setParseAction(parseInfoFunc('DescribeQuery'))
 
 # [10]    ConstructQuery    ::=   'CONSTRUCT' ( ConstructTemplate DatasetClause* WhereClause SolutionModifier | DatasetClause* 'WHERE' '{' TriplesTemplate? '}' SolutionModifier ) 
+ConstructQuery_p = CONSTRUCT_kw_p + ( (ConstructTemplate_p + ZeroOrMore(DatasetClause_p) + WhereClause_p + SolutionModifier_p) | \
+                                      (ZeroOrMore(DatasetClause_p) + WHERE_kw_p + LCURL_p +  Optional(TriplesTemplate_p) + RCURL_p + SolutionModifier_p) ) 
+class ConstructQuery(SPARQLNonTerminal): pass
+if do_parseactions: ConstructQuery_p.setParseAction(parseInfoFunc('ConstructQuery'))
 
 # [9]     SelectClause      ::=   'SELECT' ( 'DISTINCT' | 'REDUCED' )? ( ( Var | ( '(' Expression 'AS' Var ')' ) )+ | '*' ) 
 

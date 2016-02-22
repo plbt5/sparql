@@ -753,6 +753,8 @@ if __name__ == '__main__':
     printResults(l, 'DescribeQuery')
                 
     # [10]    ConstructQuery    ::=   'CONSTRUCT' ( ConstructTemplate DatasetClause* WhereClause SolutionModifier | DatasetClause* 'WHERE' '{' TriplesTemplate? '}' SolutionModifier ) 
+    l = ['CONSTRUCT { _:test9.33 <test> $algebra, ($TriplesNode) ; a ?algebra, ($TriplesNode) } WHERE { SELECT * {} } GROUP BY ROUND ( "*Expression*")', 'CONSTRUCT FROM <work:22?> WHERE { } GROUP BY ROUND ( "*Expression*")']
+    printResults(l, 'ConstructQuery')
     
     # [9]     SelectClause      ::=   'SELECT' ( 'DISTINCT' | 'REDUCED' )? ( ( Var | ( '(' Expression 'AS' Var ')' ) )+ | '*' ) 
     
