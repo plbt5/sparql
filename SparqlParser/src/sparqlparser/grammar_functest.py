@@ -716,6 +716,8 @@ if __name__ == '__main__':
     printResults(l, 'GroupCondition')
     
     # [19]    GroupClause       ::=   'GROUP' 'BY' GroupCondition+ 
+    l = ['GROUP BY ROUND ( "*Expression*")', 'GROUP BY <test:227> (DISTINCT "*Expression*",  "*Expression*",   "*Expression*" ) ( ("*Expression*") AS ?var )']
+    printResults(l, 'GroupClause')
     
     # [18]    SolutionModifier          ::=   GroupClause? HavingClause? OrderClause? LimitOffsetClauses? 
     

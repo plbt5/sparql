@@ -1409,7 +1409,11 @@ class Test(unittest.TestCase):
         self.testCases['GroupCondition']['fail'] += ['*NoGroupCondition*']
         
 # [19]    GroupClause       ::=   'GROUP' 'BY' GroupCondition+ 
-
+        self.testCases['GroupClause'] = {'pass': [], 'fail': []}        
+        self.testCases['GroupClause']['pass'] += ['GROUP BY ' + g for g in self.testCases['GroupCondition']['pass'][::20]]
+        self.testCases['GroupClause']['pass'] += ['GROUP BY ' + g + ' ' + g for g in self.testCases['GroupCondition']['pass'][1::20]]
+        self.testCases['GroupClause']['fail'] += ['*NoGroupClause*']
+        
 # [18]    SolutionModifier          ::=   GroupClause? HavingClause? OrderClause? LimitOffsetClauses? 
 
 # [17]    WhereClause       ::=   'WHERE'? GroupGraphPattern 
@@ -1915,9 +1919,12 @@ class Test(unittest.TestCase):
 # 
 #     def testHavingClause(self):
 #         Test.makeTestFunc('HavingClause', self.testCases, debug=0)()
+# 
+#     def testGroupCondition(self):
+#         Test.makeTestFunc('GroupCondition', self.testCases, debug=0)()
 
-    def testGroupCondition(self):
-        Test.makeTestFunc('GroupCondition', self.testCases, debug=0)()
+    def testGroupClause(self):
+        Test.makeTestFunc('GroupClause', self.testCases, debug=0)()
 
 # # [20]    GroupCondition    ::=   BuiltInCall | FunctionCall | '(' Expression ( 'AS' Var )? ')' | Var 
 # 

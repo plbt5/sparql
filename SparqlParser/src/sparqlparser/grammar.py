@@ -958,6 +958,12 @@ class HAVING_kw(SPARQLKeyword):
         return 'HAVING'
 if do_parseactions: HAVING_kw_p.setParseAction(parseInfoFunc('HAVING_kw'))
 
+GROUP_BY_kw_p = CaselessKeyword('GROUP') + CaselessKeyword('BY') 
+class GROUP_BY_kw(SPARQLKeyword):
+    def render(self):
+        return 'GROUP BY'
+if do_parseactions: GROUP_BY_kw_p.setParseAction(parseInfoFunc('GROUP_BY_kw'))
+
 
 # 
 # Parsers and classes for terminals
@@ -1972,6 +1978,9 @@ class GroupCondition(SPARQLNonTerminal): pass
 if do_parseactions: GroupCondition_p.setParseAction(parseInfoFunc('GroupCondition'))
 
 # [19]    GroupClause       ::=   'GROUP' 'BY' GroupCondition+ 
+GroupClause_p = GROUP_BY_kw_p + OneOrMore(GroupCondition_p) 
+class GroupClause(SPARQLNonTerminal): pass
+if do_parseactions: GroupClause_p.setParseAction(parseInfoFunc('GroupClause'))
 
 # [18]    SolutionModifier          ::=   GroupClause? HavingClause? OrderClause? LimitOffsetClauses? 
 
