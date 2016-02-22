@@ -10,7 +10,7 @@ from sparqlparser.grammar import *
 # Path_p << Literal('<Path>')
 # ConstructTriples_p << Literal('?ConstructTriples')
 # ExpressionList_p << Literal('()')
-SubSelect_p << Literal('SELECT * {}')
+# SubSelect_p << Literal('SELECT * {}')
 # TriplesTemplate_p << Literal('?var $algebra $algebra, ($TriplesNode)')
 Prologue_p << 'BASE <prologue:22> PREFIX prologue: <prologue:33>'
 
@@ -761,6 +761,8 @@ if __name__ == '__main__':
     printResults(l, 'SelectClause')
     
     # [8]     SubSelect         ::=   SelectClause WhereClause SolutionModifier ValuesClause 
+    l = ['SELECT REDUCED $var1 ?var2 (("*Expression*") AS $var3) { SELECT * {} } GROUP BY ROUND ( "*Expression*") VALUES $S { <testIri> <testIri> }']
+    printResults(l, 'SubSelect')
     
     # [7]     SelectQuery       ::=   SelectClause DatasetClause* WhereClause SolutionModifier 
     

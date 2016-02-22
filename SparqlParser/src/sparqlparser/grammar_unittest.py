@@ -11,7 +11,7 @@ from sparqlparser.grammar import *
 # Path_p << Literal('<Path>')
 # ConstructTriples_p << Literal('?ConstructTriples')
 # ExpressionList_p << Literal('()')
-SubSelect_p << Literal('SELECT * {}')
+# SubSelect_p << Literal('SELECT * {}')
 # TriplesTemplate_p << Literal('?var $algebra $algebra, ($TriplesNode)')
 Prologue_p << Literal('BASE <prologue:22> PREFIX prologue: <prologue:33>')
 # Update_p << Literal('BASE <update:22> PREFIX update: <update:33>')
@@ -1496,7 +1496,14 @@ class Test(unittest.TestCase):
         self.testCases['SelectClause']['fail'] += ['*NoSelectClause*']
                                                     
 # [8]     SubSelect         ::=   SelectClause WhereClause SolutionModifier ValuesClause 
-
+        self.testCases['SubSelect'] = {'pass': [], 'fail': []}        
+        self.testCases['SubSelect']['pass'] += [s1 + ' ' + w + ' ' + s2 + ' ' + v 
+                                                for s1 in self.testCases['SelectClause']['pass'][::40]
+                                                for w in self.testCases['WhereClause']['pass'][::20]
+                                                for s2 in self.testCases['SolutionModifier']['pass'][::80]
+                                                for v in self.testCases['ValuesClause']['pass'][::200]]
+        self.testCases['SubSelect']['fail'] += ['*NoSubSelect*']
+        
 # [7]     SelectQuery       ::=   SelectClause DatasetClause* WhereClause SolutionModifier 
 
 # [6]     PrefixDecl        ::=   'PREFIX' PNAME_NS IRIREF 
@@ -1681,8 +1688,8 @@ class Test(unittest.TestCase):
 #     def testRegexExpression(self):
 #         Test.makeTestFunc('RegexExpression', self.testCases, debug=0)()
 #                                 
-    def testVar(self):
-        Test.makeTestFunc('Var', self.testCases, debug=0)()
+#     def testVar(self):
+#         Test.makeTestFunc('Var', self.testCases, debug=0)()
 #                                 
 #     def testBuiltInCall(self):
 #         Test.makeTestFunc('BuiltInCall', self.testCases, debug=0)()
@@ -1717,8 +1724,8 @@ class Test(unittest.TestCase):
 #     def testConditionalOrExpression(self):
 #         Test.makeTestFunc('ConditionalOrExpression', self.testCases, debug=0)()
 #                                
-    def testExpression(self):
-        Test.makeTestFunc('Expression', self.testCases, debug=0)()
+#     def testExpression(self):
+#         Test.makeTestFunc('Expression', self.testCases, debug=0)()
 #                                       
 #     def testGraphTerm(self):
 #         Test.makeTestFunc('GraphTerm', self.testCases, debug=0)()
@@ -1824,10 +1831,10 @@ class Test(unittest.TestCase):
 #               
 #     def testConstructTriples(self):
 #         Test.makeTestFunc('ConstructTriples', self.testCases, debug=0)()
-              
-    def testConstructTemplate(self):
-        Test.makeTestFunc('ConstructTemplate', self.testCases, debug=0)()
-             
+#               
+#     def testConstructTemplate(self):
+#         Test.makeTestFunc('ConstructTemplate', self.testCases, debug=0)()
+#              
 #     def testExpressionList(self):
 #         Test.makeTestFunc('ExpressionList', self.testCases, debug=0)()
 #              
@@ -1885,8 +1892,8 @@ class Test(unittest.TestCase):
 #     def testGroupGraphPattern(self):
 #         Test.makeTestFunc('GroupGraphPattern', self.testCases, debug=0)()
 #       
-    def testTriplesTemplate(self):
-        Test.makeTestFunc('TriplesTemplate', self.testCases, debug=0)()
+#     def testTriplesTemplate(self):
+#         Test.makeTestFunc('TriplesTemplate', self.testCases, debug=0)()
 #       
 #     def testQuadsNotTriples(self):
 #         Test.makeTestFunc('QuadsNotTriples', self.testCases, debug=0)()
@@ -1905,7 +1912,7 @@ class Test(unittest.TestCase):
 #       
 #     def testGraphRefAll(self):
 #         Test.makeTestFunc('GraphRefAll', self.testCases, debug=0)()
-# #  
+#
 #     def testGraphOrDefault(self):
 #         Test.makeTestFunc('GraphOrDefault', self.testCases, debug=0)()
 #      
@@ -1957,8 +1964,8 @@ class Test(unittest.TestCase):
 #     def testUpdate(self):
 #         Test.makeTestFunc('Update', self.testCases, debug=0)()
 #   
-#     def testValuesClause(self):
-#         Test.makeTestFunc('ValuesClause', self.testCases, debug=0)()
+    def testValuesClause(self):
+        Test.makeTestFunc('ValuesClause', self.testCases, debug=0)()
 #   
 #     def testOffsetClause(self):
 #         Test.makeTestFunc('OffsetClause', self.testCases, debug=0)()
@@ -1987,11 +1994,11 @@ class Test(unittest.TestCase):
 #     def testGroupClause(self):
 #         Test.makeTestFunc('GroupClause', self.testCases, debug=0)()
 #  
-#     def testSolutionModifier(self):
-#         Test.makeTestFunc('SolutionModifier', self.testCases, debug=0)()
+    def testSolutionModifier(self):
+        Test.makeTestFunc('SolutionModifier', self.testCases, debug=0)()
 #  
-#     def testWhereClause(self):
-#         Test.makeTestFunc('WhereClause', self.testCases, debug=0)()
+    def testWhereClause(self):
+        Test.makeTestFunc('WhereClause', self.testCases, debug=0)()
 #  
 #     def testSourceSelector(self):
 #         Test.makeTestFunc('SourceSelector', self.testCases, debug=0)()
@@ -2004,7 +2011,7 @@ class Test(unittest.TestCase):
 #  
 #     def testDatasetClause(self):
 #         Test.makeTestFunc('DatasetClause', self.testCases, debug=0)()
-
+#
 #     def testAskQuery(self):
 #         Test.makeTestFunc('AskQuery', self.testCases, debug=0)()
 # 
@@ -2016,11 +2023,10 @@ class Test(unittest.TestCase):
 
     def testSelectClause(self):
         Test.makeTestFunc('SelectClause', self.testCases, debug=0)()
+ 
+    def testSubSelect(self):
+        Test.makeTestFunc('SubSelect', self.testCases, debug=0)()
 
-# # [9]     SelectClause      ::=   'SELECT' ( 'DISTINCT' | 'REDUCED' )? ( ( Var | ( '(' Expression 'AS' Var ')' ) )+ | '*' ) 
-# 
-# # [8]     SubSelect         ::=   SelectClause WhereClause SolutionModifier ValuesClause 
-# 
 # # [7]     SelectQuery       ::=   SelectClause DatasetClause* WhereClause SolutionModifier 
 # 
 # # [6]     PrefixDecl        ::=   'PREFIX' PNAME_NS IRIREF 

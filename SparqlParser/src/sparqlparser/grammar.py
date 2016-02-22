@@ -2078,6 +2078,7 @@ class SelectClause(SPARQLNonTerminal): pass
 if do_parseactions: SelectClause_p.setParseAction(parseInfoFunc('SelectClause'))
 
 # [8]     SubSelect         ::=   SelectClause WhereClause SolutionModifier ValuesClause 
+SubSelect_p << SelectClause_p + WhereClause_p + SolutionModifier_p + ValuesClause_p 
 
 # [7]     SelectQuery       ::=   SelectClause DatasetClause* WhereClause SolutionModifier 
 
