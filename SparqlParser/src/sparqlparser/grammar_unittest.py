@@ -1486,7 +1486,15 @@ class Test(unittest.TestCase):
         self.testCases['ConstructQuery']['fail'] += ['*NoConstructQuery*']
         
 # [9]     SelectClause      ::=   'SELECT' ( 'DISTINCT' | 'REDUCED' )? ( ( Var | ( '(' Expression 'AS' Var ')' ) )+ | '*' ) 
-
+        self.testCases['SelectClause'] = {'pass': [], 'fail': []}        
+        self.testCases['SelectClause']['pass'] += ['SELECT ' + v + ' ( ' + e + ' AS ' + v + ' )'
+                                                         for v in self.testCases['Var']['pass'][::100]
+                                                         for e in self.testCases['Expression']['pass'][::2]]
+        self.testCases['SelectClause']['pass'] += ['SELECT DISTINCT *'
+                                                         for v in self.testCases['Var']['pass'][::100]
+                                                         for e in self.testCases['Expression']['pass'][::2]]
+        self.testCases['SelectClause']['fail'] += ['*NoSelectClause*']
+                                                    
 # [8]     SubSelect         ::=   SelectClause WhereClause SolutionModifier ValuesClause 
 
 # [7]     SelectQuery       ::=   SelectClause DatasetClause* WhereClause SolutionModifier 
@@ -1673,8 +1681,8 @@ class Test(unittest.TestCase):
 #     def testRegexExpression(self):
 #         Test.makeTestFunc('RegexExpression', self.testCases, debug=0)()
 #                                 
-#     def testVar(self):
-#         Test.makeTestFunc('Var', self.testCases, debug=0)()
+    def testVar(self):
+        Test.makeTestFunc('Var', self.testCases, debug=0)()
 #                                 
 #     def testBuiltInCall(self):
 #         Test.makeTestFunc('BuiltInCall', self.testCases, debug=0)()
@@ -1709,8 +1717,8 @@ class Test(unittest.TestCase):
 #     def testConditionalOrExpression(self):
 #         Test.makeTestFunc('ConditionalOrExpression', self.testCases, debug=0)()
 #                                
-#     def testExpression(self):
-#         Test.makeTestFunc('Expression', self.testCases, debug=0)()
+    def testExpression(self):
+        Test.makeTestFunc('Expression', self.testCases, debug=0)()
 #                                       
 #     def testGraphTerm(self):
 #         Test.makeTestFunc('GraphTerm', self.testCases, debug=0)()
@@ -1979,12 +1987,12 @@ class Test(unittest.TestCase):
 #     def testGroupClause(self):
 #         Test.makeTestFunc('GroupClause', self.testCases, debug=0)()
 #  
-    def testSolutionModifier(self):
-        Test.makeTestFunc('SolutionModifier', self.testCases, debug=0)()
- 
-    def testWhereClause(self):
-        Test.makeTestFunc('WhereClause', self.testCases, debug=0)()
- 
+#     def testSolutionModifier(self):
+#         Test.makeTestFunc('SolutionModifier', self.testCases, debug=0)()
+#  
+#     def testWhereClause(self):
+#         Test.makeTestFunc('WhereClause', self.testCases, debug=0)()
+#  
 #     def testSourceSelector(self):
 #         Test.makeTestFunc('SourceSelector', self.testCases, debug=0)()
 #  
@@ -1993,21 +2001,22 @@ class Test(unittest.TestCase):
 #  
 #     def testDefaultGraphClause(self):
 #         Test.makeTestFunc('DefaultGraphClause', self.testCases, debug=0)()
- 
-    def testDatasetClause(self):
-        Test.makeTestFunc('DatasetClause', self.testCases, debug=0)()
+#  
+#     def testDatasetClause(self):
+#         Test.makeTestFunc('DatasetClause', self.testCases, debug=0)()
 
 #     def testAskQuery(self):
 #         Test.makeTestFunc('AskQuery', self.testCases, debug=0)()
 # 
 #     def testDescribeQuery(self):
 #         Test.makeTestFunc('DescribeQuery', self.testCases, debug=0)()
-
-    def testConstructQuery(self):
-        Test.makeTestFunc('ConstructQuery', self.testCases, debug=0)()
-
-# # [10]    ConstructQuery    ::=   'CONSTRUCT' ( ConstructTemplate DatasetClause* WhereClause SolutionModifier | DatasetClause* 'WHERE' '{' TriplesTemplate? '}' SolutionModifier ) 
 # 
+#     def testConstructQuery(self):
+#         Test.makeTestFunc('ConstructQuery', self.testCases, debug=0)()
+
+    def testSelectClause(self):
+        Test.makeTestFunc('SelectClause', self.testCases, debug=0)()
+
 # # [9]     SelectClause      ::=   'SELECT' ( 'DISTINCT' | 'REDUCED' )? ( ( Var | ( '(' Expression 'AS' Var ')' ) )+ | '*' ) 
 # 
 # # [8]     SubSelect         ::=   SelectClause WhereClause SolutionModifier ValuesClause 

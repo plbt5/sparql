@@ -757,6 +757,8 @@ if __name__ == '__main__':
     printResults(l, 'ConstructQuery')
     
     # [9]     SelectClause      ::=   'SELECT' ( 'DISTINCT' | 'REDUCED' )? ( ( Var | ( '(' Expression 'AS' Var ')' ) )+ | '*' ) 
+    l = ['SELECT REDUCED $var1 ?var2 (("*Expression*") AS $var3)']
+    printResults(l, 'SelectClause')
     
     # [8]     SubSelect         ::=   SelectClause WhereClause SolutionModifier ValuesClause 
     

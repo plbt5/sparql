@@ -988,6 +988,18 @@ class CONSTRUCT_kw(SPARQLKeyword):
         return 'CONSTRUCT'
 if do_parseactions: CONSTRUCT_kw_p.setParseAction(parseInfoFunc('CONSTRUCT_kw'))
 
+SELECT_kw_p = CaselessKeyword('SELECT')
+class SELECT_kw(SPARQLKeyword):
+    def render(self):
+        return 'SELECT'
+if do_parseactions: SELECT_kw_p.setParseAction(parseInfoFunc('SELECT_kw'))
+
+REDUCED_kw_p = CaselessKeyword('REDUCED')
+class REDUCED_kw(SPARQLKeyword):
+    def render(self):
+        return 'REDUCED'
+if do_parseactions: REDUCED_kw_p.setParseAction(parseInfoFunc('REDUCED_kw'))
+
 
 # 'FROM' ( DefaultGraphClause | NamedGraphClause ) 
 
@@ -2061,6 +2073,9 @@ class ConstructQuery(SPARQLNonTerminal): pass
 if do_parseactions: ConstructQuery_p.setParseAction(parseInfoFunc('ConstructQuery'))
 
 # [9]     SelectClause      ::=   'SELECT' ( 'DISTINCT' | 'REDUCED' )? ( ( Var | ( '(' Expression 'AS' Var ')' ) )+ | '*' ) 
+SelectClause_p = SELECT_kw_p + Optional(DISTINCT_kw_p | REDUCED_kw_p) + ( OneOrMore(Var_p | (LPAR_p + Expression_p + AS_kw_p + Var_p + RPAR_p)) | ALL_VALUES_st_p ) 
+class SelectClause(SPARQLNonTerminal): pass
+if do_parseactions: SelectClause_p.setParseAction(parseInfoFunc('SelectClause'))
 
 # [8]     SubSelect         ::=   SelectClause WhereClause SolutionModifier ValuesClause 
 
