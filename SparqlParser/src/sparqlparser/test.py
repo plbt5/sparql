@@ -1,16 +1,19 @@
 from pyparsing import *
 from sparqlparser.grammar import *
 
+# [29]    Update    ::=   Prologue ( Update1 ( ';' Update )? )? 
 
-s = '?S <testIri> ?S . "TriplesBlock" @en-bf <TriplesBlock> ?TriplesBlock ; <v> TriplesBlock, (TriplesBlock) ;;'
+Prologue_p << Literal('BASE <prologue:22> PREFIX prologue: <prologue:33>')
+# Update_p << Literal('BASE <update:22> PREFIX update: <update:33>')
+Update_p << (Prologue_p + Optional(Update1_p + Optional(SEMICOL_p + Update_p))) 
 
-r1 = TriplesBlock_p.parseString(s)[0]
-  
-r1.dump()
-r1.test(render=True)
-# print()
 
-print(r1)
+s = 'BASE <prologue:22> PREFIX prologue: <prologue:33> LOAD <testIri> ; BASE <prologue:22> PREFIX prologue: <prologue:33>'
 
-t = '"work" @en-bf <test> ?path ; <test2> $algebra, ($TriplesNode) ;;'
+
+print(Prologue_p.parseString(s))
+print((Prologue_p + Optional(Update1_p + SEMICOL_p)).parseString(s))
+print((Prologue_p + Optional(Update1_p + SEMICOL_p + Update_p)).parseString(s))
+
+print(Update_p.parseString(s))
 

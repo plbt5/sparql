@@ -1879,9 +1879,21 @@ Update1_p = Load_p | Clear_p | Drop_p | Add_p | Move_p | Copy_p | Create_p | Ins
 class Update1(SPARQLNonTerminal): pass
 if do_parseactions: Update1_p.setParseAction(parseInfoFunc('Update1'))
 
+Prologue_p = Forward()
+class Prologue(SPARQLNonTerminal): pass
+if do_parseactions: Prologue_p.setParseAction(parseInfoFunc('Prologue'))
+
+Update_p = Forward()
+class Update(SPARQLNonTerminal): pass
+if do_parseactions: Update_p.setParseAction(parseInfoFunc('Update'))
+
 # [29]    Update    ::=   Prologue ( Update1 ( ';' Update )? )? 
+Update_p << (Prologue_p + Optional(Update1_p + Optional(SEMICOL_p + Update_p))) 
 
 # [28]    ValuesClause      ::=   ( 'VALUES' DataBlock )? 
+ValuesClause_p = Optional(VALUES_kw_p + DataBlock_p) 
+class ValuesClause(SPARQLNonTerminal): pass
+if do_parseactions: ValuesClause_p.setParseAction(parseInfoFunc('ValuesClause'))
 
 # [27]    OffsetClause      ::=   'OFFSET' INTEGER 
 

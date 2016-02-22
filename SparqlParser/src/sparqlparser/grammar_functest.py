@@ -9,8 +9,10 @@ from sparqlparser.grammar import *
 # PropertyListNotEmpty_p << Literal('$Verb $ObjectList')
 # Path_p << Literal('<Path>')
 # ConstructTriples_p << Literal('?ConstructTriples')
-# ExpressionList_p << '()'
+# ExpressionList_p << Literal('()')
 SubSelect_p << Literal('SELECT * {}')
+# TriplesTemplate_p << Literal('?var $algebra $algebra, ($TriplesNode)')
+Prologue_p << 'BASE <prologue:22> PREFIX prologue: <prologue:33>'
 
 
 def printResults(l, rule, dump=False):
@@ -676,8 +678,12 @@ if __name__ == '__main__':
     printResults(l, 'Update1')
     
     # [29]    Update    ::=   Prologue ( Update1 ( ';' Update )? )? 
+    l = ['BASE <prologue:22> PREFIX prologue: <prologue:33> LOAD <testIri> ; BASE <prologue:22> PREFIX prologue: <prologue:33>']
+    printResults(l, 'Update')
     
     # [28]    ValuesClause      ::=   ( 'VALUES' DataBlock )? 
+    l = ['', 'VALUES $S { <testIri> <testIri> }']
+    printResults(l, 'ValuesClause')
     
     # [27]    OffsetClause      ::=   'OFFSET' INTEGER 
     
