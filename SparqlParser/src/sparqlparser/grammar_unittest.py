@@ -1374,15 +1374,30 @@ class Test(unittest.TestCase):
                                                          for l in self.testCases['LimitClause']['pass']]
         self.testCases['LimitOffsetClauses']['fail'] += ['*NoLimitOffsetClauses*']
 
-# [24]    OrderCondition    ::=   ( ( 'ASC' | 'DESC' ) BrackettedExpression ) 
-
-#             | ( Constraint | Var ) 
-
+# [24]    OrderCondition    ::=   ( ( 'ASC' | 'DESC' ) BrackettedExpression ) | ( Constraint | Var ) 
+        self.testCases['OrderCondition'] = {'pass': [], 'fail': []}        
+        self.testCases['OrderCondition']['pass'] += ['ASC ' + b for b in self.testCases['BracketedExpression']['pass']]
+        self.testCases['OrderCondition']['pass'] += ['DESC ' + b for b in self.testCases['BracketedExpression']['pass']]
+        self.testCases['OrderCondition']['pass'] += self.testCases['Constraint']['pass']
+        self.testCases['OrderCondition']['pass'] += self.testCases['Var']['pass']
+        self.testCases['OrderCondition']['fail'] += ['*NoOrderCondition*']
+        
 # [23]    OrderClause       ::=   'ORDER' 'BY' OrderCondition+ 
-
+        self.testCases['OrderClause'] = {'pass': [], 'fail': []}        
+        self.testCases['OrderClause']['pass'] += ['ORDER BY ' + o for o in self.testCases['OrderCondition']['pass'][::50]]
+        self.testCases['OrderClause']['pass'] += ['ORDER BY ' + o + ' ' + o for o in self.testCases['OrderCondition']['pass'][::50]]
+        self.testCases['OrderClause']['fail'] += ['*NoOrderClause*']
+        
 # [22]    HavingCondition   ::=   Constraint 
-
+        self.testCases['HavingCondition'] = {'pass': [], 'fail': []}        
+        self.testCases['HavingCondition']['pass'] += self.testCases['Constraint']['pass']
+        self.testCases['HavingCondition']['fail'] += ['*NoHavingCondition*']
+        
 # [21]    HavingClause      ::=   'HAVING' HavingCondition+ 
+        self.testCases['HavingClause'] = {'pass': [], 'fail': []}        
+        self.testCases['HavingClause']['pass'] += ['HAVING ' + h for h in self.testCases['HavingCondition']['pass'][::50]]
+        self.testCases['HavingClause']['pass'] += ['HAVING ' + h + ' ' + h for h in self.testCases['HavingCondition']['pass'][::50]]
+        self.testCases['HavingClause']['fail'] += ['*NoHavingClause*']
 
 # [20]    GroupCondition    ::=   BuiltInCall | FunctionCall | '(' Expression ( 'AS' Var )? ')' | Var 
 
@@ -1878,23 +1893,22 @@ class Test(unittest.TestCase):
 # 
 #     def testLimitClause(self):
 #         Test.makeTestFunc('LimitClause', self.testCases, debug=0)()
+# 
+#     def testLimitOffsetClauses(self):
+#         Test.makeTestFunc('LimitOffsetClauses', self.testCases, debug=0)()
+# 
+#     def testOrderCondition(self):
+#         Test.makeTestFunc('OrderCondition', self.testCases, debug=0)()
+# 
+#     def testOrderClause(self):
+#         Test.makeTestFunc('OrderClause', self.testCases, debug=0)()
+#         
+#     def testHavingCondition(self):
+#         Test.makeTestFunc('HavingCondition', self.testCases, debug=0)()
 
-    def testLimitOffsetClauses(self):
-        Test.makeTestFunc('LimitOffsetClauses', self.testCases, debug=0)()
+    def testHavingClause(self):
+        Test.makeTestFunc('HavingClause', self.testCases, debug=0)()
 
-
-# # [25]    LimitOffsetClauses        ::=   LimitClause OffsetClause? | OffsetClause LimitClause? 
-# 
-# # [24]    OrderCondition    ::=   ( ( 'ASC' | 'DESC' ) BrackettedExpression ) 
-# 
-# #             | ( Constraint | Var ) 
-# 
-# # [23]    OrderClause       ::=   'ORDER' 'BY' OrderCondition+ 
-# 
-# # [22]    HavingCondition   ::=   Constraint 
-# 
-# # [21]    HavingClause      ::=   'HAVING' HavingCondition+ 
-# 
 # # [20]    GroupCondition    ::=   BuiltInCall | FunctionCall | '(' Expression ( 'AS' Var )? ')' | Var 
 # 
 # # [19]    GroupClause       ::=   'GROUP' 'BY' GroupCondition+ 

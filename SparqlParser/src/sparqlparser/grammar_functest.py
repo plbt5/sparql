@@ -697,16 +697,22 @@ if __name__ == '__main__':
     l = ['LIMIT 3', 'OFFSET 3', 'LIMIT 3 OFFSET 3', 'OFFSET 3 LIMIT 3']
     printResults(l, 'LimitOffsetClauses')
     
-    # [24]    OrderCondition    ::=   ( ( 'ASC' | 'DESC' ) BrackettedExpression ) 
-    
-    #             | ( Constraint | Var ) 
+    # [24]    OrderCondition    ::=   ( ( 'ASC' | 'DESC' ) BrackettedExpression )  | ( Constraint | Var ) 
+    l = ['ASC ("*Expression*")', 'DESC ("*Expression*")', 'isBLANK ("*Expression*")', '$var']
+    printResults(l, 'OrderCondition')
     
     # [23]    OrderClause       ::=   'ORDER' 'BY' OrderCondition+ 
+    l = ['ORDER BY $var']
+    printResults(l, 'OrderClause')
     
     # [22]    HavingCondition   ::=   Constraint 
+    l = ['<test:227> (DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )', 'STRUUID()', 'ROUND ( "*Expression*")', 'isBLANK ("*Expression*")', 'COUNT ( * )', '("*Expression*")']
+    printResults(l, 'HavingCondition')
     
     # [21]    HavingClause      ::=   'HAVING' HavingCondition+ 
-    
+    l = [' HAVING <test:227> (DISTINCT "*Expression*",  "*Expression*",   "*Expression*" )']
+    printResults(l, 'HavingClause')
+        
     # [20]    GroupCondition    ::=   BuiltInCall | FunctionCall | '(' Expression ( 'AS' Var )? ')' | Var 
     
     # [19]    GroupClause       ::=   'GROUP' 'BY' GroupCondition+ 

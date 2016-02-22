@@ -934,6 +934,30 @@ class LIMIT_kw(SPARQLKeyword):
         return 'LIMIT'
 if do_parseactions: LIMIT_kw_p.setParseAction(parseInfoFunc('LIMIT_kw'))
 
+ASC_kw_p = CaselessKeyword('ASC')
+class ASC_kw(SPARQLKeyword):
+    def render(self):
+        return 'ASC'
+if do_parseactions: ASC_kw_p.setParseAction(parseInfoFunc('ASC_kw'))
+
+DESC_kw_p = CaselessKeyword('DESC')
+class DESC_kw(SPARQLKeyword):
+    def render(self):
+        return 'DESC'
+if do_parseactions: DESC_kw_p.setParseAction(parseInfoFunc('DESC_kw'))
+
+ORDER_BY_kw_p = CaselessKeyword('ORDER') + CaselessKeyword('BY')
+class ORDER_BY_kw(SPARQLKeyword):
+    def render(self):
+        return 'ORDER BY'
+if do_parseactions: ORDER_BY_kw_p.setParseAction(parseInfoFunc('ORDER_BY_kw'))
+
+HAVING_kw_p = CaselessKeyword('HAVING') 
+class HAVING_kw(SPARQLKeyword):
+    def render(self):
+        return 'HAVING'
+if do_parseactions: HAVING_kw_p.setParseAction(parseInfoFunc('HAVING_kw'))
+
 
 # 
 # Parsers and classes for terminals
@@ -1922,15 +1946,25 @@ LimitOffsetClauses_p = (LimitClause_p + Optional(OffsetClause_p)) | (OffsetClaus
 class LimitOffsetClauses(SPARQLNonTerminal): pass
 if do_parseactions: LimitOffsetClauses_p.setParseAction(parseInfoFunc('LimitOffsetClauses'))
 
-# [24]    OrderCondition    ::=   ( ( 'ASC' | 'DESC' ) BrackettedExpression ) 
-
-#             | ( Constraint | Var ) 
+# [24]    OrderCondition    ::=   ( ( 'ASC' | 'DESC' ) BrackettedExpression ) | ( Constraint | Var ) 
+OrderCondition_p =   ((ASC_kw_p | DESC_kw_p) + BracketedExpression_p) | (Constraint_p | Var_p)
+class OrderCondition(SPARQLNonTerminal): pass
+if do_parseactions: OrderCondition_p.setParseAction(parseInfoFunc('OrderCondition'))
 
 # [23]    OrderClause       ::=   'ORDER' 'BY' OrderCondition+ 
+OrderClause_p = ORDER_BY_kw_p + OneOrMore(OrderCondition_p) 
+class OrderClause(SPARQLNonTerminal): pass
+if do_parseactions: OrderClause_p.setParseAction(parseInfoFunc('OrderClause'))
 
 # [22]    HavingCondition   ::=   Constraint 
+HavingCondition_p = Constraint_p
+class HavingCondition(SPARQLNonTerminal): pass
+if do_parseactions: HavingCondition_p.setParseAction(parseInfoFunc('HavingCondition'))
 
 # [21]    HavingClause      ::=   'HAVING' HavingCondition+ 
+HavingClause_p = HAVING_kw_p + OneOrMore(HavingCondition_p) 
+class HavingClause(SPARQLNonTerminal): pass
+if do_parseactions: HavingClause_p.setParseAction(parseInfoFunc('HavingClause'))
 
 # [20]    GroupCondition    ::=   BuiltInCall | FunctionCall | '(' Expression ( 'AS' Var )? ')' | Var 
 
