@@ -1967,6 +1967,9 @@ class HavingClause(SPARQLNonTerminal): pass
 if do_parseactions: HavingClause_p.setParseAction(parseInfoFunc('HavingClause'))
 
 # [20]    GroupCondition    ::=   BuiltInCall | FunctionCall | '(' Expression ( 'AS' Var )? ')' | Var 
+GroupCondition_p = BuiltInCall_p | FunctionCall_p | (LPAR_p + Expression_p + Optional(AS_kw_p + Var_p) + RPAR_p) | Var_p 
+class GroupCondition(SPARQLNonTerminal): pass
+if do_parseactions: GroupCondition_p.setParseAction(parseInfoFunc('GroupCondition'))
 
 # [19]    GroupClause       ::=   'GROUP' 'BY' GroupCondition+ 
 
