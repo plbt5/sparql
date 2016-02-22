@@ -686,8 +686,12 @@ if __name__ == '__main__':
     printResults(l, 'ValuesClause')
     
     # [27]    OffsetClause      ::=   'OFFSET' INTEGER 
+    l = ['OFFSET 3']
+    printResults(l, 'OffsetClause')
     
     # [26]    LimitClause       ::=   'LIMIT' INTEGER 
+    l = ['LIMIT 3']
+    printResults(l, 'LimitClause')
     
     # [25]    LimitOffsetClauses        ::=   LimitClause OffsetClause? | OffsetClause LimitClause? 
     

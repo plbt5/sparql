@@ -1353,9 +1353,15 @@ class Test(unittest.TestCase):
         self.testCases['ValuesClause']['fail'] += ['*NoValuesClause*']
         
 # [27]    OffsetClause      ::=   'OFFSET' INTEGER 
-
+        self.testCases['OffsetClause'] = {'pass': [], 'fail': []}        
+        self.testCases['OffsetClause']['pass'] += ['OFFSET 3']
+        self.testCases['OffsetClause']['fail'] += ['*NoOffsetClause*']
+        
 # [26]    LimitClause       ::=   'LIMIT' INTEGER 
-
+        self.testCases['LimitClause'] = {'pass': [], 'fail': []}        
+        self.testCases['LimitClause']['pass'] += ['LIMIT 3']
+        self.testCases['LimitClause']['fail'] += ['*NoLimitClause*']
+        
 # [25]    LimitOffsetClauses        ::=   LimitClause OffsetClause? | OffsetClause LimitClause? 
 
 # [24]    OrderCondition    ::=   ( ( 'ASC' | 'DESC' ) BrackettedExpression ) 
@@ -1853,17 +1859,17 @@ class Test(unittest.TestCase):
 # 
 #     def testUpdate(self):
 #         Test.makeTestFunc('Update', self.testCases, debug=0)()
-
-    def testValuesClause(self):
-        Test.makeTestFunc('ValuesClause', self.testCases, debug=0)()
-
-
-# # [28]    ValuesClause      ::=   ( 'VALUES' DataBlock )? 
 # 
-# # [27]    OffsetClause      ::=   'OFFSET' INTEGER 
-# 
-# # [26]    LimitClause       ::=   'LIMIT' INTEGER 
-# 
+#     def testValuesClause(self):
+#         Test.makeTestFunc('ValuesClause', self.testCases, debug=0)()
+
+    def testOffsetClause(self):
+        Test.makeTestFunc('OffsetClause', self.testCases, debug=0)()
+
+    def testLimitClause(self):
+        Test.makeTestFunc('LimitClause', self.testCases, debug=0)()
+
+
 # # [25]    LimitOffsetClauses        ::=   LimitClause OffsetClause? | OffsetClause LimitClause? 
 # 
 # # [24]    OrderCondition    ::=   ( ( 'ASC' | 'DESC' ) BrackettedExpression ) 

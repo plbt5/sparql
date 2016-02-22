@@ -922,6 +922,18 @@ class INTO_kw(SPARQLKeyword):
         return 'INTO'
 if do_parseactions: INTO_kw_p.setParseAction(parseInfoFunc('INTO_kw'))
 
+OFFSET_kw_p = CaselessKeyword('OFFSET')
+class OFFSET_kw(SPARQLKeyword):
+    def render(self):
+        return 'OFFSET'
+if do_parseactions: OFFSET_kw_p.setParseAction(parseInfoFunc('OFFSET_kw'))
+
+LIMIT_kw_p = CaselessKeyword('LIMIT')
+class LIMIT_kw(SPARQLKeyword):
+    def render(self):
+        return 'LIMIT'
+if do_parseactions: LIMIT_kw_p.setParseAction(parseInfoFunc('LIMIT_kw'))
+
 
 # 
 # Parsers and classes for terminals
@@ -1896,8 +1908,14 @@ class ValuesClause(SPARQLNonTerminal): pass
 if do_parseactions: ValuesClause_p.setParseAction(parseInfoFunc('ValuesClause'))
 
 # [27]    OffsetClause      ::=   'OFFSET' INTEGER 
+OffsetClause_p =   OFFSET_kw_p + INTEGER_p 
+class OffsetClause(SPARQLNonTerminal): pass
+if do_parseactions: OffsetClause_p.setParseAction(parseInfoFunc('OffsetClause'))
 
 # [26]    LimitClause       ::=   'LIMIT' INTEGER 
+LimitClause_p =   LIMIT_kw_p + INTEGER_p 
+class LimitClause(SPARQLNonTerminal): pass
+if do_parseactions: LimitClause_p.setParseAction(parseInfoFunc('LimitClause'))
 
 # [25]    LimitOffsetClauses        ::=   LimitClause OffsetClause? | OffsetClause LimitClause? 
 
