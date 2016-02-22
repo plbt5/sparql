@@ -850,6 +850,24 @@ class WHERE_kw(SPARQLKeyword):
         return 'WHERE'
 if do_parseactions: WHERE_kw_p.setParseAction(parseInfoFunc('WHERE_kw'))
 
+DELETE_WHERE_kw_p = CaselessKeyword('DELETE') + CaselessKeyword('WHERE')
+class DELETE_WHERE_kw(SPARQLKeyword):
+    def render(self):
+        return 'DELETE WHERE'
+if do_parseactions: DELETE_WHERE_kw_p.setParseAction(parseInfoFunc('DELETE_WHERE_kw'))
+
+DELETE_DATA_kw_p = CaselessKeyword('DELETE') + CaselessKeyword('DATA')
+class DELETE_DATA_kw(SPARQLKeyword):
+    def render(self):
+        return 'DELETE DATA'
+if do_parseactions: DELETE_DATA_kw_p.setParseAction(parseInfoFunc('DELETE_DATA_kw'))
+
+INSERT_DATA_kw_p = CaselessKeyword('INSERT') + CaselessKeyword('DATA')
+class INSERT_DATA_kw(SPARQLKeyword):
+    def render(self):
+        return 'INSERT DATA'
+if do_parseactions: INSERT_DATA_kw_p.setParseAction(parseInfoFunc('INSERT_DATA_kw'))
+
 # 
 # Parsers and classes for terminals
 #
@@ -1752,10 +1770,19 @@ class Modify(SPARQLNonTerminal): pass
 if do_parseactions: Modify_p.setParseAction(parseInfoFunc('Modify'))
 
 # [40]    DeleteWhere       ::=   'DELETE WHERE' QuadPattern 
+DeleteWhere_p =   DELETE_WHERE_kw_p + QuadPattern_p 
+class DeleteWhere(SPARQLNonTerminal): pass
+if do_parseactions: DeleteWhere_p.setParseAction(parseInfoFunc('DeleteWhere'))
 
 # [39]    DeleteData        ::=   'DELETE DATA' QuadData 
+DeleteData_p = DELETE_DATA_kw_p + QuadData_p 
+class DeleteData(SPARQLNonTerminal): pass
+if do_parseactions: DeleteData_p.setParseAction(parseInfoFunc('DeleteData'))
 
 # [38]    InsertData        ::=   'INSERT DATA' QuadData 
+InsertData_p = INSERT_DATA_kw_p + QuadData_p 
+class InsertData(SPARQLNonTerminal): pass
+if do_parseactions: InsertData_p.setParseAction(parseInfoFunc('Modify'))
 
 # [37]    Copy      ::=   'COPY' 'SILENT'? GraphOrDefault 'TO' GraphOrDefault 
 

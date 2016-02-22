@@ -600,7 +600,7 @@ if __name__ == '__main__':
     printResults(l, 'QuadData')
         
     # [48]    QuadPattern       ::=   '{' Quads '}' 
-    l = ['{ ?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) GRAPH $var { ?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) } GRAPH $var { } }']
+    l = ['{ }', '{ ?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) GRAPH $var { ?var $algebra $algebra, ($TriplesNode) . ?var $algebra $algebra, ($TriplesNode) } GRAPH $var { } }']
     printResults(l, 'QuadPattern')
         
     # [46]    GraphRef          ::=   'GRAPH' iri 
@@ -632,10 +632,16 @@ if __name__ == '__main__':
     printResults(l, 'Modify')
                     
     # [40]    DeleteWhere       ::=   'DELETE WHERE' QuadPattern 
+    l = ['DELETE WHERE { }']
+    printResults(l, 'DeleteWhere')
     
     # [39]    DeleteData        ::=   'DELETE DATA' QuadData 
-    
+    l = ['DELETE DATA { }']
+    printResults(l, 'DeleteData')
+      
     # [38]    InsertData        ::=   'INSERT DATA' QuadData 
+    l = ['INSERT DATA  { }']
+    printResults(l, 'InsertData')
     
     # [37]    Copy      ::=   'COPY' 'SILENT'? GraphOrDefault 'TO' GraphOrDefault 
     
