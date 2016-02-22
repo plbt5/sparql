@@ -1918,6 +1918,9 @@ class LimitClause(SPARQLNonTerminal): pass
 if do_parseactions: LimitClause_p.setParseAction(parseInfoFunc('LimitClause'))
 
 # [25]    LimitOffsetClauses        ::=   LimitClause OffsetClause? | OffsetClause LimitClause? 
+LimitOffsetClauses_p = (LimitClause_p + Optional(OffsetClause_p)) | (OffsetClause_p + Optional(LimitClause_p))
+class LimitOffsetClauses(SPARQLNonTerminal): pass
+if do_parseactions: LimitOffsetClauses_p.setParseAction(parseInfoFunc('LimitOffsetClauses'))
 
 # [24]    OrderCondition    ::=   ( ( 'ASC' | 'DESC' ) BrackettedExpression ) 
 

@@ -1363,6 +1363,16 @@ class Test(unittest.TestCase):
         self.testCases['LimitClause']['fail'] += ['*NoLimitClause*']
         
 # [25]    LimitOffsetClauses        ::=   LimitClause OffsetClause? | OffsetClause LimitClause? 
+        self.testCases['LimitOffsetClauses'] = {'pass': [], 'fail': []}        
+        self.testCases['LimitOffsetClauses']['pass'] += self.testCases['LimitClause']['pass']
+        self.testCases['LimitOffsetClauses']['pass'] += self.testCases['OffsetClause']['pass']
+        self.testCases['LimitOffsetClauses']['pass'] += [l + ' ' + o 
+                                                         for l in self.testCases['LimitClause']['pass']
+                                                         for o in self.testCases['OffsetClause']['pass']]
+        self.testCases['LimitOffsetClauses']['pass'] += [o + ' ' + l 
+                                                         for o in self.testCases['OffsetClause']['pass']
+                                                         for l in self.testCases['LimitClause']['pass']]
+        self.testCases['LimitOffsetClauses']['fail'] += ['*NoLimitOffsetClauses*']
 
 # [24]    OrderCondition    ::=   ( ( 'ASC' | 'DESC' ) BrackettedExpression ) 
 
@@ -1862,12 +1872,15 @@ class Test(unittest.TestCase):
 # 
 #     def testValuesClause(self):
 #         Test.makeTestFunc('ValuesClause', self.testCases, debug=0)()
+# 
+#     def testOffsetClause(self):
+#         Test.makeTestFunc('OffsetClause', self.testCases, debug=0)()
+# 
+#     def testLimitClause(self):
+#         Test.makeTestFunc('LimitClause', self.testCases, debug=0)()
 
-    def testOffsetClause(self):
-        Test.makeTestFunc('OffsetClause', self.testCases, debug=0)()
-
-    def testLimitClause(self):
-        Test.makeTestFunc('LimitClause', self.testCases, debug=0)()
+    def testLimitOffsetClauses(self):
+        Test.makeTestFunc('LimitOffsetClauses', self.testCases, debug=0)()
 
 
 # # [25]    LimitOffsetClauses        ::=   LimitClause OffsetClause? | OffsetClause LimitClause? 

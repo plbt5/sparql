@@ -694,6 +694,8 @@ if __name__ == '__main__':
     printResults(l, 'LimitClause')
     
     # [25]    LimitOffsetClauses        ::=   LimitClause OffsetClause? | OffsetClause LimitClause? 
+    l = ['LIMIT 3', 'OFFSET 3', 'LIMIT 3 OFFSET 3', 'OFFSET 3 LIMIT 3']
+    printResults(l, 'LimitOffsetClauses')
     
     # [24]    OrderCondition    ::=   ( ( 'ASC' | 'DESC' ) BrackettedExpression ) 
     
